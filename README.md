@@ -40,5 +40,3 @@ portfolio-red-black
 - HTML5
 - CSS3
 - JavaScript
-
-Feel free to explore and modify the project to suit your personal style and preferences!
