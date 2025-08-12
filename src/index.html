@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <!-- Metadatos básicos y SEO -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lucas Sosa · Data/Backend Jr</title>
+  <meta name="description" content="SQL · Python · Power BI. Experiencia en GS1 Argentina. Busco seguir creciendo y aportar impacto real." />
+  <meta name="theme-color" content="#D52A2A" />
+
+  <!-- Favicon para navegadores -->
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+  <link rel="alternate icon" type="image/png" href="assets/favicon.png" />
+
+  <!-- Metadatos para compartir en redes sociales -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Lucas Sosa · Data/Backend Jr" />
+  <meta property="og:description" content="SQL · Python · Power BI. Experiencia en GS1 Argentina." />
+  <meta property="og:image" content="assets/og-image.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Fuentes y estilos principales -->
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles/main.css">
+
+  <!-- Tailwind para utilidades rápidas (opcional) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    // Configuración de Tailwind con paleta personalizada
+    tailwind.config = {
+      theme: { extend: { colors: { primary: '#D52A2A', accent: '#F37676' } } }
+    }
+  </script>
+</head>
+
+<body class="dark">
+  <!-- Accesibilidad: salto directo al contenido -->
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <!-- Barra de navegación principal -->
+  <header>
+    <nav class="navbar" aria-label="Principal">
+      <div class="navbar-logo">L-Sosa</div>
+      <ul class="navbar-links">
+        <li><a href="#about">Sobre mí</a></li>
+        <li><a href="#projects">Proyectos</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contacto</a></li>
+      </ul>
+      <!-- Botón para cambiar tema (puedes quitar si solo usas modo oscuro) -->
+      <button id="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">☀️</button>
+    </nav>
+  </header>
+
+  <!-- Contenido principal del portfolio -->
+  <main id="main">
+    <!-- Sección de presentación / Hero -->
+    <section id="hero" class="hero-section">
+      <div class="hero-content">
+        <h1>Data/Backend Jr · <span class="highlight">SQL · Python · Power BI</span></h1>
+        <p>Trabajo en GS1 Argentina (I+D). Me enfoco en calidad de datos, automatización y visualización.  
+        Busco un equipo donde seguir creciendo y aportar impacto real.</p>
+        <div class="hero-cta">
+          <a class="btn primary" href="#projects">Ver proyectos</a>
+          <a class="btn ghost" href="#contact">Contactarme</a>
+        </div>
+      </div>
+      <!-- Imagen de perfil profesional -->
+      <div class="hero-image">
+        <img src="assets/lucas-sosa.webp" alt="Retrato profesional de Lucas Sosa" loading="lazy" width="480" height="480">
+      </div>
+    </section>
+
+    <!-- Sección "Sobre mí" -->
+    <section id="about">
+      <h2>Sobre mí</h2>
+      <p>Analista de Innovación y Desarrollo en GS1 Argentina. He trabajado en:
+        homologación GPC↔CPC, procesos ETL con SQL, tableros en Power BI y automatizaciones en Python (Tkinter).
+      </p>
+    </section>
+
+    <!-- Sección de proyectos y logros -->
+    <section id="projects">
+      <h2>Casos y logros</h2>
+      <div class="project-list">
+
+        <!-- Proyecto 1 -->
+        <article class="card project">
+          <header class="card-head">
+            <span class="emoji" aria-hidden="true">🧭</span>
+            <h3>Homologación GPC ↔ CPC</h3>
+            <span class="pill">Rol: Data Jr</span>
+            <span class="pill">2024</span>
+          </header>
+          <p class="context">Unificar taxonomías para análisis consistentes entre áreas.</p>
+          <ul class="actions">
+            <li>Limpieza/normalización de CSV (acentos, duplicados, jerarquías).</li>
+            <li>Pruebas con embeddings + FAISS y reglas por niveles.</li>
+            <li>Prototipo con UI para usuarios no técnicos.</li>
+          </ul>
+          <div class="impact">
+            <div class="stat"><strong>↑ Match</strong><span>+20–30% (estimado)</span></div>
+            <div class="stat"><strong>↓ Tiempo manual</strong><span>-50% revisión</span></div>
+          </div>
+          <div class="meta"><span>Python</span><span>SQL</span><span>Power BI</span></div>
+          <div class="links">
+            <a class="btn small" href="#contact">Contáctame</a>
+            <span class="note">Repo privado / datos internos</span>
+          </div>
+          <details class="more"><summary>Cómo lo abordé</summary>
+            <p>Iteraciones con ejemplos reales, registro de decisiones y checklist de calidad.</p>
+          </details>
+        </article>
+
+        <!-- Proyecto 2 -->
+        <article class="card project">
+          <header class="card-head">
+            <span class="emoji" aria-hidden="true">📊</span>
+            <h3>Tableros de negocio</h3>
+            <span class="pill">Rol: Data Jr</span>
+            <span class="pill">2023–2024</span>
+          </header>
+          <p class="context">KPIs operativos claros para seguimiento semanal.</p>
+          <ul class="actions">
+            <li>ETL en SQL y modelo de datos limpio.</li>
+            <li>Dashboards en Power BI con refresh programado.</li>
+            <li>Documentación corta para stakeholders.</li>
+          </ul>
+          <div class="impact">
+            <div class="stat"><strong>Decisiones</strong><span>más rápidas</span></div>
+            <div class="stat"><strong>Trabajo manual</strong><span>↓ retrabajo</span></div>
+          </div>
+          <div class="meta"><span>Power BI</span><span>SQL</span></div>
+          <div class="links">
+            <a class="btn small" href="#contact">Pedir demo</a>
+            <span class="note">Datos internos</span>
+          </div>
+          <details class="more"><summary>Cómo lo abordé</summary>
+            <p>Definición de métricas, prototipos rápidos y validación con usuarios.</p>
+          </details>
+        </article>
+
+        <!-- Proyecto 3 -->
+        <article class="card project">
+          <header class="card-head">
+            <span class="emoji" aria-hidden="true">⚙️</span>
+            <h3>Automatizaciones con interfaz simple</h3>
+            <span class="pill">Rol: Data Jr</span>
+            <span class="pill">2023</span>
+          </header>
+          <p class="context">Reducir errores al ejecutar procesos técnicos repetitivos.</p>
+          <ul class="actions">
+            <li>Utilidades en Python (Tkinter) para SPs y reportes.</li>
+            <li>Validaciones previas y mensajes claros de error.</li>
+            <li>Logs para seguimiento y soporte.</li>
+          </ul>
+          <div class="impact">
+            <div class="stat"><strong>Errores</strong><span>↓ significativamente</span></div>
+            <div class="stat"><strong>Autonomía</strong><span>usuarios no técnicos</span></div>
+          </div>
+          <div class="meta"><span>Python</span><span>Tkinter</span></div>
+          <div class="links">
+            <a class="btn small" href="#contact">Ver flujo</a>
+          </div>
+          <details class="more"><summary>Cómo lo abordé</summary>
+            <p>Enfoque “UX primero”: menos pasos, textos simples y estados visibles.</p>
+          </details>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- Sección de habilidades -->
+    <section id="skills">
+      <h2>Skills</h2>
+      <div class="skills-grid">
+        <div>
+          <h4>Core</h4>
+          <ul>
+            <li>SQL (MySQL)</li>
+            <li>Python</li>
+            <li>Power BI</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Backend</h4>
+          <ul>
+            <li>APIs básicas</li>
+            <li>C# .NET (intro)</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Frontend</h4>
+          <ul>
+            <li>HTML/CSS</li>
+            <li>JS</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Extras</h4>
+          <ul>
+            <li>Automatización</li>
+            <li>Data quality</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección de contacto -->
+    <section id="contact">
+      <h2>Contacto</h2>
+      <!-- Formulario de contacto -->
+      <form id="contact-form" action="https://formspree.io/f/yourid" method="POST">
+        <label for="name">Nombre</label>
+        <input id="name" name="name" required>
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" required>
+        <label for="message">Mensaje</label>
+        <textarea id="message" name="message" required></textarea>
+        <button type="submit">Enviar</button>
+      </form>
+      <!-- Links externos de contacto -->
+      <div class="links">
+        <a href="https://www.linkedin.com/in/tuusuario" target="_blank" rel="noopener">LinkedIn</a> ·
+        <a href="https://github.com/tuusuario" target="_blank" rel="noopener">GitHub</a> ·
+        <a href="assets/CV_SosaLucas.pdf" download>Descargar CV</a>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pie de página -->
+  <footer>
+    <p>© 2025 Lucas Sosa</p>
+  </footer>
+
+  <!-- Script principal -->
+  <script src="scripts/app.js" defer></script>
+</body>
+</html>
