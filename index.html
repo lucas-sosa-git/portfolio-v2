@@ -34,18 +34,29 @@
 <body class="dark">
   <a class="skip-link" href="#main">Saltar al contenido</a>
 
-  <header>
-    <nav class="navbar" aria-label="Principal">
-      <div class="navbar-logo">L-Sosa</div>
-      <ul class="navbar-links">
-        <li><a href="#about">Sobre mí</a></li>
-        <li><a href="#projects">Proyectos</a></li>
-        <li><a href="#skills">Skills</a></li>
-        <li><a href="#contact">Contacto</a></li>
-      </ul>
-      <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
-    </nav>
-  </header>
+<header>
+  <nav class="navbar" aria-label="Principal">
+    <a href="#hero" class="navbar-logo" aria-label="Inicio">L-Sosa</a>
+
+    <!-- Botón hamburguesa (móvil) -->
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Abrir menú">
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+      <span class="nav-toggle-bar"></span>
+    </button>
+
+    <!-- Links -->
+    <ul id="nav-menu" class="navbar-links">
+      <li><a href="#about">Sobre mí</a></li>
+      <li><a href="#projects">Proyectos</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contacto</a></li>
+    </ul>
+
+    <!-- Botón tema, se mantiene -->
+    <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
+  </nav>
+</header>
 
   <main id="main">
     <!-- HERO -->
