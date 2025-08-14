@@ -145,30 +145,143 @@ header{
   .navbar-links a::after{ bottom:0; }
 }
 
-/* =====================  HERO  ===================== */
+/* =====================  HERO (nuevo)  ===================== */
 .hero-section{
-  display:grid; grid-template-columns:1.2fr .8fr;
-  align-items:center; gap:2rem; min-height:70vh;
-}
-.hero-content p{ color:var(--muted); font-size:1.05rem; }
-.hero-cta{ display:flex; gap:.75rem; margin-top:1.25rem; }
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 3rem);
 
-.btn{
-  display:inline-block; border:1px solid var(--border);
-  padding:.6rem 1rem; border-radius:.6rem;
-  text-decoration:none; color:var(--text);
-  transition:color .2s, border-color .2s, transform .1s, background .2s;
+  /* ocupa el primer pantallazo completo (restando navbar) */
+  min-height: calc(100vh - var(--nav-h));
+  padding-block: clamp(1rem, 3vh, 2.5rem);
 }
-.btn.primary{ background:var(--primary); border-color:transparent; color:#fff; }
-.btn.ghost:hover{ border-color:var(--accent); color:var(--accent); }
+@supports (height: 100svh){
+  .hero-section{ min-height: calc(100svh - var(--nav-h)); }
+}
 
+.hero-content{ display: grid; gap: .9rem; }
+
+.hero-kicker{
+  font-weight: 700;
+  font-size: clamp(1rem, .6rem + 1vw, 1.15rem);
+  color: var(--text);                /* ya no en rojo */
+  opacity: .9;
+}
+
+.hero-title{
+  margin: .1rem 0 .25rem;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: .2px;
+  font-size: clamp(2.1rem, 2rem + 3vw, 3.6rem);
+  color: var(--text);
+}
+.hero-title .hero-name{ color: var(--contact-accent); }  /* solo el nombre en rojo */
+
+.hero-subtitle{
+  color: var(--muted);
+  max-width: 60ch;
+  font-size: clamp(1rem, .85rem + .6vw, 1.125rem);
+}
+
+.hero-cta{ display: flex; gap: .75rem; margin-top: .5rem; }
+
+/* Imagen: tamaño contenido y con sombra suave */
+.hero-image{ justify-self: center; }
 .hero-image img{
-  border-radius:1rem; display:block; object-fit:cover; width:100%; height:auto;
+  width: clamp(260px, 34vw, 500px);
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 1.25rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,.35);
+  display: block;
 }
 
-@media (max-width:720px){
-  .hero-section{ grid-template-columns:1fr; }
+/* Responsive */
+@media (max-width: 960px){
+  .hero-section{
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    text-align: left;
+  }
+  .hero-image{ order: 2; }  /* texto arriba, imagen abajo */
+  .hero-image img{ width: clamp(240px, 62vw, 420px); }
+  .hero-cta{ justify-content: start; }
 }
+
+/* =====================  HERO sin imagen  ===================== */
+.hero-2col{
+  display: grid;
+  grid-template-columns: 1.15fr .85fr;
+  align-items: center;
+  gap: clamp(1.25rem, 3vw, 3rem);
+  min-height: calc(100vh - var(--nav-h));
+  padding-block: clamp(1rem, 3vh, 2.5rem);
+}
+@supports (height: 100svh){
+  .hero-2col{ min-height: calc(100svh - var(--nav-h)); }
+}
+
+.hero-copy{ display: grid; gap: .9rem; }
+.hero-kicker{
+  font-weight: 700;
+  font-size: clamp(1rem, .6rem + 1vw, 1.15rem);
+  color: var(--text);
+  opacity: .9;
+}
+.hero-title{
+  margin: .1rem 0 .25rem;
+  font-weight: 800; line-height: 1.1; letter-spacing: .2px;
+  font-size: clamp(2.2rem, 2rem + 3vw, 3.6rem);
+  color: var(--text);
+}
+.hero-title .hero-name{ color: var(--contact-accent); }
+.hero-subtitle{
+  color: var(--muted);
+  max-width: 62ch;
+  font-size: clamp(1rem, .85rem + .6vw, 1.125rem);
+}
+
+/* Lado derecho: SVG animado */
+.hero-visual{
+  position: relative;
+  width: 100%;
+  height: clamp(260px, 52vh, 560px);
+  overflow: visible;
+  isolation: isolate;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+
+.hero-visual canvas{
+  width: 100%;
+  height: 100%;
+  display: block;
+  /* se integra en dark; en light lo cambio a multiply */
+  mix-blend-mode: screen;
+  /* fade radial para que JAMÁS “se corte” en el borde */
+  -webkit-mask-image: radial-gradient(110% 110% at 55% 50%, #000 72%, transparent 100%);
+          mask-image: radial-gradient(110% 110% at 55% 50%, #000 72%, transparent 100%);
+}
+body.light .hero-visual canvas{ mix-blend-mode: multiply; }
+
+
+/* Responsive: apilar y reducir visual en móviles grandes; ocultar en muy chicos */
+@media (max-width: 960px){
+  .hero-2col{ grid-template-columns: 1fr; gap: 1.75rem; }
+  .hero-visual{ order: 2; height: clamp(200px, 36vh, 360px); }
+}
+@media (max-width: 640px){
+  .hero-visual{ display:none; }  /* mantiene limpieza en pantallas pequeñas */
+}
+
+/* Respeto a usuarios con movimiento reducido */
+@media (prefers-reduced-motion: reduce){
+  .hero-visual svg path{ animation: none !important; }
+}
+
 
 /* =====================  PROYECTOS  ===================== */
 .project-list{
@@ -319,3 +432,31 @@ header{
   display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1rem;
 }
 footer{ background:var(--surface); text-align:center; padding:1rem 0; }
+
+/* Quitar la línea gris del hero */
+#hero,
+.hero-2col { border-bottom: 0 !important; }
+
+/* Canvas integrado al fondo y sin interacción */
+.hero-visual {
+  position: relative;
+  width: 100%;
+  height: clamp(260px, 52vh, 560px);
+  background: transparent;
+  overflow: visible;
+  isolation: isolate;
+  pointer-events: none;  /* solo decorativo */
+}
+
+.hero-visual canvas{
+  width:100%;
+  height:100%;
+  display:block;
+  mix-blend-mode:screen;   /* se integra bien en dark */
+  pointer-events:none;
+}
+
+
+body.light .hero-visual canvas{
+  mix-blend-mode: multiply; /* en tema claro */
+}
