@@ -11,10 +11,7 @@ function setTheme(mode) {
   document.body.classList.toggle('light', mode === 'light');
   if (themeBtn) {
     themeBtn.textContent = mode === 'light' ? '🌞' : '🌙';
-    themeBtn.setAttribute(
-      'aria-label',
-      mode === 'light' ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro'
-    );
+    themeBtn.setAttribute('aria-label', mode === 'light' ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro');
   }
 }
 setTheme(startLight ? 'light' : 'dark');
@@ -76,7 +73,6 @@ document.querySelectorAll('.copy-btn').forEach((btn) => {
     return valid;
   };
 
-  // Validación progresiva
   fields.forEach((field) => {
     const input = field.querySelector('input, textarea');
     if (!input) return;
@@ -109,25 +105,21 @@ if (navToggle && navMenu) {
     navToggle.setAttribute('aria-expanded', String(!hidden));
   };
 
-  // Estado inicial en mobile
-  setHidden(true);
+  setHidden(true); // estado inicial
 
   navToggle.addEventListener('click', () => {
     const hidden = navMenu.getAttribute('aria-hidden') === 'true';
     setHidden(!hidden);
   });
 
-  // Cerrar al hacer click en un link
   navMenu.querySelectorAll('a').forEach((a) => {
     a.addEventListener('click', () => setHidden(true));
   });
 
-  // Cerrar con ESC
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') setHidden(true);
   });
 
-  // Cerrar al clickear fuera
   document.addEventListener('click', (e) => {
     if (navMenu.contains(e.target) || navToggle.contains(e.target)) return;
     setHidden(true);
@@ -135,31 +127,7 @@ if (navToggle && navMenu) {
 }
 
 // ============================
-// SCROLL SPY (opcional - DESACTIVADO)
-// ============================
-const ENABLE_SCROLL_SPY = false;
-
-if (ENABLE_SCROLL_SPY) {
-  const sections = document.querySelectorAll('main section[id]');
-  const navLinks = document.querySelectorAll('.navbar-links a');
-  const byId = (id) => [...navLinks].find(a => a.getAttribute('href') === `#${id}`);
-
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      const link = byId(entry.target.id);
-      if (!link) return;
-      if (entry.isIntersecting) {
-        navLinks.forEach((a) => a.classList.remove('active'));
-        link.classList.add('active');
-      }
-    });
-  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-
-  sections.forEach((s) => io.observe(s));
-}
-
-// ============================
-// NAVBAR elevación on scroll
+// NAVBAR elevación on scroll (opcional)
 // ============================
 const navbar = document.querySelector('.navbar');
 let ticking = false;
@@ -193,9 +161,7 @@ updateNavbarElevation();
   const L3D = {
     freq: { ax: 3, by: 2, cz: 1 },
 
-    // Centro un toque más a la izquierda para evitar rozar el borde derecho
     center: { x: 0.54, y: 0.50 },
-    // Escala “segura” (si querés más grande, subí esto y/o el bleedMin)
     radiusScale: 0.33,
     perspective: 3.0,
 
@@ -231,18 +197,16 @@ updateNavbarElevation();
   // ------- BLEED dinámico (borde extra) ------------------------------------
   let w, h, dpr, time = START.time;
   let bleed = 0;
-  const bleedMin = 72;           // piso en px
-  const bleedRatio = 0.20;       // % del menor lado (subí a 0.24 si aún roza)
+  const bleedMin = 72;
+  const bleedRatio = 0.20;
 
   function resize() {
     dpr = Math.min(window.devicePixelRatio || 1, L3D.dprMax);
     w = canvas.clientWidth;
     h = canvas.clientHeight;
 
-    // Cálculo dinámico del bleed
     bleed = Math.max(bleedMin, Math.round(Math.min(w, h) * bleedRatio));
 
-    // Hacemos el lienzo más grande y dibujamos con un offset
     const Wbuf = w + bleed * 2;
     const Hbuf = h + bleed * 2;
     canvas.width  = Math.floor(Wbuf * dpr);
@@ -298,7 +262,6 @@ updateNavbarElevation();
 
   function drawLissajous() {
     const cx = w * L3D.center.x, cy = h * L3D.center.y;
-    // “safeScale” para no tocar bordes cuando la perspectiva agranda
     const safeScale = 0.98;
     const s  = Math.min(w, h) * L3D.radiusScale * safeScale;
 
@@ -318,7 +281,7 @@ updateNavbarElevation();
 
       buildPath(p, steps, ax, by, cz, cx, cy, s, rx, ry, rz);
 
-      // Glow difuso
+      // Glow
       ctx.save();
       ctx.globalCompositeOperation = L3D.compositeGlow;
       ctx.globalAlpha = L3D.glowAlpha[p] ?? L3D.glowAlpha.at(-1);
@@ -358,4 +321,89 @@ updateNavbarElevation();
 
   const mo = new MutationObserver(updatePalette);
   mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'style'] });
+})();
+
+// ====== PROYECTS: fondo waves por card (solo corre en hover) ======
+(() => {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  const cards = document.querySelectorAll('.proj-card');
+  if (!cards.length) return;
+
+  cards.forEach(setupWave);
+
+  function setupWave(card){
+    const canvas = card.querySelector('.proj-bg');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    let w=0, h=0, dpr=1, t=0, raf=null;
+
+    function cssVar(name, fb){
+      const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      return v || fb;
+    }
+    function palette(){
+      return {
+        red:  cssVar('--contact-accent', '#e43f5a'),
+        pink: cssVar('--accent', '#f37676'),
+        soft: 'rgba(255,220,220,.6)'
+      };
+    }
+
+    function resize(){
+      const rect = card.getBoundingClientRect();
+      w = Math.max(160, Math.floor(rect.width * 1.16));   // leve margen extra (bleed)
+      h = Math.max(120, Math.floor(rect.height * 1.16));
+      dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+      canvas.width  = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function drawWave({ amp, kx, speed, phase, lw, color, blur }){
+      ctx.save();
+      ctx.beginPath();
+      ctx.lineWidth = lw;
+      ctx.lineCap = 'round';
+      ctx.shadowBlur = blur;
+      ctx.shadowColor = color;
+      // dibujamos un poco fuera del lienzo para evitar cortes
+      for (let x = -20; x <= w + 20; x += 2) {
+        const y = h * 0.45 + Math.sin(x * kx + t * speed + phase) * amp;
+        (x === -20) ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = color;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function render(){
+      const { red, pink, soft } = palette();
+      ctx.clearRect(0, 0, w, h);
+      drawWave({ amp: h * 0.12, kx: 0.014, speed: 1.2, phase: 0.0, lw: 2.4, color: red,  blur: 14 });
+      drawWave({ amp: h * 0.09, kx: 0.019, speed: 0.9, phase: 1.2, lw: 1.8, color: pink, blur: 12 });
+      drawWave({ amp: h * 0.07, kx: 0.022, speed: 0.7, phase: 2.4, lw: 1.4, color: soft, blur: 10 });
+      t += 0.03;
+      raf = requestAnimationFrame(render);
+    }
+
+    function start(){ if (!raf){ resize(); render(); } }
+    function stop(){ if (raf){ cancelAnimationFrame(raf); raf = null; } }
+
+    // Arranca/para con hover
+    card.addEventListener('mouseenter', start);
+    card.addEventListener('mouseleave', stop);
+
+    // Si el card desaparece del viewport, nos aseguramos de parar
+    const io = new IntersectionObserver(([entry]) => { if (!entry.isIntersecting) stop(); });
+    io.observe(card);
+
+    // Recalcular en resize
+    window.addEventListener('resize', () => { if (raf) resize(); }, { passive:true });
+  }
 })();

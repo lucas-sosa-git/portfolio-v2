@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Lucas Sosa - Portfolio</title>
-  <meta name="description" content="Experiencia en GS1 Argentina. Busco seguir creciendo y aportar impacto real." />
+  <meta name="description" content="Portfolio de Lucas Sosa: datos, automatización y visualización." />
   <meta name="theme-color" content="#D52A2A" />
 
   <!-- Favicon -->
@@ -14,7 +14,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Lucas Sosa · Data/Backend Jr" />
-  <meta property="og:description" content="SQL · Python · Power BI. Experiencia en GS1 Argentina." />
+  <meta property="og:description" content="SQL · Python · Power BI. Experimentos con IA aplicada." />
   <meta property="og:image" content="assets/og-image.jpg" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -34,29 +34,29 @@
 <body class="dark">
   <a class="skip-link" href="#main">Saltar al contenido</a>
 
-<header>
-  <nav class="navbar" aria-label="Principal">
-    <a href="#hero" class="navbar-logo" aria-label="Inicio">L-Sosa</a>
+  <header>
+    <nav class="navbar" aria-label="Principal">
+      <a href="#hero" class="navbar-logo" aria-label="Inicio">L-Sosa</a>
 
-    <!-- Botón hamburguesa (móvil) -->
-    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Abrir menú">
-      <span class="nav-toggle-bar"></span>
-      <span class="nav-toggle-bar"></span>
-      <span class="nav-toggle-bar"></span>
-    </button>
+      <!-- Botón hamburguesa (móvil) -->
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Abrir menú">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
 
-    <!-- Links -->
-    <ul id="nav-menu" class="navbar-links">
-      <li><a href="#about">Sobre mí</a></li>
-      <li><a href="#projects">Proyectos</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#contact">Contacto</a></li>
-    </ul>
+      <!-- Links -->
+      <ul id="nav-menu" class="navbar-links" aria-hidden="true">
+        <li><a href="#about">Sobre mí</a></li>
+        <li><a href="#projects">Proyectos</a></li>
+        <li><a href="#courses">Cursos</a></li>
+        <li><a href="#contact">Contacto</a></li>
+      </ul>
 
-    <!-- Botón tema, se mantiene -->
-    <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
-  </nav>
-</header>
+      <!-- Botón tema -->
+      <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
+    </nav>
+  </header>
 
   <main id="main">
     <!-- HERO -->
@@ -78,109 +78,244 @@
       </div>
     </section>
 
-    <!-- SOBRE MI -->
-    <section id="about">
-      <h2>Sobre mí</h2>
-      <p>Analista de Innovación y Desarrollo en GS1 Argentina. He trabajado en: homologación GPC↔CPC,
-      procesos ETL con SQL, tableros en Power BI y automatizaciones en Python (Tkinter).</p>
+    <!-- SOBRE MÍ -->
+    <section id="about" class="about-split">
+      <!-- Foto -->
+      <div class="about-photo">
+        <img src="assets/lucas-sosa.webp" alt="Foto de Lucas Sosa" width="560" height="700" loading="lazy">
+      </div>
+
+      <!-- Texto -->
+      <div class="about-copy">
+        <h2>Sobre mí</h2>
+
+        <p class="about-lead">
+          Trabajo en <strong>GS1 Argentina</strong> como Analista de Innovación y Desarrollo.
+          Me muevo cerca de Ingeniería de Datos: calidad, homologación de taxonomías y automatización.
+        </p>
+
+        <ul class="about-list">
+          <li>Validación y análisis de flujo de datos en el estudio <em>Valoremos los Alimentos</em>.</li>
+          <li>Script de IA con <strong>Sentence Transformers</strong> (Hugging Face) para comparar categorizaciones de productos (Strings) <strong>GPC</strong> ↔ <strong>CPC</strong>.</li>
+          <li>Procesos <strong>ETL</strong> en <strong>SQL</strong> y tableros en <strong>Power BI</strong>.</li>
+          <li>Automatizaciones con <strong>Python</strong> (CustomTkinter, Pandas) para operaciones repetitivas.</li>
+        </ul>
+      </div>
     </section>
 
-    <!-- PROYECTOS (resumido) -->
-    <section id="projects">
-      <h2>Casos y logros</h2>
-      <div class="project-list">
-        <article class="card project">
-          <header class="card-head">
-            <span class="emoji" aria-hidden="true">🧭</span>
-            <h3>Homologación GPC ↔ CPC</h3>
-            <span class="pill">Rol: Data Jr</span>
+    <!-- PROYECTOS-->
+  <!-- PROYECTOS (cards con fondo animado sutil) -->
+<section id="projects">
+  <h2 class="section-title">Proyectos</h2>
+
+  <div class="projects-grid">
+<!-- VLA · Mermas retail (Power BI) -->
+<article class="proj-card">
+  <canvas class="proj-bg" aria-hidden="true"></canvas>
+
+  <div class="proj-thumb">
+    <!-- Sugerencia de thumb: captura del dashboard (con datos sensibles blur) -->
+    <img src="assets/projects/vla.png" alt="Tablero de mermas VLA en Power BI" loading="lazy">
+  </div>
+
+  <div class="proj-body">
+    <header class="proj-head">
+      <h3 class="proj-title">VLA · Mermas retail</h3>
+      <!-- Link externo al reporte -->
+      <a class="proj-link" href="https://app.powerbi.com/view?r=eyJrIjoiYjFkZWJjZjQtOGZjNi00NDg5LWJkOTUtNDExYTEyNzAxMGViIiwidCI6ImEyMmNjNzFiLTA5MjQtNDQ4YS1hOTJhLTRiNjNlYjZkOWE3NiIsImMiOjR9" target="_blank" rel="noopener" aria-label="Abrir reporte">
+        <!-- icono external-link -->
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path fill="currentColor" d="M14 3h7v7h-2V6.41l-9.29 9.3-1.42-1.42 9.3-9.29H14V3ZM5 5h6v2H7v10h10v-4h2v6H5V5Z"/>
+        </svg>
+      </a>
+    </header>
+
+    <p class="proj-desc">
+      Recepción de CSVs en OwnCloud → ETL en Python → validaciones SQL → visualización en Power BI.
+      Millones de registros de merma de supermercados argentinos.
+    </p>
+
+    <ul class="tech-list">
+      <li><img src="assets/tech/python.svg" alt="Python"></li>
+      <li><img src="assets/tech/sql.svg" alt="SQL"></li>
+      <li><img src="assets/tech/powerbi.svg" alt="Power BI"></li>
+    </ul>
+  </div>
+</article>
+
+<!-- GPC ↔ CPC Matching (privado) -->
+<article class="proj-card">
+  <canvas class="proj-bg" aria-hidden="true"></canvas>
+
+  <div class="proj-thumb">
+    <!-- Sugerencia: imagen abstracta de grafos o embeddings -->
+    <img src="assets/projects/gpc-cpc.jpg" alt="Matching de categorías GPC y CPC con embeddings" loading="lazy">
+  </div>
+
+  <div class="proj-body">
+    <header class="proj-head">
+      <h3 class="proj-title">Matching GPC ↔ CPC</h3>
+      <!-- Sin repo público: lleva a contacto -->
+      <a class="proj-link" href="#contact" aria-label="Contactarme por demo" title="Contactarme por demo">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path fill="currentColor" d="M12 2a9 9 0 1 0 9 9h-2a7 7 0 1 1-7-7V2Zm1 1.5V10l4 2.4.9-1.7-3.4-2V3.5H13Z"/>
+        </svg>
+      </a>
+    </header>
+
+    <p class="proj-desc">
+      Script con Sentence Transformers (Hugging Face) + reglas por niveles para sugerir
+      equivalencias entre taxonomías GPC y CPC. Datos y código internos.
+    </p>
+
+    <ul class="tech-list">
+      <li><img src="assets/tech/python.svg" alt="Python"></li>
+      <li><img src="assets/tech/hf.svg" alt="Hugging Face"></li>
+      <li><img src="assets/tech/faiss.svg" alt="FAISS"></li>
+    </ul>
+  </div>
+</article>
+
+<!-- Circuitos con Arduino -->
+<article class="proj-card">
+  <canvas class="proj-bg" aria-hidden="true"></canvas>
+
+  <div class="proj-thumb">
+    <!-- Sugerencia: foto macro de protoboard/leds o simulador -->
+    <img src="assets/projects/arduino.jpg" alt="Circuitos con Arduino y protoboard" loading="lazy">
+  </div>
+
+  <div class="proj-body">
+    <header class="proj-head">
+      <h3 class="proj-title">Circuitos Arduino</h3>
+      <a class="proj-link" href="https://github.com/lucas-sosa-git/arduino-circuits" target="_blank" rel="noopener" aria-label="Ver repo en GitHub" title="GitHub">
+        <!-- GitHub -->
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path fill="currentColor" d="M12 .5A12 12 0 0 0 0 12.8c0 5.4 3.4 10 8.2 11.6.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.5-1.4-1.9-1.4-1.9-1.1-.8.1-.8.1-.8 1.2.1 1.8 1.3 1.8 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.7-1.7-2.7-.3-5.5-1.4-5.5-6.2 0-1.4.5-2.6 1.3-3.5-.1-.3-.6-1.7.1-3.5 0 0 1.1-.4 3.6 1.3a12.2 12.2 0 0 1 6.6 0c2.5-1.7 3.6-1.3 3.6-1.3.7 1.8.2 3.2.1 3.5.8.9 1.3 2.1 1.3 3.5 0 4.9-2.8 5.9-5.5 6.2.4.4.7 1 .7 2v3c0 .3.2.7.8.6A12.3 12.3 0 0 0 24 12.8 12 12 0 0 0 12 .5Z"/>
+        </svg>
+      </a>
+    </header>
+
+    <p class="proj-desc">
+      Pequeños circuitos y prácticas: sensores, PWM, matrices de LEDs y control básico.
+    </p>
+
+    <ul class="tech-list">
+      <li><img src="assets/tech/arduino.svg" alt="Arduino"></li>
+      <li><img src="assets/tech/cpp.svg" alt="C/C++"></li>
+    </ul>
+  </div>
+</article>
+
+<!-- Portfolio personal -->
+<article class="proj-card">
+  <canvas class="proj-bg" aria-hidden="true"></canvas>
+
+  <div class="proj-thumb">
+    <!-- Sugerencia: captura del hero con las ondas/Lissajous -->
+    <img src="assets/projects/portfolio.png" alt="Portfolio personal de Lucas Sosa" loading="lazy">
+  </div>
+
+  <div class="proj-body">
+    <header class="proj-head">
+      <h3 class="proj-title">Portfolio · Data/Backend Jr</h3>
+      <a class="proj-link" href="https://github.com/lucas-sosa-git/portfolio" target="_blank" rel="noopener" aria-label="Ver repo en GitHub" title="GitHub">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path fill="currentColor" d="M12 .5A12 12 0 0 0 0 12.8c0 5.4 3.4 10 8.2 11.6.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.5-1.4-1.9-1.4-1.9-1.1-.8.1-.8.1-.8 1.2.1 1.8 1.3 1.8 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.7-1.7-2.7-.3-5.5-1.4-5.5-6.2 0-1.4.5-2.6 1.3-3.5-.1-.3-.6-1.7.1-3.5 0 0 1.1-.4 3.6 1.3a12.2 12.2 0 0 1 6.6 0c2.5-1.7 3.6-1.3 3.6-1.3.7 1.8.2 3.2.1 3.5.8.9 1.3 2.1 1.3 3.5 0 4.9-2.8 5.9-5.5 6.2.4.4.7 1 .7 2v3c0 .3.2.7.8.6A12.3 12.3 0 0 0 24 12.8 12 12 0 0 0 12 .5Z"/>
+        </svg>
+      </a>
+    </header>
+
+    <p class="proj-desc">
+      Sitio personal con diseño accesible y animaciones canvas (waves/Lissajous) para el hero.
+    </p>
+
+    <ul class="tech-list">
+      <li><img src="assets/tech/html.svg" alt="HTML"></li>
+      <li><img src="assets/tech/css.svg" alt="CSS"></li>
+      <li><img src="assets/tech/js.svg" alt="JavaScript"></li>
+    </ul>
+  </div>
+</article>
+
+<!-- Proyecto Rojas (web consultorio odontológico) -->
+<article class="proj-card">
+  <canvas class="proj-bg" aria-hidden="true"></canvas>
+
+  <div class="proj-thumb">
+    <!-- Sugerencia: hero del sitio o logo dental simple -->
+    <img src="assets/projects/rojas.jpg" alt="Sitio web consultorio odontológico" loading="lazy">
+  </div>
+
+  <div class="proj-body">
+    <header class="proj-head">
+      <h3 class="proj-title">Proyecto Rojas · Web</h3>
+      <a class="proj-link" href="https://github.com/lucas-sosa-git/proyecto-rojas" target="_blank" rel="noopener" aria-label="Ver repo en GitHub" title="GitHub">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path fill="currentColor" d="M12 .5A12 12 0 0 0 0 12.8c0 5.4 3.4 10 8.2 11.6.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.5-1.4-1.9-1.4-1.9-1.1-.8.1-.8.1-.8 1.2.1 1.8 1.3 1.8 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.7-1.7-2.7-.3-5.5-1.4-5.5-6.2 0-1.4.5-2.6 1.3-3.5-.1-.3-.6-1.7.1-3.5 0 0 1.1-.4 3.6 1.3a12.2 12.2 0 0 1 6.6 0c2.5-1.7 3.6-1.3 3.6-1.3.7 1.8.2 3.2.1 3.5.8.9 1.3 2.1 1.3 3.5 0 4.9-2.8 5.9-5.5 6.2.4.4.7 1 .7 2v3c0 .3.2.7.8.6A12.3 12.3 0 0 0 24 12.8 12 12 0 0 0 12 .5Z"/>
+        </svg>
+      </a>
+    </header>
+
+    <p class="proj-desc">
+      Pequeño front informativo para consultorio: secciones, contacto y estilo claro.
+    </p>
+
+    <ul class="tech-list">
+      <li><img src="assets/tech/html.svg" alt="HTML"></li>
+      <li><img src="assets/tech/css.svg" alt="CSS"></li>
+      <li><img src="assets/tech/js.svg" alt="JavaScript"></li>
+    </ul>
+  </div>
+</article>
+<!-- ========== /fin de cards ========== -->
+
+  </div>
+</section>
+
+
+    <!-- CURSOS (preparado para crecer) -->
+    <section id="courses">
+      <h2>Cursos</h2>
+      <div class="course-grid">
+        <article class="card course">
+          <header class="course-head">
+            <h3>SQL Avanzado</h3>
             <span class="pill">2024</span>
           </header>
-          <p class="context">Unificar taxonomías para análisis consistentes entre áreas.</p>
-          <ul class="actions">
-            <li>Limpieza/normalización de CSV (acentos, duplicados, jerarquías).</li>
-            <li>Pruebas con embeddings + FAISS y reglas por niveles.</li>
-            <li>Prototipo con UI para usuarios no técnicos.</li>
-          </ul>
-          <div class="impact">
-            <div class="stat"><strong>↑ Match</strong><span>+20–30% (estimado)</span></div>
-            <div class="stat"><strong>↓ Tiempo manual</strong><span>-50% revisión</span></div>
-          </div>
-          <div class="meta"><span>Python</span><span>SQL</span><span>Power BI</span></div>
-          <div class="links">
-            <a class="btn small" href="#contact">Contáctame</a>
-            <span class="note">Repo privado / datos internos</span>
-          </div>
-          <details class="more"><summary>Cómo lo abordé</summary>
-            <p>Iteraciones con ejemplos reales, registro de decisiones y checklist de calidad.</p>
-          </details>
+          <p class="context">Consultas complejas, CTEs, ventanas y performance básico.</p>
+          <div class="meta"><span>SQL</span><span>Práctico</span></div>
+          <!-- <a class="btn small" href="#" target="_blank" rel="noopener">Ver certificado</a> -->
         </article>
 
-        <article class="card project">
-          <header class="card-head">
-            <span class="emoji" aria-hidden="true">📊</span>
-            <h3>Tableros de negocio</h3>
-            <span class="pill">Rol: Data Jr</span>
-            <span class="pill">2023–2024</span>
-          </header>
-          <p class="context">KPIs operativos claros para seguimiento semanal.</p>
-          <ul class="actions">
-            <li>ETL en SQL y modelo de datos limpio.</li>
-            <li>Dashboards en Power BI con refresh programado.</li>
-            <li>Documentación corta para stakeholders.</li>
-          </ul>
-          <div class="impact">
-            <div class="stat"><strong>Decisiones</strong><span>más rápidas</span></div>
-            <div class="stat"><strong>Trabajo manual</strong><span>↓ retrabajo</span></div>
-          </div>
-          <div class="meta"><span>Power BI</span><span>SQL</span></div>
-          <div class="links">
-            <a class="btn small" href="#contact">Pedir demo</a>
-            <span class="note">Datos internos</span>
-          </div>
-          <details class="more"><summary>Cómo lo abordé</summary>
-            <p>Definición de métricas, prototipos rápidos y validación con usuarios.</p>
-          </details>
-        </article>
-
-        <article class="card project">
-          <header class="card-head">
-            <span class="emoji" aria-hidden="true">⚙️</span>
-            <h3>Automatizaciones con interfaz simple</h3>
-            <span class="pill">Rol: Data Jr</span>
+        <article class="card course">
+          <header class="course-head">
+            <h3>Power BI para negocio</h3>
             <span class="pill">2023</span>
           </header>
-          <p class="context">Reducir errores al ejecutar procesos técnicos repetitivos.</p>
-          <ul class="actions">
-            <li>Utilidades en Python (Tkinter) para SPs y reportes.</li>
-            <li>Validaciones previas y mensajes claros de error.</li>
-            <li>Logs para seguimiento y soporte.</li>
-          </ul>
-          <div class="impact">
-            <div class="stat"><strong>Errores</strong><span>↓ significativamente</span></div>
-            <div class="stat"><strong>Autonomía</strong><span>usuarios no técnicos</span></div>
-          </div>
-          <div class="meta"><span>Python</span><span>Tkinter</span></div>
-          <div class="links">
-            <a class="btn small" href="#contact">Ver flujo</a>
-          </div>
-          <details class="more"><summary>Cómo lo abordé</summary>
-            <p>Enfoque “UX primero”: menos pasos, textos simples y estados visibles.</p>
-          </details>
+          <p class="context">Modelado, DAX inicial y publicación con actualizaciones.</p>
+          <div class="meta"><span>Power BI</span><span>DAX</span></div>
+        </article>
+
+        <article class="card course">
+          <header class="course-head">
+            <h3>Introducción a ML</h3>
+            <span class="pill">En curso</span>
+          </header>
+          <p class="context">Pipelines, validación y experimentación con notebooks.</p>
+          <div class="meta"><span>Python</span><span>sklearn</span></div>
         </article>
       </div>
     </section>
 
-    <!-- CONTACTO (estilo referencia, alineado) -->
+    <!-- CONTACTO -->
     <section id="contact" class="contact-split">
-      <!-- IZQUIERDA -->
       <div class="c-left">
         <h2 class="c-title">Contacto</h2>
 
         <!-- Mail -->
         <div class="c-row">
           <div class="c-icon">
-            <!-- ícono MAIL: stroke rojo, fondo se mezcla -->
             <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true">
               <rect x="3" y="5" width="18" height="14" rx="2" ry="2" />
               <path d="M3 7l9 6 9-6" />
@@ -205,7 +340,6 @@
         <!-- CV -->
         <div class="c-row">
           <div class="c-icon">
-            <!-- ícono DOWNLOAD: stroke rojo -->
             <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true">
               <path d="M12 3v10" />
               <path d="M8 11l4 4 4-4" />
@@ -242,7 +376,7 @@
         </div>
       </div>
 
-      <!-- DERECHA: FORM -->
+      <!-- Derecha: FORM -->
       <div class="c-right">
         <form id="contact-form" class="c-form" action="https://formspree.io/f/yourid" method="POST" novalidate>
           <div class="field">
