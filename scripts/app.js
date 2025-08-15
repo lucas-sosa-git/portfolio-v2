@@ -96,6 +96,11 @@ document.querySelectorAll('.copy-btn').forEach((btn) => {
 // ============================
 // MENÚ MÓVIL (accesible)
 // ============================
+if (!userHasChoice) {
+  (mqlDark.addEventListener ? mqlDark.addEventListener('change', (e)=>setTheme(e.matches?'dark':'light'))
+                            : mqlDark.addListener && mqlDark.addListener((e)=>setTheme(e.matches?'dark':'light')));
+}
+
 const navToggle = document.querySelector('.nav-toggle');
 const navMenu = document.getElementById('nav-menu');
 
@@ -354,8 +359,8 @@ updateNavbarElevation();
 
     function resize(){
       const rect = card.getBoundingClientRect();
-      w = Math.max(160, Math.floor(rect.width * 1.16));   // leve margen extra (bleed)
-      h = Math.max(120, Math.floor(rect.height * 1.16));
+      w = Math.max(160, Math.floor(rect.width));   // sin "bleed", 1:1 con la tarjeta
+      h = Math.max(120, Math.floor(rect.height));
       dpr = Math.min(window.devicePixelRatio || 1, 1.75);
       canvas.width  = Math.floor(w * dpr);
       canvas.height = Math.floor(h * dpr);
@@ -364,6 +369,7 @@ updateNavbarElevation();
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
+
     function drawWave({ amp, kx, speed, phase, lw, color, blur }){
       ctx.save();
       ctx.beginPath();
@@ -371,11 +377,12 @@ updateNavbarElevation();
       ctx.lineCap = 'round';
       ctx.shadowBlur = blur;
       ctx.shadowColor = color;
-      // dibujamos un poco fuera del lienzo para evitar cortes
-      for (let x = -20; x <= w + 20; x += 2) {
-        const y = h * 0.45 + Math.sin(x * kx + t * speed + phase) * amp;
-        (x === -20) ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+
+      for (let x = 0; x <= w; x += 1.5) {   // antes iba de -20 a w+20
+        const y = h * 0.2 + Math.sin(x * kx + t * speed + phase) * amp;
+        (x === 0) ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
       }
+
       ctx.globalCompositeOperation = 'lighter';
       ctx.strokeStyle = color;
       ctx.stroke();
@@ -385,12 +392,15 @@ updateNavbarElevation();
     function render(){
       const { red, pink, soft } = palette();
       ctx.clearRect(0, 0, w, h);
-      drawWave({ amp: h * 0.12, kx: 0.014, speed: 1.2, phase: 0.0, lw: 2.4, color: red,  blur: 14 });
-      drawWave({ amp: h * 0.09, kx: 0.019, speed: 0.9, phase: 1.2, lw: 1.8, color: pink, blur: 12 });
-      drawWave({ amp: h * 0.07, kx: 0.022, speed: 0.7, phase: 2.4, lw: 1.4, color: soft, blur: 10 });
-      t += 0.03;
+
+      drawWave({ amp: h * 0.16, kx: 0.012, speed: 0.70, phase: 0.0, lw: 2.8, color: red,  blur: 18 });
+      drawWave({ amp: h * 0.12, kx: 0.017, speed: 0.55, phase: 1.1, lw: 2.2, color: pink, blur: 14 });
+      drawWave({ amp: h * 0.10, kx: 0.020, speed: 0.45, phase: 2.2, lw: 1.8, color: soft, blur: 12 });
+
+      t += 0.015;  // antes 0.03 → más lento y suave
       raf = requestAnimationFrame(render);
     }
+
 
     function start(){ if (!raf){ resize(); render(); } }
     function stop(){ if (raf){ cancelAnimationFrame(raf); raf = null; } }

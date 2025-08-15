@@ -84,6 +84,13 @@ header{
 .navbar-logo:hover, .navbar-logo:focus-visible{ color: var(--accent); }
 .navbar-logo:hover::after, .navbar-logo:focus-visible::after{ transform: scaleX(1); }
 
+.navbar[data-elevated="true"]{
+  background: color-mix(in srgb, var(--bg) 80%, #000 20%);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0,0,0,.25);
+  backdrop-filter: saturate(1.1) blur(8px);
+}
+
 /* Menú móvil */
 .theme-toggle{
   margin-left:auto; display:inline-flex; align-items:center; justify-content:center;
@@ -240,15 +247,24 @@ body.light .hero-visual canvas{ mix-blend-mode: multiply; }
 /* Fondo animado (canvas) */
 .proj-bg{
   position: absolute;
-  inset: -6% -8%;                 /* leve bleed para que no se “corte” */
+  inset: 0;                          /* ocupa exactamente la tarjeta */
   z-index: 0;
   opacity: 0;
-  transition: opacity .25s ease;
+  transition: opacity .35s ease;     /* más lento */
   pointer-events: none;
-  mix-blend-mode: screen;         /* elegante sobre fondo oscuro */
-  -webkit-mask-image: radial-gradient(120% 120% at 60% 40%, #000 68%, transparent 100%);
-          mask-image: radial-gradient(120% 120% at 60% 40%, #000 68%, transparent 100%);
+  mix-blend-mode: screen;
+  -webkit-mask-image: none;          /* sin recortes: arranca en el borde izquierdo */
+          mask-image: none;
 }
+
+.proj-card{
+  transition:
+    transform .28s cubic-bezier(.2,.6,.2,1),
+    box-shadow .28s,
+    border-color .28s;
+}
+.proj-card:hover{ transform: translateY(-4px); } 
+
 body.light .proj-bg{ mix-blend-mode: multiply; }
 .proj-card:hover .proj-bg{ opacity: .85; }
 
@@ -384,3 +400,8 @@ body.light .proj-bg{ mix-blend-mode: multiply; }
 }
 
 footer{ background:var(--surface); text-align:center; padding:1rem 0; }
+
+/* ——— Proyectos: eliminar fondo oscuro detrás del título ——— */
+.proj-body{ background: var(--card); }            /* pinta el panel inferior */
+.proj-head, .proj-title{ background: transparent; }
+.proj-title{ display:inline; line-height:1.15; }  /* evita “bloques” visuales */
