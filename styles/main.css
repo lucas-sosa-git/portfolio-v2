@@ -167,9 +167,6 @@ body.light .hero-visual canvas{ mix-blend-mode: multiply; }
 }
 @media (max-width: 640px){ .hero-visual{ display:none; } }
 
-/* Quitar la línea gris del hero */
-#hero, .hero-2col { border-bottom: 0 !important; }
-
 /* =====================  SOBRE MÍ  ===================== */
 .about-split{
   display:grid;
@@ -405,3 +402,349 @@ footer{ background:var(--surface); text-align:center; padding:1rem 0; }
 .proj-body{ background: var(--card); }            /* pinta el panel inferior */
 .proj-head, .proj-title{ background: transparent; }
 .proj-title{ display:inline; line-height:1.15; }  /* evita “bloques” visuales */
+
+/* ===== Cursos: coherencia visual con Proyectos ===== */
+#courses .section-title{
+  font-size: clamp(1.8rem, 1.2rem + 2.4vw, 2.6rem);
+  line-height: 1.1;
+  margin: 0 0 1rem;
+  color: var(--contact-accent);
+}
+
+/* Reutilizo .proj-card; solo ajusto detalles para cursos */
+.course-card .proj-thumb img{
+  aspect-ratio: 16 / 9;
+}
+
+.pill{
+  display:inline-block;
+  padding:.12rem .5rem;
+  border-radius:.5rem;
+  background: color-mix(in srgb, var(--accent) 88%, #fff 12%);
+  color: #111;
+  font-weight: 800;
+  font-size: .78rem;
+  letter-spacing:.2px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, #000 65%);
+}
+
+/* ===== Proyectos: disclaimer ===== */
+.projects-disclaimer{
+  margin: .25rem 0 1rem;
+  color: var(--muted);
+  font-size: clamp(.95rem, .9rem + .2vw, 1rem);
+}
+
+/* ===== Proyectos: toolbar de filtros (coherente con tu UI) ===== */
+.filters-toolbar{
+  display:flex; flex-wrap:wrap; gap:.5rem; margin:0 0 1rem;
+}
+.filter-btn{
+  border:1px solid var(--border);
+  background:#ffffff10;
+  color:var(--text);
+  padding:.4rem .7rem;
+  border-radius:.6rem;
+  font-weight:700;
+  letter-spacing:.2px;
+  transition: background .2s, border-color .2s, color .2s, transform .1s;
+}
+.filter-btn:hover{ background:#ffffff18; border-color:var(--accent); color:var(--accent); transform:translateY(-1px); }
+.filter-btn:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+.filter-btn[aria-pressed="true"]{
+  background: var(--accent);
+  border-color: var(--accent);
+  color:#fff;
+}
+
+/* ===== Proyectos: badges de estado ===== */
+.proj-meta{ display:flex; gap:.5rem; flex-wrap:wrap; }
+.badge{
+  display:inline-flex; align-items:center; gap:.35rem;
+  padding:.16rem .5rem; border-radius:.5rem; font-weight:800; font-size:.74rem; letter-spacing:.2px;
+  border:1px solid var(--border); background:#ffffff12; color:var(--text);
+}
+.badge-prod{  background: color-mix(in srgb, var(--primary) 25%, #111 75%); border-color: color-mix(in srgb, var(--primary) 45%, #000 55%); }
+.badge-demo{  background: #ffffff18; }
+.badge-exp{   background: color-mix(in srgb, var(--accent) 32%, #111 68%); border-color: color-mix(in srgb, var(--accent) 45%, #000 55%); }
+.badge-wip{   background: #ffffff12; }
+
+/* ===== Proyectos: animaciones de mostrar/ocultar (suaves, 200–300ms) ===== */
+.proj-card{
+  transition: opacity .24s ease, transform .24s ease, box-shadow .28s, border-color .28s;
+}
+.proj-card.hiding{ opacity:0; transform:scale(.98); }
+.proj-card.showing{ opacity:0; transform:scale(.98); }
+.hidden-display{ display:none !important; }
+/* ===== FINAL OVERRIDE: chips uniformes en Proyectos ===== */
+:root{
+  --chip-h: 26px;          /* altura fija para todos los chips */
+  --chip-px: .60rem;       /* padding horizontal uniforme */
+  --chip-radius: .5rem;
+  --chip-fs: .78rem;
+}
+
+.proj-card .proj-meta{
+  display:flex; flex-wrap:wrap; gap:.5rem; align-items:center;
+}
+
+/* Fuerza mismo tamaño a .badge y .pill dentro de tarjetas */
+.proj-card .badge,
+.proj-card .pill{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  height:var(--chip-h) !important;    /* <- clave */
+  padding:0 var(--chip-px) !important;/* <- clave */
+  border-radius:var(--chip-radius) !important;
+  font-size:var(--chip-fs) !important;
+  font-weight:800 !important;
+  line-height:1 !important;           /* evita “inflado” por line-height */
+  letter-spacing:.2px !important;
+  white-space:nowrap !important;      /* no se parte en 2 líneas */
+  box-sizing:border-box !important;
+  vertical-align:middle !important;
+}
+
+/* Si algún chip tiene icono adentro, que no rompa la altura */
+.proj-card .badge svg,
+.proj-card .pill svg{
+  width:1em; height:1em; flex:0 0 auto;
+  vertical-align:middle;
+}
+
+/* Opcional: por si .pill tenía padding definido fuera de proyectos */
+#projects .pill{ padding:0 var(--chip-px) !important; }
+
+/* ===== AJUSTE CHIPS + ESPACIADO UNIFORME BAJO EL TÍTULO ===== */
+:root{
+  /* chips un poquito más grandes */
+  --chip-h: 30px;
+  --chip-px: .82rem;
+  --chip-radius: .55rem;
+  --chip-fs: .82rem;
+}
+
+/* tamaño uniforme en tarjetas */
+.proj-card .badge,
+.proj-card .pill{
+  display:inline-flex !important;
+  align-items:center !important;
+  justify-content:center !important;
+  height:var(--chip-h) !important;
+  padding:0 var(--chip-px) !important;
+  border-radius:var(--chip-radius) !important;
+  font-size:var(--chip-fs) !important;
+  font-weight:800 !important;
+  line-height:1 !important;
+  letter-spacing:.2px !important;
+  white-space:nowrap !important;
+  box-sizing:border-box !important;
+  vertical-align:middle !important;
+}
+
+/* quita márgenes “fantasma” del header y del h3 */
+.proj-card .proj-head{ margin:0 !important; padding:0 !important; }
+.proj-card .proj-head > *{ margin:0 !important; }
+
+/* la separación entre título y chips será SIEMPRE la misma */
+.proj-card .proj-head + .proj-meta{
+  margin-top:.55rem !important;   /* <- ajustá este valor a gusto */
+}
+
+/* por si el grid mete diferencias de gap entre filas */
+.proj-card .proj-body{ gap:.55rem; }  /* consistente con el margin-top de arriba */
+
+/* ===== FIX PROYECTOS: chips más grandes + espaciado uniforme ===== */
+:root{
+  /* tamaño de chips y gap vertical entre bloques del body */
+  --chip-h: 34px;
+  --chip-px: .8rem;
+  --chip-radius: .55rem;
+  --chip-fs: .84rem;
+  --proj-body-gap: .65rem;
+}
+
+/* 1) Normalizo el layout del "cuerpo" de la card y los márgenes internos */
+.proj-card .proj-body{
+  display: grid;
+  grid-auto-rows: min-content;
+  /* un ÚNICO lugar define el espacio vertical entre:
+     [header] → [.proj-meta] → [p] → [ul]  */
+  row-gap: var(--proj-body-gap) !important;
+  gap: var(--proj-body-gap) !important;
+}
+
+/* Elimino márgenes residuales del header, del h3 y de meta/desc */
+.proj-card .proj-head,
+.proj-card .proj-head > *,
+.proj-card .proj-meta,
+.proj-card .proj-desc{
+  margin: 0 !important;
+}
+
+/* 2) Tamaño consistente de chips/pills/badges */
+.proj-card .badge,
+.proj-card .pill{
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  height: var(--chip-h) !important;
+  padding: 0 var(--chip-px) !important;
+  border-radius: var(--chip-radius) !important;
+  font-size: var(--chip-fs) !important;
+  font-weight: 800 !important;
+  line-height: 1 !important;
+  letter-spacing: .2px !important;
+  white-space: nowrap !important;
+  box-sizing: border-box !important;
+  vertical-align: middle !important;
+}
+
+/* Pills de estado (coherentes con tu .pill base) */
+.pill-blue{ 
+  background: #1e90ff; 
+  color: #fff; 
+  border-color: color-mix(in srgb, #1e90ff 55%, #000 45%);
+}
+.pill-green{ 
+  background: #22c55e; 
+  color: #0b2814; 
+  border-color: color-mix(in srgb, #22c55e 45%, #000 55%);
+}
+
+/* Fila de progreso con porcentaje a la derecha */
+.progress-row{
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: center;
+  gap: .5rem;
+}
+.progress{
+  position: relative;
+  height: 8px;
+  background: color-mix(in srgb, var(--border) 60%, #fff 40%);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.progress > span{
+  position: absolute; inset: 0 auto 0 0;
+  width: calc(var(--pct, 0) * 1%);
+  background: #16a34a; /* verde progreso */
+  border-radius: inherit;
+}
+.progress-row .pct{
+  font-weight: 800;
+  color: var(--muted);
+}
+
+/* ===== CURSOS: toolbar ===== */
+.courses-toolbar{
+  display:flex; flex-wrap:wrap; gap:.5rem; margin:0 0 1rem;
+}
+.courses-toolbar .chip-btn{
+  border:1px solid var(--border);
+  background:#ffffff10; color:var(--text);
+  padding:.42rem .74rem; border-radius:.6rem;
+  font-weight:700; letter-spacing:.2px; cursor:pointer;
+  transition: background .2s, border-color .2s, color .2s, transform .1s;
+}
+.courses-toolbar .chip-btn:hover{ background:#ffffff18; border-color:var(--accent); color:var(--accent); transform:translateY(-1px); }
+.courses-toolbar .chip-btn[aria-pressed="true"]{ background:var(--accent); border-color:var(--accent); color:#fff; }
+
+/* ===== CURSOS: grid y card ===== */
+.courses-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(280px,1fr));
+  gap:1rem;
+}
+.course-card{
+  background:var(--card); border:1px solid var(--border); border-radius:1rem;
+  padding:.85rem .95rem; display:flex; flex-direction:column; gap:.65rem;
+  transition: transform .26s cubic-bezier(.2,.6,.2,1), box-shadow .28s, border-color .28s;
+}
+.course-card:hover{
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--contact-accent) 40%, var(--border));
+  box-shadow: 0 14px 36px rgba(0,0,0,.24);
+}
+
+.course-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:.6rem; }
+.course-title{ margin:0; font-weight:800; font-size:1.05rem; letter-spacing:.2px; color:#fff; }
+.course-meta{ margin:0; padding:0; list-style:none; color:var(--muted); font-size:.92rem; display:grid; gap:.25rem; }
+.course-desc{ margin:0; color:var(--muted); }
+
+/* Pills de estado — no se rompen NUNCA */
+.chip-status{
+  display:inline-flex; align-items:center; justify-content:center;
+  white-space:nowrap; height:28px; padding:0 .65rem;
+  border-radius:.6rem; font-weight:800; font-size:.78rem; letter-spacing:.2px;
+  border:1px solid var(--border); box-sizing:border-box;
+}
+.chip-status.is-ok{
+  background: color-mix(in srgb, #22c55e 28%, #111 72%);
+  border-color: color-mix(in srgb, #22c55e 45%, #000 55%);
+}
+.chip-status.is-progress{
+  background: color-mix(in srgb, #60a5fa 28%, #111 72%);
+  border-color: color-mix(in srgb, #60a5fa 45%, #000 55%);
+}
+
+/* Botón PDF */
+.pdf-btn{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:.45rem .7rem; border-radius:.55rem;
+  border:1px solid var(--border); background:#ffffff12; color:var(--text);
+  font-weight:700; font-size:.9rem; text-decoration:none;
+  transition: background .2s, border-color .2s, color .2s, transform .1s;
+}
+.pdf-btn:hover{ background:#ffffff18; border-color:var(--accent); color:var(--accent); transform:translateY(-1px); }
+.pdf-btn.is-disabled{ opacity:.6; pointer-events:none; }
+
+/* Ocultar cards filtradas */
+.hidden-display{ display:none !important; }
+
+/* ===== CURSOS: quita la banda negra detrás del título ===== */
+.course-card .course-head,
+.course-card .course-title,
+.course-card .course-title *,
+.course-card .course-head * {
+  background: transparent !important;
+}
+
+.course-card .course-title{
+  display: inline;        /* evita “bloques” detrás del texto */
+  line-height: 1.15;
+}
+
+/* (opcional) por si algún reset mete padding/margen raro */
+.course-card .course-head{ margin:0; padding:0; }
+.course-card .course-head > *{ margin:0; }
+
+.course-card{
+  position: relative;
+  overflow: hidden;         /* asegura que el efecto no se “derrame” */
+}
+
+.course-bg{
+  position: absolute;
+  inset: 0;
+  z-index: 0;               /* debajo del contenido */
+  pointer-events: none;
+  opacity: 0;               /* aparece solo en hover */
+  transition: opacity .25s ease;
+  mix-blend-mode: screen;   /* bonito en dark; en light podés quitarlo */
+}
+body.light .course-bg{ mix-blend-mode: multiply; }
+
+.course-card:hover .course-bg{ opacity: .9; }
+
+.course-card > *:not(.course-bg){
+  position: relative;
+  z-index: 1;               /* el texto siempre arriba */
+}
+
+#contact {
+  border-bottom: none !important;
+}
+

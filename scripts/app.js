@@ -131,31 +131,7 @@ if (navToggle && navMenu) {
   });
 }
 
-// ============================
-// NAVBAR elevación on scroll (opcional)
-// ============================
-const navbar = document.querySelector('.navbar');
-let ticking = false;
 
-function updateNavbarElevation() {
-  if (!navbar) return;
-  if (window.scrollY > 8) {
-    navbar.setAttribute('data-elevated', 'true');
-  } else {
-    navbar.removeAttribute('data-elevated');
-  }
-  ticking = false;
-}
-
-function onScroll() {
-  if (!ticking) {
-    window.requestAnimationFrame(updateNavbarElevation);
-    ticking = true;
-  }
-}
-
-window.addEventListener('scroll', onScroll, { passive: true });
-updateNavbarElevation();
 
 // ==== HERO · Lissajous 3D (con bleed dinámico anti-cortes) =================
 (() => {
@@ -416,4 +392,236 @@ updateNavbarElevation();
     // Recalcular en resize
     window.addEventListener('resize', () => { if (raf) resize(); }, { passive:true });
   }
+})();
+
+(() => {
+  const toolbar = document.querySelector('#projects .filters-toolbar');
+  const buttons = toolbar ? Array.from(toolbar.querySelectorAll('.filter-btn')) : [];
+  const grid    = document.querySelector('#projects .projects-grid');
+  const cards   = grid ? Array.from(grid.querySelectorAll('.proj-card')) : [];
+
+  if (!toolbar || !grid || !cards.length) return;
+
+  // Normaliza tags para comparar (minúsculas + sin acentos)
+  const norm = (s) => (s||'')
+    .toString()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .trim();
+
+  // Mapa de filtros (DE/DBA matchea cualquiera de ambos)
+  const FILTERS = {
+    'all': null,
+    'de/dba': ['de','dba'],
+    'ia': ['ia'],
+    'arduino': ['arduino'],
+    'web': ['web'],
+  };
+
+  // Animaciones suaves (coherentes con el sitio)
+  const HIDE_MS = 240;
+
+  function setActive(btn) {
+    buttons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+  }
+
+  function getCardTags(card) {
+    return (card.dataset.tags || '')
+      .split(',')
+      .map(t => norm(t))
+      .filter(Boolean);
+  }
+
+  function matchesFilter(card, key) {
+    if (!key || key === 'all') return true;
+    const wanted = FILTERS[key];
+    const tags = getCardTags(card);
+    return wanted.some(w => tags.includes(w));
+  }
+
+  function hideCard(card) {
+    if (card.classList.contains('hidden-display')) return;
+    card.classList.add('hiding');
+    const onEnd = () => {
+      card.classList.add('hidden-display');
+      card.classList.remove('hiding');
+      card.removeEventListener('transitionend', onEnd);
+    };
+    card.addEventListener('transitionend', onEnd);
+  }
+
+  function showCard(card) {
+    if (!card.classList.contains('hidden-display')) return;
+    card.classList.add('showing');
+    card.classList.remove('hidden-display');
+    // forzar reflow y animar
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => card.classList.remove('showing'));
+    });
+  }
+
+  function applyFilter(keyRaw) {
+    const key = norm(keyRaw);
+    cards.forEach(card => {
+      if (matchesFilter(card, key)) {
+        showCard(card);
+      } else {
+        hideCard(card);
+      }
+    });
+  }
+
+  const bootBtn = buttons.find(b => (b.dataset.filter || '').toLowerCase() === 'de/dba');
+  if (bootBtn) { setActive(bootBtn); applyFilter('DE/DBA'); }
+
+
+  toolbar.addEventListener('click', (e) => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    setActive(btn);
+    applyFilter(btn.dataset.filter || 'all');
+    
+  });
+
+  // Accesibilidad: teclas ← →
+  toolbar.addEventListener('keydown', (e) => {
+    if (!['ArrowLeft','ArrowRight'].includes(e.key)) return;
+    const i = buttons.indexOf(document.activeElement);
+    if (i === -1) return;
+    e.preventDefault();
+    const next = e.key === 'ArrowRight' ? (i+1) % buttons.length : (i-1+buttons.length) % buttons.length;
+    buttons[next].focus();
+  });
+})();
+// ====== COURSES: fondo waves por card (hover) ======
+(() => {
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReduced) return;
+
+  // Reutilizo la misma idea que en Proyectos, con parámetros un poco más suaves
+  function setupCourseWave(card){
+    // Si la tarjeta no tiene canvas, lo insertamos como primer hijo
+    let canvas = card.querySelector('.course-bg');
+    if (!canvas) {
+      canvas = document.createElement('canvas');
+      canvas.className = 'course-bg';
+      canvas.setAttribute('aria-hidden', 'true');
+      card.prepend(canvas);
+    }
+
+    const ctx = canvas.getContext('2d');
+    let w=0, h=0, dpr=1, t=0, raf=null;
+
+    function cssVar(name, fb){
+      const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+      return v || fb;
+    }
+    function palette(){
+      return {
+        red:  cssVar('--contact-accent', '#e43f5a'),
+        pink: cssVar('--accent', '#f37676'),
+        soft: 'rgba(255,220,220,.55)'
+      };
+    }
+
+    function resize(){
+      const rect = card.getBoundingClientRect();
+      w = Math.max(160, Math.floor(rect.width));
+      h = Math.max(120, Math.floor(rect.height));
+      dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+
+      canvas.width  = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = '100%';
+      canvas.style.height = '100%';
+
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function drawWave({ amp, kx, speed, phase, lw, color, blur }){
+      ctx.save();
+      ctx.beginPath();
+      ctx.lineWidth   = lw;
+      ctx.lineCap     = 'round';
+      ctx.shadowBlur  = blur;
+      ctx.shadowColor = color;
+
+      // Base un poco más baja que en proyectos para no invadir los títulos
+      const yBase = h * 0.22;
+      for (let x = 0; x <= w; x += 1.5) {
+        const y = yBase + Math.sin(x * kx + t * speed + phase) * amp;
+        (x === 0) ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+      }
+
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.strokeStyle = color;
+      ctx.stroke();
+      ctx.restore();
+    }
+
+    function render(){
+      const { red, pink, soft } = palette();
+      ctx.clearRect(0, 0, w, h);
+
+      // Ligeramente más discreto que en Proyectos
+      drawWave({ amp: h * 2, kx: 0.012, speed: 0.1, phase: 0.0, lw: 2.4, color: red,  blur: 14 });
+      drawWave({ amp: h * 2.1, kx: 0.017, speed: 0.05, phase: 1.1, lw: 2.0, color: pink, blur: 12 });
+      drawWave({ amp: h * 1.9, kx: 0.020, speed: 0.23, phase: 2.2, lw: 1.6, color: soft, blur: 10 });
+
+      t += 0.015;     // suave
+      raf = requestAnimationFrame(render);
+    }
+
+    function start(){ if (!raf){ resize(); render(); } }
+    function stop(){ if (raf){ cancelAnimationFrame(raf); raf = null; } }
+
+    card.addEventListener('mouseenter', start);
+    card.addEventListener('mouseleave', stop);
+
+    const io = new IntersectionObserver(([entry]) => { if (!entry.isIntersecting) stop(); });
+    io.observe(card);
+
+    window.addEventListener('resize', () => { if (raf) resize(); }, { passive:true });
+  }
+
+  const cards = document.querySelectorAll('.course-card');
+  if (!cards.length) return;
+  cards.forEach(setupCourseWave);
+})();
+
+// ============================
+// CURSOS: filtro por categoría
+// ============================
+(() => {
+  const section = document.querySelector('#courses');
+  if (!section) return;
+
+  const toolbar = section.querySelector('.courses-toolbar');
+  const buttons = [...toolbar.querySelectorAll('.chip-btn')];
+  const cards   = [...section.querySelectorAll('.course-card')];
+
+  function setActive(btn) {
+    buttons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
+  }
+  function applyFilter(cat) {
+    const wanted = cat.toLowerCase();
+    cards.forEach(card => {
+      const list = (card.dataset.cat || '').split(',').map(s => s.trim().toLowerCase());
+      const show = (wanted === 'all') || list.includes(wanted);
+      card.classList.toggle('hidden-display', !show);
+    });
+  }
+
+  toolbar.addEventListener('click', (e) => {
+    const btn = e.target.closest('.chip-btn');
+    if (!btn) return;
+    setActive(btn);
+    applyFilter(btn.dataset.cat);
+  });
+
+  // Estado inicial: Avanzados
+  const defaultBtn = buttons.find(b => b.dataset.cat === 'Avanzado') || buttons[0];
+  setActive(defaultBtn);
+  applyFilter(defaultBtn.dataset.cat);
 })();
