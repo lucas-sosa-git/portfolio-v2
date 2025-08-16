@@ -133,7 +133,7 @@ if (navToggle && navMenu) {
 
 
 
-// ==== HERO · Lissajous 3D (con bleed dinámico anti-cortes) =================
+// ==== HERO · Lissajous 3D (con bleed dinámico) =================
 (() => {
   const canvas = document.getElementById('hero-waves');
   if (!canvas) return;
@@ -204,12 +204,14 @@ if (navToggle && navMenu) {
     const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
     return v || fallback;
   }
+  // **Ajuste de color en LIGHT (solo color, sin tocar tamaños)**
   function updatePalette() {
     if (!L3D.colorsFromCSS) return;
+    const isLight = document.body.classList.contains('light');
     L3D.colors = [
       cssVar('--contact-accent', '#e43f5a'),
       cssVar('--accent', '#f37676'),
-      'rgba(255,220,220,.65)',
+      isLight ? 'rgba(255,170,170,.65)' : 'rgba(255,220,220,.65)',
     ];
   }
   updatePalette();
@@ -304,6 +306,7 @@ if (navToggle && navMenu) {
   mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'style'] });
 })();
 
+
 // ====== PROYECTS: fondo waves por card (solo corre en hover) ======
 (() => {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -320,18 +323,26 @@ if (navToggle && navMenu) {
     const ctx = canvas.getContext('2d');
 
     let w=0, h=0, dpr=1, t=0, raf=null;
+    // --- Fade-out sin cambiar tamaños ---
+    const FADE_MS = 260;
+    let state = 'stopped';        // 'running' | 'fading' | 'stopped'
+    let fadeStart = 0, fadeUntil = 0;
 
-    function cssVar(name, fb){
-      const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-      return v || fb;
-    }
-    function palette(){
-      return {
-        red:  cssVar('--contact-accent', '#e43f5a'),
-        pink: cssVar('--accent', '#f37676'),
+function palette(){
+  return document.body.classList.contains('light')
+    ? {
+        red:  '#c81e1e',              // rojo profundo (más contraste en fondo claro)
+        pink: '#ff6a7a',              // rosa/coral vivo (más saturado que #F37676)
+        soft: 'rgba(255,196,201,.58)' // brillo rosado suave (sin tirarse a ámbar)
+      }
+    : {
+        red:  '#e43f5a',
+        pink: '#f37676',
         soft: 'rgba(255,220,220,.6)'
       };
-    }
+}
+
+
 
     function resize(){
       const rect = card.getBoundingClientRect();
@@ -345,16 +356,24 @@ if (navToggle && navMenu) {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
-
-    function drawWave({ amp, kx, speed, phase, lw, color, blur }){
+    function clearCanvas(){
       ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.restore();
+    }
+
+    function drawWave(params, alpha){
+      const { amp, kx, speed, phase, lw, color, blur } = params;
+      ctx.save();
+      ctx.globalAlpha = alpha;  // <- fade aplicado aquí
       ctx.beginPath();
       ctx.lineWidth = lw;
       ctx.lineCap = 'round';
       ctx.shadowBlur = blur;
       ctx.shadowColor = color;
 
-      for (let x = 0; x <= w; x += 1.5) {   // antes iba de -20 a w+20
+      for (let x = 0; x <= w; x += 1.5) {
         const y = h * 0.2 + Math.sin(x * kx + t * speed + phase) * amp;
         (x === 0) ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
       }
@@ -369,27 +388,63 @@ if (navToggle && navMenu) {
       const { red, pink, soft } = palette();
       ctx.clearRect(0, 0, w, h);
 
-      drawWave({ amp: h * 0.16, kx: 0.012, speed: 0.70, phase: 0.0, lw: 2.8, color: red,  blur: 18 });
-      drawWave({ amp: h * 0.12, kx: 0.017, speed: 0.55, phase: 1.1, lw: 2.2, color: pink, blur: 14 });
-      drawWave({ amp: h * 0.10, kx: 0.020, speed: 0.45, phase: 2.2, lw: 1.8, color: soft, blur: 12 });
+      const now = performance.now();
+      let alpha = 1;
+      if (state === 'fading') alpha = Math.max(0, (fadeUntil - now) / FADE_MS);
 
-      t += 0.015;  // antes 0.03 → más lento y suave
+      // mismos parámetros que tenías (sin cambios de tamaño/velocidad)
+      drawWave({ amp: h * 0.16, kx: 0.012, speed: 0.70, phase: 0.0, lw: 2.8, color: red,  blur: 18 }, alpha);
+      drawWave({ amp: h * 0.12, kx: 0.017, speed: 0.55, phase: 1.1, lw: 2.2, color: pink, blur: 14 }, alpha);
+      drawWave({ amp: h * 0.10, kx: 0.020, speed: 0.45, phase: 2.2, lw: 1.8, color: soft, blur: 12 }, alpha);
+
+      t += 0.015;
+
+      if (state === 'fading' && alpha === 0) {
+        // fin del fade: limpiar y cortar el loop
+        clearCanvas();
+        cancelAnimationFrame(raf);
+        raf = null;
+        state = 'stopped';
+        return;
+      }
+
       raf = requestAnimationFrame(render);
     }
 
+    function start(){
+      if (!raf){
+        resize();
+        state = 'running';
+        render();
+      } else {
+        state = 'running';
+      }
+    }
 
-    function start(){ if (!raf){ resize(); render(); } }
-    function stop(){ if (raf){ cancelAnimationFrame(raf); raf = null; } }
+    function stop(){
+      // no cortamos de golpe; iniciamos fade-out
+      if (raf && state !== 'fading') {
+        state = 'fading';
+        fadeStart = performance.now();
+        fadeUntil = fadeStart + FADE_MS;
+      }
+    }
 
     // Arranca/para con hover
     card.addEventListener('mouseenter', start);
     card.addEventListener('mouseleave', stop);
 
-    // Si el card desaparece del viewport, nos aseguramos de parar
-    const io = new IntersectionObserver(([entry]) => { if (!entry.isIntersecting) stop(); });
+    // Si el card desaparece del viewport, que no quede pintado
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting && raf) {
+        state = 'fading';
+        fadeStart = performance.now();
+        fadeUntil = fadeStart + FADE_MS;
+      }
+    });
     io.observe(card);
 
-    // Recalcular en resize
+    // Recalcular en resize si está corriendo
     window.addEventListener('resize', () => { if (raf) resize(); }, { passive:true });
   }
 })();
@@ -475,7 +530,6 @@ if (navToggle && navMenu) {
   const bootBtn = buttons.find(b => (b.dataset.filter || '').toLowerCase() === 'de/dba');
   if (bootBtn) { setActive(bootBtn); applyFilter('DE/DBA'); }
 
-
   toolbar.addEventListener('click', (e) => {
     const btn = e.target.closest('.filter-btn');
     if (!btn) return;
@@ -494,12 +548,14 @@ if (navToggle && navMenu) {
     buttons[next].focus();
   });
 })();
+
+
 // ====== COURSES: fondo waves por card (hover) ======
 (() => {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (prefersReduced) return;
 
-  // Reutilizo la misma idea que en Proyectos, con parámetros un poco más suaves
+  // Reutilizo la misma idea que en Proyectos, con fade-out al salir
   function setupCourseWave(card){
     // Si la tarjeta no tiene canvas, lo insertamos como primer hijo
     let canvas = card.querySelector('.course-bg');
@@ -512,18 +568,26 @@ if (navToggle && navMenu) {
 
     const ctx = canvas.getContext('2d');
     let w=0, h=0, dpr=1, t=0, raf=null;
+    // --- Fade-out sin cambiar tamaños ---
+    const FADE_MS = 260;
+    let state = 'stopped';        // 'running' | 'fading' | 'stopped'
+    let fadeStart = 0, fadeUntil = 0;
 
-    function cssVar(name, fb){
-      const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-      return v || fb;
-    }
-    function palette(){
-      return {
-        red:  cssVar('--contact-accent', '#e43f5a'),
-        pink: cssVar('--accent', '#f37676'),
-        soft: 'rgba(255,220,220,.55)'
+function palette(){
+  return document.body.classList.contains('light')
+    ? {
+        red:  '#c81e1e',              // rojo profundo (más contraste en fondo claro)
+        pink: '#ff6a7a',              // rosa/coral vivo (más saturado que #F37676)
+        soft: 'rgba(255,196,201,.58)' // brillo rosado suave (sin tirarse a ámbar)
+      }
+    : {
+        red:  '#e43f5a',
+        pink: '#f37676',
+        soft: 'rgba(255,220,220,.6)'
       };
-    }
+}
+
+
 
     function resize(){
       const rect = card.getBoundingClientRect();
@@ -539,13 +603,22 @@ if (navToggle && navMenu) {
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
-    function drawWave({ amp, kx, speed, phase, lw, color, blur }){
+    function clearCanvas(){
       ctx.save();
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.restore();
+    }
+
+    function drawWave(params, alpha){
+      const { amp, kx, speed, phase, lw, color, blur } = params;
+      ctx.save();
+      ctx.globalAlpha   = alpha;   // <- fade aplicado aquí
       ctx.beginPath();
-      ctx.lineWidth   = lw;
-      ctx.lineCap     = 'round';
-      ctx.shadowBlur  = blur;
-      ctx.shadowColor = color;
+      ctx.lineWidth     = lw;
+      ctx.lineCap       = 'round';
+      ctx.shadowBlur    = blur;
+      ctx.shadowColor   = color;
 
       // Base un poco más baja que en proyectos para no invadir los títulos
       const yBase = h * 0.22;
@@ -564,22 +637,55 @@ if (navToggle && navMenu) {
       const { red, pink, soft } = palette();
       ctx.clearRect(0, 0, w, h);
 
-      // Ligeramente más discreto que en Proyectos
-      drawWave({ amp: h * 2, kx: 0.012, speed: 0.1, phase: 0.0, lw: 2.4, color: red,  blur: 14 });
-      drawWave({ amp: h * 2.1, kx: 0.017, speed: 0.05, phase: 1.1, lw: 2.0, color: pink, blur: 12 });
-      drawWave({ amp: h * 1.9, kx: 0.020, speed: 0.23, phase: 2.2, lw: 1.6, color: soft, blur: 10 });
+      const now = performance.now();
+      let alpha = 1;
+      if (state === 'fading') alpha = Math.max(0, (fadeUntil - now) / FADE_MS);
 
-      t += 0.015;     // suave
+      // mismos parámetros que tenías
+      drawWave({ amp: h * 2,   kx: 0.012, speed: 0.1,  phase: 0.0, lw: 2.4, color: red,  blur: 14 }, alpha);
+      drawWave({ amp: h * 2.1, kx: 0.017, speed: 0.05, phase: 1.1, lw: 2.0, color: pink, blur: 12 }, alpha);
+      drawWave({ amp: h * 1.9, kx: 0.020, speed: 0.23, phase: 2.2, lw: 1.6, color: soft, blur: 10 }, alpha);
+
+      t += 0.015;
+
+      if (state === 'fading' && alpha === 0) {
+        clearCanvas();
+        cancelAnimationFrame(raf);
+        raf = null;
+        state = 'stopped';
+        return;
+      }
+
       raf = requestAnimationFrame(render);
     }
 
-    function start(){ if (!raf){ resize(); render(); } }
-    function stop(){ if (raf){ cancelAnimationFrame(raf); raf = null; } }
+    function start(){
+      if (!raf){
+        resize();
+        state = 'running';
+        render();
+      } else {
+        state = 'running';
+      }
+    }
+    function stop(){
+      if (raf && state !== 'fading') {
+        state = 'fading';
+        fadeStart = performance.now();
+        fadeUntil = fadeStart + FADE_MS;
+      }
+    }
 
     card.addEventListener('mouseenter', start);
     card.addEventListener('mouseleave', stop);
 
-    const io = new IntersectionObserver(([entry]) => { if (!entry.isIntersecting) stop(); });
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting && raf) {
+        state = 'fading';
+        fadeStart = performance.now();
+        fadeUntil = fadeStart + FADE_MS;
+      }
+    });
     io.observe(card);
 
     window.addEventListener('resize', () => { if (raf) resize(); }, { passive:true });

@@ -774,3 +774,118 @@ body.light .course-bg{ mix-blend-mode: multiply; }
   from { opacity: 0; transform: translateY(-5px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+/* ===================== LIGHT MODE FIX PACK ===================== */
+body.light{
+  /* Softer light palette */
+  --bg: #f9fafb;            /* antes #fff */
+  --surface: #f3f4f6;       /* antes #f7f7f8 */
+  --card: #ffffff;
+  --border: #e5e7eb;
+  --text: #0f172a;          /* slate-900 */
+  --muted: #475569;         /* slate-600 */
+  --primary: #D52A2A;
+  --accent: #F37676;
+}
+
+/* Textos que estaban forzados a blanco dentro de tarjetas */
+body.light .proj-title,
+body.light .c-label{
+  color: var(--text) !important;
+}
+
+/* Overlays/botones que usaban #ffffff10 / #ffffff12, etc. */
+body.light .proj-link,
+body.light .social,
+body.light .copy-btn,
+body.light .pdf-btn{
+  background: rgba(0,0,0,.04) !important;
+  border-color: color-mix(in srgb, var(--border) 85%, #000 15%) !important;
+  color: var(--text) !important;
+}
+body.light .proj-link:hover,
+body.light .social:hover,
+body.light .copy-btn:hover,
+body.light .pdf-btn:hover{
+  background: rgba(0,0,0,.06) !important;
+  color: var(--primary) !important;
+  border-color: var(--accent) !important;
+}
+
+/* Imágenes de thumbs y bordes en light */
+body.light .proj-thumb img{
+  background: #f0f2f5;
+  border-color: var(--border);
+}
+
+/* Copys y disclaimers */
+body.light .proj-desc,
+body.light .course-desc,
+body.light .projects-disclaimer{
+  color: var(--muted);
+}
+
+/* Formularios: dejá fondo blanco y texto oscuro */
+body.light .c-form input,
+body.light .c-form textarea{
+  background: #fff;
+  color: #0f172a;
+  border-color: #d1d5db;
+}
+body.light .c-form input::placeholder,
+body.light .c-form textarea::placeholder{
+  color: #7c8aa0;
+}
+
+/* Botón enviar con contraste correcto */
+body.light .submit-btn{
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+/* Navbar elevada en light: sombra suave y fondo no translúcido oscuro */
+body.light .navbar{ background: var(--bg); }
+body.light .navbar[data-elevated="true"]{
+  background: color-mix(in srgb, var(--bg) 85%, #fff 15%);
+  border-bottom: 1px solid var(--border);
+  box-shadow: 0 8px 24px rgba(0,0,0,.08);
+}
+
+/* Fondos animados: multiplicar en light para no “lavar” */
+body.light .proj-bg,
+body.light .course-bg{
+  mix-blend-mode: multiply;
+  opacity: .75;
+}
+
+/* Pills legibles en light */
+body.light .pill{ color: #111; }
+
+/* ===== Cursos (LIGHT): texto más legible sin tocar el canvas ===== */
+body.light .course-title,
+body.light .course-desc{
+  color: var(--text) !important;
+  /* halo sutil que separa del canvas sin overlays */
+  text-shadow:
+    0 1px 0 rgba(255,255,255,.55),
+    0 0 1px rgba(0,0,0,.22);
+  font-weight: 600;   /* un pelín más de peso ayuda en fondos activos */
+}
+
+/* Pills/acciones: contraste en light (no afecta al canvas) */
+body.light .chip-status,
+body.light .pdf-btn{
+  background: #fff;
+  border-color: #d1d5db;
+  color: var(--text);
+}
+
+/* Asegurar stacking: el canvas siempre atrás, texto adelante */
+.course-card{ position: relative; overflow: hidden; }
+.course-bg{
+  position: absolute; inset: 0; z-index: 0; pointer-events: none;
+}
+.course-card > *:not(.course-bg){ position: relative; z-index: 1; }
+
+/* (por si quedó de pruebas) quita cualquier scrim/velo previo */
+.course-card::before{ content: none !important; }
