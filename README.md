@@ -1,42 +1,47 @@
-# Portfolio Project - Red and Black
+🌐 Mi Portfolio Personal
 
-This portfolio project showcases a simple yet elegant design following UX/UI principles, utilizing a striking color palette of red and black. 
+Este es mi portfolio web, un espacio donde muestro mi experiencia, proyectos y aprendizajes en el área de Ingeniería de Datos, Administración de Bases de Datos y desarrollo experimental.
 
-## Project Structure
+🚀 Características principales
 
-```
-portfolio-red-black
-├── src
-│   ├── index.html        # Main HTML document for the portfolio
-│   ├── styles
-│   │   └── main.css      # CSS styles for layout and design
-│   ├── scripts
-│   │   └── app.js        # JavaScript for interactivity
-│   └── assets
-│       └── fonts         # Custom fonts for typography
-└── README.md             # Project documentation
-```
+- Diseño limpio y coherente: cada sección (Hero, Proyectos, Cursos, Contacto) mantiene una estética unificada.
 
-## Features
+- Animaciones sutiles y matemáticas: efectos tipo ondas y trayectorias físicas que acompañan las tarjetas sin invadir el contenido.
 
-- **Responsive Design**: The portfolio is designed to be responsive, ensuring a seamless experience across devices.
-- **User-Friendly Navigation**: Clear and intuitive navigation to enhance user experience.
-- **Interactive Elements**: JavaScript is used to add interactivity, making the portfolio engaging.
+- Sistema de filtros: tanto en proyectos como en cursos, se pueden seleccionar categorías para navegar de forma intuitiva.
 
-## Setup Instructions
+- Feedback elegante: los formularios y botones (ej. copiar mail, enviar contacto) brindan retroalimentación visual sin redirigir al usuario.
 
-1. Clone the repository to your local machine.
-2. Open the `index.html` file in your web browser to view the portfolio.
-3. Customize the content in `src/index.html`, `src/styles/main.css`, and `src/scripts/app.js` as needed.
+- Certificados PDF integrados: en la sección Cursos, se pueden consultar los certificados aprobados y los cursos en curso.
 
-## Design Choices
+📂 Estructura del proyecto
 
-- **Color Palette**: The use of red and black creates a bold and modern aesthetic.
-- **Typography**: Custom fonts are included to enhance readability and align with the overall design.
-- **UX/UI Principles**: The layout and design choices are made to ensure a positive user experience.
+- index.html: la estructura principal de la página.
 
-## Technologies Used
+- assets/: contiene imágenes, íconos y PDFs de los certificados de cursos.
 
-- HTML5
-- CSS3
-- JavaScript
+- style.css: estilos generales y animaciones hover.
+
+- script.js: lógica de interacción (filtros, animaciones, feedback en formularios, copiar mail, etc.).
+
+📚 Secciones
+
+- Hero: presentación breve y clara, destacando mi rol y experiencia.
+
+- Proyectos: tarjetas con descripción, imágenes y hover animado.
+
+- Cursos: dividido en categorías (Introductorio, Avanzado, Habilidades Blandas). Cada tarjeta muestra el curso, estado y link a certificado en PDF.
+
+- Contacto: formulario con feedback visual y botón para copiar email.
+
+🛠️ Tecnologías utilizadas
+
+- HTML5 / CSS3 / JavaScript
+
+- Animaciones con keyframes personalizadas
+
+- Formspree para el envío de formularios (configurado con feedback interno, sin redirecciones)
+
+🎨 Inspiración
+
+El diseño busca transmitir un equilibrio entre rigor técnico y curiosidad experimental
