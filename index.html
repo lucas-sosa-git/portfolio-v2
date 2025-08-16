@@ -98,7 +98,7 @@
           <li>Validación y análisis de flujo de datos en el estudio <em>Valoremos los Alimentos</em>.</li>
           <li>Script de IA con <strong>Sentence Transformers</strong> (Hugging Face) para comparar categorizaciones de productos (Strings) <strong>GPC</strong> ↔ <strong>CPC</strong>.</li>
           <li>Procesos <strong>ETL</strong> en <strong>SQL</strong> y tableros en <strong>Power BI</strong>.</li>
-          <li>Automatizaciones con <strong>Python</strong> (CustomTkinter, Pandas) para operaciones repetitivas.</li>
+          <li>Automatizaciones con <strong>Python</strong> (CustomTkinter, Pandas) para operaciones repetitivas y complejas.</li>
         </ul>
       </div>
     </section>
@@ -413,8 +413,8 @@
           <div class="c-text">
             <div class="c-label">Mail</div>
             <div class="c-line">
-              <a class="c-link" href="mailto:lucas.sosaet32@gmail.com">lucas.sosaet32@gmail.com</a>
-              <button class="dl-btn" data-copy="lucas.sosaet32@gmail.com" aria-label="Copiar email" title="Copiar email">
+              <a>lucas.sosaet32@gmail.com</a>
+              <button class="copy-btn dl-btn" data-copy="lucas.sosaet32@gmail.com" aria-label="Copiar email" title="Copiar email">
                 <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
                   <rect x="9" y="9" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
                   <rect x="3" y="3" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -482,6 +482,48 @@
           <button type="submit" class="submit-btn">Enviar</button>
         </form>
       </div>
+      <script>
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("contact-form");
+
+  form.addEventListener("submit", async function (e) {
+    e.preventDefault(); // evita redirección
+
+    const formData = new FormData(form);
+    const status = document.createElement("div");
+    status.classList.add("form-status");
+    form.appendChild(status);
+
+    try {
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: formData,
+        headers: {
+          Accept: "application/json"
+        }
+      });
+
+      if (response.ok) {
+        status.textContent = "✅ ¡Gracias! Tu mensaje fue enviado correctamente.";
+        status.classList.add("success");
+        form.reset();
+      } else {
+        status.textContent = "⚠️ Ocurrió un problema. Intenta de nuevo.";
+        status.classList.add("error");
+      }
+    } catch (error) {
+      status.textContent = "🚨 Error de conexión. Por favor, intenta más tarde.";
+      status.classList.add("error");
+    }
+
+    // desaparece después de unos segundos
+    setTimeout(() => {
+      status.remove();
+    }, 4000);
+  });
+});
+</script>
+
     </section>
   </main>
 
