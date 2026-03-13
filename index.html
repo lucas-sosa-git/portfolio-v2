@@ -6,24 +6,19 @@
   <title>Lucas Sosa - Portfolio</title>
   <meta name="theme-color" content="#D52A2A" />
 
-  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
   <link rel="alternate icon" type="image/png" href="assets/favicon.png" />
 
-  <!-- Canonical -->
   <link rel="canonical" href="https://lucas-sosa-git.github.io/portfolio-v2/" />
 
-  <!-- Open Graph (WhatsApp + LinkedIn) -->
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="Lucas Sosa — Portfolio" />
   <meta property="og:locale" content="es_AR" />
-  <!-- Versionado para forzar refresh en LinkedIn Chat -->
   <meta property="og:url" content="https://lucas-sosa-git.github.io/portfolio-v2/?li=4" />
 
   <meta property="og:title" content="Lucas Sosa — Ingeniería de Datos / DBA Jr" />
   <meta property="og:description" content="ETL en Python/SQL, validaciones en MySQL·MariaDB·SQL Server y tableros en Power BI. Experimentos con IA (embeddings GPC↔CPC) y automatización en Python." />
 
-  <!-- Imagen OG: usa el favicon (duplicado con nombre nuevo para evitar caché en LinkedIn) -->
   <meta property="og:image" content="https://lucas-sosa-git.github.io/portfolio-v2/assets/og-favicon-v4.png" />
   <meta property="og:image:secure_url" content="https://lucas-sosa-git.github.io/portfolio-v2/assets/og-favicon-v4.png" />
   <meta property="og:image:type" content="image/png" />
@@ -32,11 +27,9 @@
   <meta property="og:image:alt" content="Logo LS — Lucas Sosa" />
   <meta property="og:updated_time" content="2025-08-18T00:00:00Z" />
 
-  <!-- Fuente y estilos -->
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles/main.css">
 
-  <!-- (opcional) Tailwind utilitario por CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { theme: { extend: { colors: { primary: '#D52A2A', accent: '#F37676' } } } };
@@ -50,14 +43,12 @@
     <nav class="navbar" aria-label="Principal">
       <a href="#hero" class="navbar-logo" aria-label="Inicio">L-Sosa</a>
 
-      <!-- Botón hamburguesa (móvil) -->
       <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Abrir menú">
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
         <span class="nav-toggle-bar"></span>
       </button>
 
-      <!-- Links -->
       <ul id="nav-menu" class="navbar-links" aria-hidden="true">
         <li><a href="#about">Sobre mí</a></li>
         <li><a href="#projects">Proyectos</a></li>
@@ -65,13 +56,11 @@
         <li><a href="#contact">Contacto</a></li>
       </ul>
 
-      <!-- Botón tema -->
       <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
     </nav>
   </header>
 
   <main id="main">
-    <!-- HERO -->
     <section id="hero" class="hero-2col">
       <div class="hero-copy">
         <p class="hero-kicker">👋 Un saludo a la persona que está leyendo esto</p>
@@ -79,9 +68,9 @@
           Soy <span class="hero-name">Lucas Sosa</span>
         </h1>
         <p class="hero-subtitle">
-          Estoy construyendo mi carrera en Ingeniería de Datos y Administración de Bases.
-          Me enfoco en que los datos lleguen limpios y a tiempo, con consultas eficientes
-          y procesos listos para escalar.
+          Estoy construyendo mi carrera en Ingeniería de Datos y Administración de Bases de Datos.<br><br>
+          Me enfoco en que los datos lleguen limpios, consistentes y a tiempo: desde la ingestión, validación y transformación hasta consultas eficientes para análisis y visualización.<br><br>
+          Me interesa especialmente automatizar procesos repetitivos, mejorar la calidad de los datos y diseñar flujos que puedan escalar sin depender de intervención manual.
         </p>
       </div>
 
@@ -90,41 +79,35 @@
       </div>
     </section>
 
-    <!-- SOBRE MÍ -->
     <section id="about" class="about-split">
-      <!-- Foto -->
       <div class="about-photo">
         <img src="assets/lucas-sosa.webp" alt="Foto de Lucas Sosa" width="560" height="700" loading="lazy">
       </div>
 
-      <!-- Texto -->
       <div class="about-copy">
         <h2>Sobre mí</h2>
 
         <p class="about-lead">
-          Trabajo en <strong>GS1 Argentina</strong> como Analista de Innovación y Desarrollo.
-          Me muevo cerca de Ingeniería de Datos: calidad, homologación de taxonomías y automatización.
+          Trabajo en <strong>GS1 Argentina</strong> como Analista de Innovación y Desarrollo, en tareas cercanas a Ingeniería de Datos: validación de calidad, homologación de taxonomías y automatización de procesos de análisis.<br><br>
+          Mi trabajo se centra en asegurar que los datos puedan ser utilizados de forma confiable para análisis y visualización, reduciendo errores manuales y mejorando la consistencia entre distintas fuentes.
         </p>
 
         <ul class="about-list">
-          <li>Validación y análisis de flujo de datos en el estudio <em>Valoremos los Alimentos</em>.</li>
-          <li>Script de IA con <strong>Sentence Transformers</strong> (Hugging Face) para comparar categorizaciones de productos (Strings) <strong>GPC</strong> ↔ <strong>CPC</strong>.</li>
-          <li>Procesos <strong>ETL</strong> en <strong>SQL</strong> y tableros en <strong>Power BI</strong>.</li>
-          <li>Automatizaciones con <strong>Python</strong> (CustomTkinter, Pandas) para operaciones repetitivas y complejas.</li>
+          <li>Validación y análisis del flujo de datos en el estudio <em>Valoremos los Alimentos</em>, detectando inconsistencias y asegurando calidad antes del análisis.</li>
+          <li>Desarrollo de un script con <strong>Sentence Transformers</strong> (Hugging Face) para sugerir equivalencias entre taxonomías <strong>GPC</strong> y <strong>CPC</strong> mediante embeddings semánticos.</li>
+          <li>Procesos <strong>ETL</strong> con <strong>SQL</strong> y <strong>Python</strong> para transformar y preparar datos utilizados en tableros analíticos.</li>
+          <li>Automatización de tareas repetitivas con <strong>Python</strong> (CustomTkinter, Pandas), reduciendo trabajo manual en procesos de análisis y preparación de datos.</li>
         </ul>
       </div>
     </section>
 
-<!-- ===================== PROYECTOS ===================== -->
 <section id="projects">
   <h2 class="section-title">Proyectos</h2>
 
-  <!-- Disclaimer -->
   <p class="projects-disclaimer">
-    Exploro distintas áreas de IT y todavía estoy definiendo mi rol. Por eso vas a ver proyectos variados: desde DE/DBA hasta IA, Arduino y Web. Usá los filtros si querés navegar por categoría.
+    Exploro distintas áreas de IT mientras construyo mi perfil profesional. Por eso este portfolio incluye proyectos de Ingeniería de Datos, IA, desarrollo web y experimentos con hardware. Cada proyecto refleja algo que quise entender o mejorar: desde pipelines de datos hasta automatización y prototipos técnicos.
   </p>
 
-  <!-- Toolbar de filtros (accesible). Requiere el JS de filtros para funcionar -->
   <div class="filters-toolbar" role="group" aria-label="Filtro de proyectos">
     <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">Todos</button>
     <button type="button" class="filter-btn" data-filter="DE/DBA" aria-pressed="false">DE/DBA</button>
@@ -133,9 +116,7 @@
     <button type="button" class="filter-btn" data-filter="Web" aria-pressed="false">Web</button>
   </div>
 
-  <!-- Grilla -->
   <div class="projects-grid">
-    <!-- VLA · Mermas retail (Power BI) -->
     <article class="proj-card" data-tags="DE, DBA, BI, Producción">
       <canvas class="proj-bg" aria-hidden="true"></canvas>
 
@@ -154,19 +135,20 @@
         <div class="proj-meta"><span class="pill">En producción</span></div>
 
         <p class="proj-desc">
-          Recepción de CSVs en OwnCloud → ETL en Python → validaciones con SQL → visualización en Power BI.
-          Millones de registros de merma de supermercados argentinos.
+          Pipeline de datos para análisis de mermas en supermercados argentinos.<br><br>
+          Los datos se reciben en CSV desde OwnCloud, se procesan mediante ETL en Python y pasan por validaciones en SQL antes de alimentar tableros analíticos en Power BI. El sistema permite consolidar millones de registros y transformarlos en información utilizable para analizar pérdidas y tendencias en el sector retail.
+          <br><br>
+          <strong>💡 Limitación actual:</strong> el sistema aún depende de carga manual de archivos y podría mejorarse automatizando la ingesta de datos.
         </p>
 
         <ul class="tech-list">
-          <li><img src="assets/tech/python.svg" alt="Python"></li>
-          <li><img src="assets/tech/sql.svg" alt="SQL"></li>
-          <li><img src="assets/tech/powerbi.svg" alt="Power BI"></li>
+          <li><img src="assets/tech/python.svg" alt="Python" title="Python"></li>
+          <li><img src="assets/tech/sql.svg" alt="SQL" title="SQL"></li>
+          <li><img src="assets/tech/powerbi.svg" alt="Power BI" title="Power BI"></li>
         </ul>
       </div>
     </article>
 
-    <!-- Matching GPC ↔ CPC (privado) -->
     <article class="proj-card" data-tags="IA, DE, Experimento">
       <canvas class="proj-bg" aria-hidden="true"></canvas>
 
@@ -185,19 +167,20 @@
         <div class="proj-meta"><span class="pill">Experimental</span></div>
 
         <p class="proj-desc">
-          Script con Sentence Transformers (Hugging Face) + reglas por niveles para sugerir
-          equivalencias entre taxonomías GPC y CPC (Datos y código privados).
+          Experimento de matching semántico entre las taxonomías GPC (GS1) y CPC (INDEC).<br><br>
+          Utiliza embeddings generados con Sentence Transformers y búsqueda vectorial para sugerir posibles equivalencias entre categorías. El objetivo es reducir el trabajo manual en la homologación de clasificaciones de productos entre distintos sistemas.
+          <br><br>
+          <strong>💡 Aprendizaje:</strong> validar datos temprano en el pipeline reduce enormemente los errores y falsos positivos al momento de hacer búsquedas vectoriales.
         </p>
 
         <ul class="tech-list">
-          <li><img src="assets/tech/python.svg" alt="Python"></li>
-          <li><img src="assets/tech/hf.svg" alt="Hugging Face"></li>
-          <li><img src="assets/tech/faiss.svg" alt="FAISS"></li>
+          <li><img src="assets/tech/python.svg" alt="Python" title="Python"></li>
+          <li><img src="assets/tech/hf.svg" alt="Hugging Face" title="Hugging Face"></li>
+          <li><img src="assets/tech/faiss.svg" alt="FAISS" title="FAISS"></li>
         </ul>
       </div>
     </article>
 
-    <!-- Circuitos con Arduino -->
     <article class="proj-card" data-tags="Arduino, Experimento">
       <canvas class="proj-bg" aria-hidden="true"></canvas>
 
@@ -215,16 +198,20 @@
 
         <div class="proj-meta"><span class="pill">Experimental</span></div>
 
-        <p class="proj-desc">Pequeños circuitos y prácticas.</p>
+        <p class="proj-desc">
+          Repositorio de pequeños experimentos con Arduino y electrónica básica.<br><br>
+          Explora conceptos como sensores, control de LEDs y lógica de interacción entre hardware y software. Este proyecto refleja mi interés por entender cómo funcionan los sistemas más allá del software.
+          <br><br>
+          <strong>💡 Aprendizaje:</strong> trabajar con hardware me ayudó a entender las limitaciones físicas (memoria, procesamiento) y cómo optimizar la lógica a bajo nivel.
+        </p>
 
         <ul class="tech-list">
-          <li><img src="assets/tech/arduino.svg" alt="Arduino"></li>
-          <li><img src="assets/tech/cpp.svg" alt="C/C++"></li>
+          <li><img src="assets/tech/arduino.svg" alt="Arduino" title="Arduino"></li>
+          <li><img src="assets/tech/cpp.svg" alt="C/C++" title="C/C++"></li>
         </ul>
       </div>
     </article>
 
-    <!-- Portfolio personal -->
     <article class="proj-card" data-tags="Web, Demo">
       <canvas class="proj-bg" aria-hidden="true"></canvas>
 
@@ -242,17 +229,17 @@
 
         <div class="proj-meta"><span class="pill">Demo</span></div>
 
-        <p class="proj-desc">Sitio personal con diseño accesible y animaciones sutiles.</p>
+        <p class="proj-desc">Sitio personal con diseño accesible y animaciones sutiles.<br><br>
+        <strong>💡 Aprendizaje:</strong> priorizar la accesibilidad semántica y optimizar el rendimiento de la web desde el inicio del desarrollo.</p>
 
         <ul class="tech-list">
-          <li><img src="assets/tech/html.svg" alt="HTML"></li>
-          <li><img src="assets/tech/css.svg" alt="CSS"></li>
-          <li><img src="assets/tech/js.svg" alt="JavaScript"></li>
+          <li><img src="assets/tech/html.svg" alt="HTML" title="HTML"></li>
+          <li><img src="assets/tech/css.svg" alt="CSS" title="CSS"></li>
+          <li><img src="assets/tech/js.svg" alt="JavaScript" title="JavaScript"></li>
         </ul>
       </div>
     </article>
 
-    <!-- Proyecto Rojas (web consultorio odontológico) -->
     <article class="proj-card" data-tags="Web, Demo">
       <canvas class="proj-bg" aria-hidden="true"></canvas>
 
@@ -271,26 +258,25 @@
         <div class="proj-meta"><span class="pill">Demo</span></div>
 
         <p class="proj-desc">
-          Front para consultorio odontológico, este proyecto lo hice junto a mis compañeros de la secundaria. 
-          Marca mis origenes en el desarrollo.
+          Sitio web desarrollado junto a compañeros de la secundaria para un consultorio odontológico.<br><br>
+          Fue uno de mis primeros proyectos de desarrollo web y marcó mi primer contacto con la construcción de productos reales para usuarios.
+          <br><br>
+          <strong>💡 Aprendizaje:</strong> mi primer contacto formal con el ciclo de vida de un producto y la importancia de entender las necesidades reales del cliente final.
         </p>
 
         <ul class="tech-list">
-          <li><img src="assets/tech/html.svg" alt="HTML"></li>
-          <li><img src="assets/tech/css.svg" alt="CSS"></li>
-          <li><img src="assets/tech/js.svg" alt="JavaScript"></li>
+          <li><img src="assets/tech/html.svg" alt="HTML" title="HTML"></li>
+          <li><img src="assets/tech/css.svg" alt="CSS" title="CSS"></li>
+          <li><img src="assets/tech/js.svg" alt="JavaScript" title="JavaScript"></li>
         </ul>
       </div>
     </article>
-    <!-- /fin de cards -->
-  </div>
+    </div>
 </section>
 
-<!-- ===================== CURSOS (rediseñado) ===================== -->
 <section id="courses" class="courses-section">
   <h2 class="section-title">Cursos</h2>
 
-  <!-- Toolbar categorías (solo categoría, por defecto Avanzados) -->
   <div class="courses-toolbar" role="group" aria-label="Categoría de cursos">
     <button type="button" class="chip-btn" data-cat="all" aria-pressed="false">Todos</button>
     <button type="button" class="chip-btn" data-cat="Introductorio" aria-pressed="false">Introductorios</button>
@@ -298,28 +284,46 @@
     <button type="button" class="chip-btn" data-cat="Habilidades blandas" aria-pressed="false">Habilidades blandas</button>
   </div>
 
-  <!-- Grilla -->
   <div class="courses-grid">
 
-    <!-- Avanzado · En curso -->
     <article class="course-card" data-cat="Avanzado">
       <header class="course-head">
         <h3 class="course-title">IA para programadores</h3>
         <span class="chip-status is-progress" title="En curso">En curso</span>
       </header>
-      <p class="course-desc">Fundamentos prácticos de ML para devs</p>
+      <p class="course-desc">Fundamentos prácticos de ML para devs.</p>
     </article>
-
-    <!-- Introductorio · En curso -->
-    <article class="course-card" data-cat="Introductorio">
+    
+    <article class="course-card" data-cat="Avanzado">
       <header class="course-head">
-        <h3 class="course-title">Programación orientada a objetos con IA</h3>
+        <h3 class="course-title">Power BI</h3>
         <span class="chip-status is-progress" title="En curso">En curso</span>
       </header>
-        <p class="course-desc">POO en C# (.NET) usando IA como herrramienta principal para el desarrollo.</p>
+      <p class="course-desc">Modelado de datos, DAX y visualización de dashboards interactivos.</p>
     </article>
 
-    <!-- Introductorio · Aprobado -->
+    <article class="course-card" data-cat="Avanzado">
+      <header class="course-head">
+        <h3 class="course-title">Programación orientada a objetos con IA</h3>
+        <span class="chip-status is-ok" title="Aprobado">Aprobado</span>
+      </header>
+        <p class="course-desc">POO en C# (.NET) usando IA como herrramienta principal para el desarrollo.</p>
+      <div class="course-actions">
+        <a class="pdf-btn" href="assets/courses/poo_con_ia.pdf" target="_blank" rel="noopener">Ver certificado (PDF)</a>
+      </div>
+    </article>
+    
+    <article class="course-card" data-cat="Avanzado">
+      <header class="course-head">
+        <h3 class="course-title">SQL Server Programming</h3>
+        <span class="chip-status is-ok" title="Aprobado">Aprobado</span>
+      </header>
+        <p class="course-desc">Programación avanzada, optimización de consultas y stored procedures en SQL Server.</p>
+      <div class="course-actions">
+        <a class="pdf-btn" href="assets/courses/sql_server_programming.pdf" target="_blank" rel="noopener">Ver certificado (PDF)</a>
+      </div>
+    </article>
+
     <article class="course-card" data-cat="Introductorio">
       <header class="course-head">
         <h3 class="course-title">Desarrollo Web con HTML</h3>
@@ -331,7 +335,6 @@
       </div>
     </article>
 
-    <!-- Introductorio · Aprobado -->
     <article class="course-card" data-cat="Introductorio">
       <header class="course-head">
         <h3 class="course-title">Introducción a Bases de Datos y SQL</h3>
@@ -343,7 +346,6 @@
       </div>
     </article>
 
-    <!-- Introductorio · Aprobado -->
     <article class="course-card" data-cat="Introductorio">
       <header class="course-head">
         <h3 class="course-title">Javascript desde cero</h3>
@@ -355,7 +357,6 @@
       </div>
     </article>
 
-    <!-- Introductorio · Aprobado -->
     <article class="course-card" data-cat="Introductorio">
       <header class="course-head">
         <h3 class="course-title">C# para no programadores</h3>
@@ -367,7 +368,6 @@
       </div>
     </article>
 
-    <!-- Avanzado · Aprobado -->
     <article class="course-card" data-cat="Avanzado">
       <header class="course-head">
         <h3 class="course-title">Fundamentos de Base de Datos (Avanzado)</h3>
@@ -379,7 +379,6 @@
       </div>
     </article>
 
-    <!-- Habilidades blandas · Aprobado -->
     <article class="course-card" data-cat="Habilidades blandas">
       <header class="course-head">
         <h3 class="course-title">Líderes recreativos comunitarios</h3>
@@ -391,7 +390,6 @@
       </div>
     </article>
 
-    <!-- Habilidades blandas · En curso -->
     <article class="course-card" data-cat="Habilidades blandas">
       <header class="course-head">
         <h3 class="course-title">Storytelling</h3>
@@ -402,14 +400,10 @@
 
   </div>
 </section>
-<!-- ===================== /CURSOS ===================== -->
-
-    <!-- CONTACTO -->
-    <section id="contact" class="contact-split">
+<section id="contact" class="contact-split">
       <div class="c-left">
         <h2 class="c-title">Contacto</h2>
 
-        <!-- Mail -->
         <div class="c-row">
           <div class="c-icon">
             <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true">
@@ -421,8 +415,8 @@
           <div class="c-text">
             <div class="c-label">Mail</div>
             <div class="c-line">
-              <a>lucas.sosaet32@gmail.com</a>
-              <button class="copy-btn dl-btn" data-copy="lucas.sosaet32@gmail.com" aria-label="Copiar email" title="Copiar email">
+              <a>lsosaa@fi.uba.ar</a>
+              <button class="copy-btn dl-btn" data-copy="lsosaa@fi.uba.ar" aria-label="Copiar email" title="Copiar email">
                 <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
                   <rect x="9" y="9" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
                   <rect x="3" y="3" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
@@ -433,7 +427,6 @@
           </div>
         </div>
 
-        <!-- CV -->
         <div class="c-row">
           <div class="c-icon">
             <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true">
@@ -457,7 +450,6 @@
           </div>
         </div>
 
-        <!-- Sociales -->
         <div class="c-socials">
           <a href="https://github.com/lucas-sosa-git" target="_blank" rel="noopener noreferrer" class="social" aria-label="GitHub" title="GitHub">
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
@@ -472,7 +464,6 @@
         </div>
       </div>
 
-      <!-- Derecha: FORM -->
       <div class="c-right">
         <form id="contact-form" class="c-form" action="https://formspree.io/f/xrbldnlv" method="POST" novalidate>
           <div class="field">
@@ -536,7 +527,7 @@ document.addEventListener("DOMContentLoaded", () => {
   </main>
 
   <footer>
-    <p>© 2025 Lucas Sosa</p>
+    <p>© 2026 Lucas Sosa</p>
   </footer>
 
   <script src="scripts/app.js" defer></script>
