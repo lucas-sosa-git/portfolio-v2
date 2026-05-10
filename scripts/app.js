@@ -118,7 +118,22 @@ if (navToggle && navMenu) {
   });
 
   navMenu.querySelectorAll('a').forEach((a) => {
-    a.addEventListener('click', () => setHidden(true));
+    a.addEventListener('click', (e) => {
+      const href = a.getAttribute('href') || '';
+      const target = href.startsWith('#') ? document.querySelector(href) : null;
+
+      if (!target) {
+        setHidden(true);
+        return;
+      }
+
+      e.preventDefault();
+      setHidden(true);
+      window.setTimeout(() => {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.pushState(null, '', href);
+      }, 120);
+    });
   });
 
   document.addEventListener('keydown', (e) => {
