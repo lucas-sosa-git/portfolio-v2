@@ -119,10 +119,11 @@ if (navToggle && navMenu) {
 
   navMenu.querySelectorAll('a').forEach((a) => {
     a.addEventListener('click', (e) => {
+      const isMobileMenu = window.matchMedia('(max-width: 840px)').matches;
       const href = a.getAttribute('href') || '';
       const target = href.startsWith('#') ? document.querySelector(href) : null;
 
-      if (!target) {
+      if (!target || !isMobileMenu) {
         setHidden(true);
         return;
       }
@@ -145,6 +146,43 @@ if (navToggle && navMenu) {
     setHidden(true);
   });
 }
+
+// ============================
+// BOTTOM NAV MOBILE: estado activo
+// ============================
+(() => {
+  const items = Array.from(document.querySelectorAll('.mobile-bottom-nav .mbn-item'));
+  if (!items.length) return;
+
+  const byId = new Map(
+    items
+      .map((item) => {
+        const id = (item.getAttribute('href') || '').replace('#', '');
+        const section = id ? document.getElementById(id) : null;
+        return section ? [id, { item, section }] : null;
+      })
+      .filter(Boolean)
+  );
+
+  const setActive = (id) => {
+    items.forEach((item) => {
+      item.classList.toggle('active', (item.getAttribute('href') || '') === `#${id}`);
+    });
+  };
+
+  const observer = new IntersectionObserver((entries) => {
+    const visible = entries
+      .filter((entry) => entry.isIntersecting)
+      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+    if (visible?.target?.id) setActive(visible.target.id);
+  }, {
+    rootMargin: '-35% 0px -45% 0px',
+    threshold: [0.15, 0.35, 0.6],
+  });
+
+  byId.forEach(({ section }) => observer.observe(section));
+})();
 
 
 
