@@ -162,8 +162,8 @@ header{
 .hero-actions{
   display:flex;
   flex-wrap:wrap;
-  gap:.7rem;
-  margin-top:.35rem;
+  gap:.85rem;
+  margin-top:1.25rem;
 }
 .primary-btn,
 .secondary-btn{
@@ -171,12 +171,12 @@ header{
   align-items:center;
   justify-content:center;
   min-height:44px;
-  padding:.72rem 1rem;
-  border-radius:.7rem;
-  font-weight:800;
+  padding:.8rem 1.1rem;
+  border-radius:999px;
+  font-weight:700;
   line-height:1;
   text-decoration:none;
-  transition:transform .16s ease, border-color .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
+  transition:transform 180ms ease, border-color 180ms ease, background 180ms ease, color 180ms ease, box-shadow 180ms ease;
 }
 .primary-btn{
   background:linear-gradient(135deg, var(--primary), var(--contact-accent));
@@ -200,6 +200,36 @@ header{
   background:#ffffff18;
   border-color:var(--accent);
   color:var(--accent);
+}
+.primary-btn:focus-visible,
+.secondary-btn:focus-visible{
+  outline:3px solid rgba(243,118,118,.5);
+  outline-offset:3px;
+}
+
+.hero-highlights{
+  display:grid;
+  gap:.6rem;
+  margin:1.15rem 0 0;
+  padding:0;
+  list-style:none;
+}
+.hero-highlights li{
+  position:relative;
+  padding-left:1.35rem;
+  color:var(--muted);
+  line-height:1.45;
+}
+.hero-highlights li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:.62em;
+  width:.45rem;
+  height:.45rem;
+  border-radius:999px;
+  background:var(--accent);
+  box-shadow:0 0 0 5px rgba(243,118,118,.12);
 }
 
 .hero-visual{
@@ -231,30 +261,124 @@ body.light .hero-visual canvas{ mix-blend-mode: multiply; }
 .quick-profile{
   display:grid;
   grid-template-columns:repeat(3, 1fr);
-  gap:.75rem;
+  gap:1rem;
   padding:1rem 0 2.25rem;
 }
-.quick-profile article{
-  background:linear-gradient(180deg, color-mix(in srgb, var(--card) 92%, var(--contact-accent) 8%), var(--card));
-  border:1px solid color-mix(in srgb, var(--border) 72%, var(--contact-accent) 28%);
-  border-radius:.85rem;
-  padding:1rem;
+.quick-profile-card,
+.experience-card,
+.ai-card{
+  background:linear-gradient(180deg, rgba(255,255,255,.075), rgba(255,255,255,.035));
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:1.25rem;
+  box-shadow:0 18px 60px rgba(0,0,0,.18);
+}
+.quick-profile-card{
+  padding:1.15rem;
   display:grid;
   gap:.35rem;
 }
-.quick-profile strong{
+.quick-profile-label{
+  display:inline-flex;
+  margin-bottom:.25rem;
   color:var(--accent);
   font-size:.78rem;
+  font-weight:800;
   letter-spacing:.08em;
   text-transform:uppercase;
 }
-.quick-profile span{
+.quick-profile-card strong{
+  display:block;
   color:var(--text);
-  font-weight:700;
+  font-size:clamp(1rem, 2vw, 1.25rem);
+  margin-bottom:.15rem;
+}
+.quick-profile-card p{
+  margin:0;
+  color:var(--muted);
   line-height:1.35;
 }
 @media (max-width: 760px){
   .quick-profile{ grid-template-columns:1fr; padding-top:.5rem; }
+}
+
+.experience-section,
+.ai-section{
+  padding-block:3rem;
+}
+.experience-section .section-title,
+.ai-section .section-title{
+  font-size:clamp(1.8rem, 1.2rem + 2.4vw, 2.6rem);
+  line-height:1.1;
+  margin:0 0 1rem;
+  color:var(--contact-accent);
+}
+.experience-card{
+  padding:1.15rem;
+}
+.experience-header{
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:1rem;
+  margin-bottom:1rem;
+}
+.experience-header h3{
+  margin:0;
+  color:var(--text);
+  font-size:clamp(1.2rem, 2vw, 1.6rem);
+}
+.experience-header p{
+  margin:.25rem 0 0;
+  color:var(--muted);
+}
+.experience-header span{
+  flex:0 0 auto;
+  border:1px solid rgba(243,118,118,.28);
+  color:var(--accent);
+  background:rgba(243,118,118,.09);
+  border-radius:999px;
+  padding:.45rem .7rem;
+  font-size:.82rem;
+  font-weight:800;
+}
+.experience-card p,
+.experience-list{
+  color:var(--muted);
+}
+.experience-list{
+  display:grid;
+  gap:.55rem;
+  margin:1rem 0 0;
+  padding-left:1.1rem;
+}
+.section-lead{
+  max-width:780px;
+  margin:-.5rem 0 1.3rem;
+  color:var(--muted);
+  font-size:1.02rem;
+  line-height:1.75;
+}
+.ai-grid{
+  display:grid;
+  grid-template-columns:repeat(3, minmax(0, 1fr));
+  gap:1rem;
+}
+.ai-card{
+  padding:1.15rem;
+}
+.ai-card h3{
+  margin:0 0 .5rem;
+  color:var(--text);
+}
+.ai-card p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.55;
+}
+@media (max-width: 860px){
+  .ai-grid{ grid-template-columns:1fr; }
+  .experience-header{ flex-direction:column; }
+  .experience-header span{ align-self:flex-start; }
 }
 
 /* =====================  SOBRE MÍ  ===================== */
@@ -276,6 +400,11 @@ body.light .hero-visual canvas{ mix-blend-mode: multiply; }
 .about-lead{
   font-size:clamp(1.05rem,.9rem + .6vw,1.2rem);
   color:var(--muted); max-width:60ch;
+}
+.about-copy p{
+  color:var(--muted);
+  line-height:1.65;
+  margin:0;
 }
 .about-list{ list-style:none; margin:0 0 .75rem; padding:0; display:grid; gap:.55rem; }
 .about-list li{
@@ -368,6 +497,26 @@ body.light .proj-bg{ mix-blend-mode: multiply; }
   border: 1px solid var(--border);
   box-shadow: 0 10px 26px rgba(0,0,0,.25);
   background: #0a0a0a;
+}
+.proj-card-no-thumb{
+  grid-template-rows:1fr;
+}
+.proj-card-no-thumb .proj-body{
+  padding:1rem;
+}
+.proj-card-no-thumb .proj-body::before{
+  content:"GS1 QR";
+  display:inline-flex;
+  width:fit-content;
+  margin-bottom:.1rem;
+  padding:.32rem .62rem;
+  border:1px solid color-mix(in srgb, var(--contact-accent) 40%, var(--border));
+  border-radius:999px;
+  color:var(--accent);
+  background:rgba(243,118,118,.08);
+  font-weight:800;
+  font-size:.78rem;
+  letter-spacing:.08em;
 }
 
 /* Body */
@@ -927,12 +1076,23 @@ body.light .proj-thumb img{
 body.light .proj-desc,
 body.light .course-desc,
 body.light .projects-disclaimer,
-body.light .hero-subtitle{
+body.light .hero-subtitle,
+body.light .hero-highlights li,
+body.light .quick-profile-card p,
+body.light .experience-card p,
+body.light .experience-list,
+body.light .ai-card p,
+body.light .section-lead,
+body.light .about-copy p{
   color: var(--muted);
 }
 
-body.light .quick-profile article{
-  background:linear-gradient(180deg, #fff, color-mix(in srgb, var(--red-50) 45%, #fff 55%));
+body.light .quick-profile-card,
+body.light .experience-card,
+body.light .ai-card{
+  background:rgba(255,255,255,.82);
+  border-color:rgba(213,42,42,.14);
+  box-shadow:0 18px 50px rgba(80,20,20,.08);
 }
 
 /* Formularios: dejá fondo blanco y texto oscuro */
