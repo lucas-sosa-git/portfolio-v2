@@ -53,6 +53,7 @@
       <ul id="nav-menu" class="navbar-links" aria-hidden="true">
         <li><a href="#about">Sobre mí</a></li>
         <li><a href="#projects">Proyectos</a></li>
+        <li><a href="#skills">Skills</a></li>
         <li><a href="#courses">Cursos</a></li>
         <li><a href="#contact">Contacto</a></li>
       </ul>
@@ -69,6 +70,10 @@
     <a href="#projects" class="mbn-item">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 5a2 2 0 0 1 2-2h5v7H4V5Zm9-2h5a2 2 0 0 1 2 2v3h-7V3ZM4 12h7v9H6a2 2 0 0 1-2-2v-7Zm9-2h7v9a2 2 0 0 1-2 2h-5V10Z"/></svg>
       <span>Proyectos</span>
+    </a>
+    <a href="#skills" class="mbn-item">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2 3 6.5v11L12 22l9-4.5v-11L12 2Zm0 2.2 5.6 2.8L12 9.8 6.4 7 12 4.2ZM5 8.6l6 3v7.8l-6-3V8.6Zm8 10.8v-7.8l6-3v7.8l-6 3Z"/></svg>
+      <span>Skills</span>
     </a>
     <a href="#courses" class="mbn-item">
       <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v17H7a3 3 0 0 0-3 3V4.5ZM7 4a1 1 0 0 0-1 1v12.2A5 5 0 0 1 7 17h11V4H7Zm0 15h13v2H7a1 1 0 1 1 0-2Z"/></svg>
@@ -169,15 +174,19 @@
     Selección de proyectos donde apliqué SQL, Python, Power BI, automatización e IA para resolver problemas reales o prototipar soluciones técnicas. Priorizo proyectos que muestran criterio, calidad de datos, aprendizaje rápido y capacidad para mejorar procesos.
   </p>
 
-  <div class="filters-toolbar" role="group" aria-label="Filtro de proyectos">
-    <button type="button" class="filter-btn" data-filter="all" aria-pressed="true">Todos</button>
-    <button type="button" class="filter-btn" data-filter="DE/DBA" aria-pressed="false">DE/DBA</button>
-    <button type="button" class="filter-btn" data-filter="IA" aria-pressed="false">IA</button>
-    <button type="button" class="filter-btn" data-filter="Arduino" aria-pressed="false">Arduino</button>
-    <button type="button" class="filter-btn" data-filter="Web" aria-pressed="false">Web</button>
+  <div class="projects-carousel-head">
+    <div class="projects-carousel-hint" aria-hidden="true">Deslizá para explorar</div>
+    <div class="projects-carousel-controls" aria-label="Controles del carrusel de proyectos">
+      <button type="button" class="carousel-btn" data-carousel-prev aria-label="Proyecto anterior">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M15.4 5.4 14 4l-8 8 8 8 1.4-1.4L8.8 12l6.6-6.6Z"/></svg>
+      </button>
+      <button type="button" class="carousel-btn" data-carousel-next aria-label="Proyecto siguiente">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M8.6 18.6 10 20l8-8-8-8-1.4 1.4 6.6 6.6-6.6 6.6Z"/></svg>
+      </button>
+    </div>
   </div>
 
-  <div class="projects-grid">
+  <div id="projects-carousel" class="projects-grid projects-carousel" tabindex="0" aria-label="Carrusel de proyectos">
     <article class="proj-card" data-tags="DE, DBA, BI, Producción, Python, SQL">
       <canvas class="proj-bg" aria-hidden="true"></canvas>
 
@@ -285,8 +294,12 @@
       </div>
     </article>
 
-    <article class="proj-card proj-card-nubenta" data-tags="Web, Demo">
+    <article class="proj-card proj-card-nubenta" data-tags="Web, Demo, React, SQLAlchemy, Render, GitHub">
       <canvas class="proj-bg" aria-hidden="true"></canvas>
+
+      <div class="proj-thumb">
+        <img src="assets/projects/nubenta.png" alt="Dashboard de Nubenta POS" loading="lazy" decoding="async">
+      </div>
 
       <div class="proj-body">
         <header class="proj-head">
@@ -299,24 +312,33 @@
         <div class="proj-meta">
           <span class="pill pill-wip">En desarrollo</span>
           <span class="pill">Web App</span>
+          <span class="pill">React JS</span>
+          <span class="pill">SQLAlchemy</span>
         </div>
 
         <p class="proj-desc">
-          Punto de venta moderno desarrollado para comercios. Permite gestionar ventas, inventario y caja desde cualquier dispositivo. Proyecto en desarrollo activo donde estoy construyendo la arquitectura frontend, el sistema de estado y la experiencia de usuario.
+          Punto de venta moderno para comercios, pensado para gestionar ventas, inventario y caja desde cualquier dispositivo. Trabajo en la arquitectura frontend con React JS, integración con backend desplegado en Render, persistencia con SQLAlchemy y control de versiones en GitHub.
           <br><br>
-          <strong>Aprendizaje:</strong> primer proyecto propio de mayor escala: tomé decisiones de arquitectura, diseño de interfaz y experiencia de usuario desde cero.
+          Lo desarrollo junto a un colega de Chile, ingeniero informático, coordinando decisiones de producto, arquitectura y experiencia de usuario para construir una solución más cercana a un producto real que a una demo aislada.
+          <br><br>
+          <strong>Aprendizaje:</strong> primer proyecto propio de mayor escala: estoy tomando decisiones de arquitectura, diseño de interfaz, versionado y colaboración técnica desde cero.
         </p>
 
         <ul class="tech-list">
-          <li><img src="assets/tech/html.svg" alt="HTML" title="HTML" width="26" height="26" decoding="async"></li>
-          <li><img src="assets/tech/css.svg" alt="CSS" title="CSS" width="26" height="26" decoding="async"></li>
-          <li><img src="assets/tech/js.svg" alt="JavaScript" title="JavaScript" width="26" height="26" decoding="async"></li>
+          <li><img src="assets/tech/react.svg" alt="React JS" title="React JS" width="26" height="26" decoding="async"></li>
+          <li><img src="assets/tech/sqlalchemy.svg" alt="SQLAlchemy" title="SQLAlchemy" width="26" height="26" decoding="async"></li>
+          <li><img src="assets/tech/render.svg" alt="Render" title="Render" width="26" height="26" decoding="async"></li>
+          <li><img src="assets/tech/github.svg" alt="GitHub" title="GitHub" width="26" height="26" decoding="async"></li>
         </ul>
       </div>
     </article>
 
-    <article class="proj-card proj-card-no-thumb proj-card-gs1" data-tags="Web, Demo, GS1">
+    <article class="proj-card proj-card-gs1" data-tags="Web, Demo, GS1">
       <canvas class="proj-bg" aria-hidden="true"></canvas>
+
+      <div class="proj-thumb">
+        <img src="assets/projects/gs1-qr-code.png" alt="Demo de GS1 Digital Link para Purina" loading="lazy" decoding="async">
+      </div>
 
       <div class="proj-body">
         <header class="proj-head">
@@ -412,6 +434,44 @@
       </div>
     </article>
     </div>
+  <div class="projects-carousel-dots" aria-label="Indicadores del carrusel de proyectos"></div>
+</section>
+
+<section id="skills" class="skills-section" aria-labelledby="skills-title">
+  <h2 id="skills-title" class="section-title">Skills</h2>
+  <p class="section-lead skills-lead">
+    Stack que uso para trabajar con datos, automatizar procesos, prototipar soluciones y construir productos web.
+  </p>
+
+  <div class="skills-marquee" aria-label="Skills técnicas">
+    <div class="skills-track">
+      <span class="skill-chip"><img src="assets/tech/python.svg" alt="" width="28" height="28" decoding="async">Python</span>
+      <span class="skill-chip"><img src="assets/tech/sql.svg" alt="" width="28" height="28" decoding="async">SQL</span>
+      <span class="skill-chip"><img src="assets/tech/pandas.svg" alt="" width="28" height="28" decoding="async">Pandas</span>
+      <span class="skill-chip"><img src="assets/tech/powerbi.svg" alt="" width="28" height="28" decoding="async">Power BI</span>
+      <span class="skill-chip"><img src="assets/tech/react.svg" alt="" width="28" height="28" decoding="async">React JS</span>
+      <span class="skill-chip"><img src="assets/tech/sqlalchemy.svg" alt="" width="28" height="28" decoding="async">SQLAlchemy</span>
+      <span class="skill-chip"><img src="assets/tech/render.svg" alt="" width="28" height="28" decoding="async">Render</span>
+      <span class="skill-chip"><img src="assets/tech/github.svg" alt="" width="28" height="28" decoding="async">GitHub</span>
+      <span class="skill-chip"><img src="assets/tech/html.svg" alt="" width="28" height="28" decoding="async">HTML</span>
+      <span class="skill-chip"><img src="assets/tech/css.svg" alt="" width="28" height="28" decoding="async">CSS</span>
+      <span class="skill-chip"><img src="assets/tech/js.svg" alt="" width="28" height="28" decoding="async">JavaScript</span>
+      <span class="skill-chip"><img src="assets/tech/hf.svg" alt="" width="28" height="28" decoding="async">Hugging Face</span>
+
+      <span class="skill-chip" aria-hidden="true"><img src="assets/tech/python.svg" alt="" width="28" height="28" decoding="async">Python</span>
+      <span class="skill-chip" aria-hidden="true"><img src="assets/tech/sql.svg" alt="" width="28" height="28" decoding="async">SQL</span>
+      <span class="skill-chip" aria-hidden="true"><img src="assets/tech/pandas.svg" alt="" width="28" height="28" decoding="async">Pandas</span>
+      <span class="skill-chip" aria-hidden="true"><img src="assets/tech/powerbi.svg" alt="" width="28" height="28" decoding="async">Power BI</span>
+      <span class="skill-chip" aria-hidden="true"><img src="assets/tech/react.svg" alt="" width="28" height="28" decoding="async">React JS</span>
+      <span class="skill-chip" aria-hidden="true"><img src="assets/tech/sqlalchemy.svg" alt="" width="28" height="28" decoding="async">SQLAlchemy</span>
+      <span class="skill-chip" aria-hidden="true"><img src="assets/tech/render.svg" alt="" width="28" height="28" decoding="async">Render</span>
+      <span class="skill-chip" aria-hidden="true"><img src="assets/tech/github.svg" alt="" width="28" height="28" decoding="async">GitHub</span>
+      <span class="skill-chip" aria-hidden="true"><img src="assets/tech/html.svg" alt="" width="28" height="28" decoding="async">HTML</span>
+      <span class="skill-chip" aria-hidden="true"><img src="assets/tech/css.svg" alt="" width="28" height="28" decoding="async">CSS</span>
+      <span class="skill-chip" aria-hidden="true"><img src="assets/tech/js.svg" alt="" width="28" height="28" decoding="async">JavaScript</span>
+      <span class="skill-chip" aria-hidden="true"><img src="assets/tech/hf.svg" alt="" width="28" height="28" decoding="async">Hugging Face</span>
+    </div>
+  </div>
 </section>
 
 <section id="courses" class="courses-section">

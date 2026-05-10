@@ -503,103 +503,69 @@ function palette(){
 })();
 
 (() => {
-  const toolbar = document.querySelector('#projects .filters-toolbar');
-  const buttons = toolbar ? Array.from(toolbar.querySelectorAll('.filter-btn')) : [];
-  const grid    = document.querySelector('#projects .projects-grid');
-  const cards   = grid ? Array.from(grid.querySelectorAll('.proj-card')) : [];
+  const carousel = document.getElementById('projects-carousel');
+  const cards = carousel ? Array.from(carousel.querySelectorAll('.proj-card')) : [];
+  const prev = document.querySelector('[data-carousel-prev]');
+  const next = document.querySelector('[data-carousel-next]');
+  const dots = document.querySelector('.projects-carousel-dots');
 
-  if (!toolbar || !grid || !cards.length) return;
+  if (!carousel || !cards.length) return;
 
-  // Normaliza tags para comparar (minúsculas + sin acentos)
-  const norm = (s) => (s||'')
-    .toString()
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/\p{Diacritic}/gu, '')
-    .trim();
-
-  // Mapa de filtros (DE/DBA matchea cualquiera de ambos)
-  const FILTERS = {
-    'all': null,
-    'de/dba': ['de','dba'],
-    'ia': ['ia'],
-    'arduino': ['arduino'],
-    'web': ['web'],
+  const scrollToCard = (index) => {
+    const card = cards[Math.max(0, Math.min(index, cards.length - 1))];
+    card?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
   };
 
-  // Animaciones suaves (coherentes con el sitio)
-  const HIDE_MS = 240;
+  const getActiveIndex = () => {
+    const left = carousel.getBoundingClientRect().left;
+    let closest = 0;
+    let distance = Infinity;
 
-  function setActive(btn) {
-    buttons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
-  }
-
-  function getCardTags(card) {
-    return (card.dataset.tags || '')
-      .split(',')
-      .map(t => norm(t))
-      .filter(Boolean);
-  }
-
-  function matchesFilter(card, key) {
-    if (!key || key === 'all') return true;
-    const wanted = FILTERS[key];
-    const tags = getCardTags(card);
-    return wanted.some(w => tags.includes(w));
-  }
-
-  function hideCard(card) {
-    if (card.classList.contains('hidden-display')) return;
-    card.classList.add('hiding');
-    const onEnd = () => {
-      card.classList.add('hidden-display');
-      card.classList.remove('hiding');
-      card.removeEventListener('transitionend', onEnd);
-    };
-    card.addEventListener('transitionend', onEnd);
-  }
-
-  function showCard(card) {
-    if (!card.classList.contains('hidden-display')) return;
-    card.classList.add('showing');
-    card.classList.remove('hidden-display');
-    // forzar reflow y animar
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => card.classList.remove('showing'));
-    });
-  }
-
-  function applyFilter(keyRaw) {
-    const key = norm(keyRaw);
-    cards.forEach(card => {
-      if (matchesFilter(card, key)) {
-        showCard(card);
-      } else {
-        hideCard(card);
+    cards.forEach((card, index) => {
+      const delta = Math.abs(card.getBoundingClientRect().left - left);
+      if (delta < distance) {
+        closest = index;
+        distance = delta;
       }
     });
+
+    return closest;
+  };
+
+  const setActive = () => {
+    const index = getActiveIndex();
+    prev?.toggleAttribute('disabled', index === 0);
+    next?.toggleAttribute('disabled', index === cards.length - 1);
+    dots?.querySelectorAll('button').forEach((dot, dotIndex) => {
+      dot.setAttribute('aria-current', String(dotIndex === index));
+    });
+  };
+
+  if (dots) {
+    cards.forEach((card, index) => {
+      const dot = document.createElement('button');
+      dot.type = 'button';
+      dot.setAttribute('aria-label', `Ver proyecto ${index + 1}: ${card.querySelector('.proj-title')?.textContent?.trim() || 'Proyecto'}`);
+      dot.addEventListener('click', () => scrollToCard(index));
+      dots.appendChild(dot);
+    });
   }
 
-  const bootBtn = buttons.find(b => (b.dataset.filter || '').toLowerCase() === 'de/dba');
-  if (bootBtn) { setActive(bootBtn); applyFilter('DE/DBA'); }
+  prev?.addEventListener('click', () => scrollToCard(getActiveIndex() - 1));
+  next?.addEventListener('click', () => scrollToCard(getActiveIndex() + 1));
 
-  toolbar.addEventListener('click', (e) => {
-    const btn = e.target.closest('.filter-btn');
-    if (!btn) return;
-    setActive(btn);
-    applyFilter(btn.dataset.filter || 'all');
-    
-  });
-
-  // Accesibilidad: teclas ← →
-  toolbar.addEventListener('keydown', (e) => {
-    if (!['ArrowLeft','ArrowRight'].includes(e.key)) return;
-    const i = buttons.indexOf(document.activeElement);
-    if (i === -1) return;
+  carousel.addEventListener('keydown', (e) => {
+    if (!['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
     e.preventDefault();
-    const next = e.key === 'ArrowRight' ? (i+1) % buttons.length : (i-1+buttons.length) % buttons.length;
-    buttons[next].focus();
+    scrollToCard(getActiveIndex() + (e.key === 'ArrowRight' ? 1 : -1));
   });
+
+  carousel.addEventListener('scroll', () => {
+    window.requestAnimationFrame(setActive);
+  }, { passive: true });
+
+  window.addEventListener('resize', setActive, { passive: true });
+  setActive();
 })();
 
 
