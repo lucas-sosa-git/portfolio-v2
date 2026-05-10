@@ -140,13 +140,67 @@ header{
   .hero-2col{ min-height: calc(100svh - var(--nav-h)); }
 }
 .hero-copy{ display: grid; gap: .9rem; }
-.hero-kicker{ font-weight:700; font-size:clamp(1rem,.6rem + 1vw,1.15rem); opacity:.9; color:var(--text); }
+.hero-kicker{
+  width: fit-content;
+  margin: 0;
+  padding: .35rem .7rem;
+  border: 1px solid color-mix(in srgb, var(--contact-accent) 42%, var(--border));
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--contact-accent) 16%, transparent);
+  font-weight:700;
+  font-size:clamp(.88rem,.78rem + .35vw,1rem);
+  opacity:.95;
+  color:var(--text);
+}
 .hero-title{
   margin:.1rem 0 .25rem; font-weight:800; line-height:1.1; letter-spacing:.2px;
   font-size:clamp(2.2rem, 2rem + 3vw, 3.6rem); color:var(--text);
 }
 .hero-title .hero-name{ color:var(--contact-accent); }
-.hero-subtitle{ color:var(--muted); max-width:62ch; font-size:clamp(1rem,.85rem + .6vw,1.125rem); }
+.hero-subtitle{ color:var(--muted); max-width:64ch; font-size:clamp(1rem,.85rem + .6vw,1.125rem); line-height:1.65; }
+
+.hero-actions{
+  display:flex;
+  flex-wrap:wrap;
+  gap:.7rem;
+  margin-top:.35rem;
+}
+.primary-btn,
+.secondary-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:44px;
+  padding:.72rem 1rem;
+  border-radius:.7rem;
+  font-weight:800;
+  line-height:1;
+  text-decoration:none;
+  transition:transform .16s ease, border-color .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
+}
+.primary-btn{
+  background:linear-gradient(135deg, var(--primary), var(--contact-accent));
+  color:#fff;
+  border:1px solid color-mix(in srgb, var(--contact-accent) 70%, #fff 30%);
+  box-shadow:0 12px 28px rgba(213,42,42,.28);
+}
+.secondary-btn{
+  background:#ffffff10;
+  color:var(--text);
+  border:1px solid var(--border);
+}
+.primary-btn:hover,
+.secondary-btn:hover{
+  transform:translateY(-2px);
+}
+.primary-btn:hover{
+  box-shadow:0 16px 34px rgba(213,42,42,.34);
+}
+.secondary-btn:hover{
+  background:#ffffff18;
+  border-color:var(--accent);
+  color:var(--accent);
+}
 
 .hero-visual{
   position: relative; width: 100%;
@@ -165,7 +219,43 @@ body.light .hero-visual canvas{ mix-blend-mode: multiply; }
   .hero-2col{ grid-template-columns: 1fr; gap: 1.75rem; }
   .hero-visual{ order:2; height: clamp(200px, 36vh, 360px); }
 }
-@media (max-width: 640px){ .hero-visual{ display:none; } }
+@media (max-width: 640px){
+  .hero-2col{ min-height:auto; padding-block:2rem; }
+  .hero-title{ font-size:clamp(2rem, 12vw, 2.65rem); }
+  .hero-actions{ display:grid; grid-template-columns:1fr; }
+  .primary-btn,
+  .secondary-btn{ width:100%; }
+  .hero-visual{ display:none; }
+}
+
+.quick-profile{
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:.75rem;
+  padding:1rem 0 2.25rem;
+}
+.quick-profile article{
+  background:linear-gradient(180deg, color-mix(in srgb, var(--card) 92%, var(--contact-accent) 8%), var(--card));
+  border:1px solid color-mix(in srgb, var(--border) 72%, var(--contact-accent) 28%);
+  border-radius:.85rem;
+  padding:1rem;
+  display:grid;
+  gap:.35rem;
+}
+.quick-profile strong{
+  color:var(--accent);
+  font-size:.78rem;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+}
+.quick-profile span{
+  color:var(--text);
+  font-weight:700;
+  line-height:1.35;
+}
+@media (max-width: 760px){
+  .quick-profile{ grid-template-columns:1fr; padding-top:.5rem; }
+}
 
 /* =====================  SOBRE MÍ  ===================== */
 .about-split{
@@ -302,7 +392,8 @@ body.light .proj-bg{ mix-blend-mode: multiply; }
 }
 .proj-link:hover{ transform: translateY(-2px); background:#ffffff20; color: var(--primary); border-color: var(--primary); }
 
-.proj-desc{ color: var(--muted); margin: 0; }
+.proj-desc{ color: var(--muted); margin: 0; line-height:1.58; }
+.proj-desc strong{ color:var(--text); }
 
 /* Tech badges (imágenes pequeñas) */
 .tech-list{
@@ -659,9 +750,21 @@ footer{ background:var(--surface); text-align:center; padding:1rem 0; }
   gap:1rem;
 }
 .course-card{
+  order:var(--course-order, 20);
   background:var(--card); border:1px solid var(--border); border-radius:1rem;
-  padding:.85rem .95rem; display:flex; flex-direction:column; gap:.65rem;
+  padding:.75rem .85rem; display:flex; flex-direction:column; gap:.55rem;
   transition: transform .26s cubic-bezier(.2,.6,.2,1), box-shadow .28s, border-color .28s;
+}
+.course-card.course-featured{
+  border-color: color-mix(in srgb, var(--contact-accent) 30%, var(--border));
+}
+.course-card.course-secondary{
+  opacity:.82;
+  transform:scale(.98);
+}
+.course-card.course-secondary:hover{
+  opacity:1;
+  transform:translateY(-2px) scale(.98);
 }
 .course-card:hover{
   transform: translateY(-3px);
@@ -670,9 +773,9 @@ footer{ background:var(--surface); text-align:center; padding:1rem 0; }
 }
 
 .course-head{ display:flex; align-items:flex-start; justify-content:space-between; gap:.6rem; }
-.course-title{ margin:0; font-weight:800; font-size:1.05rem; letter-spacing:.2px; color:#fff; }
+.course-title{ margin:0; font-weight:800; font-size:1rem; letter-spacing:.2px; color:#fff; }
 .course-meta{ margin:0; padding:0; list-style:none; color:var(--muted); font-size:.92rem; display:grid; gap:.25rem; }
-.course-desc{ margin:0; color:var(--muted); }
+.course-desc{ margin:0; color:var(--muted); font-size:.94rem; }
 
 /* Pills de estado — no se rompen NUNCA */
 .chip-status{
@@ -798,7 +901,8 @@ body.light .c-label{
 body.light .proj-link,
 body.light .social,
 body.light .copy-btn,
-body.light .pdf-btn{
+body.light .pdf-btn,
+body.light .secondary-btn{
   background: rgba(0,0,0,.04) !important;
   border-color: color-mix(in srgb, var(--border) 85%, #000 15%) !important;
   color: var(--text) !important;
@@ -806,7 +910,8 @@ body.light .pdf-btn{
 body.light .proj-link:hover,
 body.light .social:hover,
 body.light .copy-btn:hover,
-body.light .pdf-btn:hover{
+body.light .pdf-btn:hover,
+body.light .secondary-btn:hover{
   background: rgba(0,0,0,.06) !important;
   color: var(--primary) !important;
   border-color: var(--accent) !important;
@@ -821,8 +926,13 @@ body.light .proj-thumb img{
 /* Copys y disclaimers */
 body.light .proj-desc,
 body.light .course-desc,
-body.light .projects-disclaimer{
+body.light .projects-disclaimer,
+body.light .hero-subtitle{
   color: var(--muted);
+}
+
+body.light .quick-profile article{
+  background:linear-gradient(180deg, #fff, color-mix(in srgb, var(--red-50) 45%, #fff 55%));
 }
 
 /* Formularios: dejá fondo blanco y texto oscuro */
