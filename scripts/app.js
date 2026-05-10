@@ -360,212 +360,88 @@ if (navToggle && navMenu) {
 })();
 
 
-// ====== PROYECTS: fondo waves por card (solo corre en hover) ======
+// ====== PROJECTS: filtros por categoria ======
 (() => {
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduced) return;
+  const toolbar = document.querySelector('#projects .filters-toolbar');
+  const buttons = toolbar ? Array.from(toolbar.querySelectorAll('.filter-btn')) : [];
+  const grid = document.querySelector('#projects .projects-grid');
+  const cards = grid ? Array.from(grid.querySelectorAll('.proj-card')) : [];
 
-  const cards = document.querySelectorAll('.proj-card');
-  if (!cards.length) return;
+  if (!toolbar || !grid || !cards.length) return;
 
-  cards.forEach(setupWave);
+  const norm = (value) => (value || '')
+    .toString()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/\p{Diacritic}/gu, '')
+    .trim();
 
-  function setupWave(card){
-    const canvas = card.querySelector('.proj-bg');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-
-    let w=0, h=0, dpr=1, t=0, raf=null;
-    // --- Fade-out sin cambiar tamaños ---
-    const FADE_MS = 260;
-    let state = 'stopped';        // 'running' | 'fading' | 'stopped'
-    let fadeStart = 0, fadeUntil = 0;
-
-function palette(){
-  return document.body.classList.contains('light')
-    ? {
-        red:  '#c81e1e',              // rojo profundo (más contraste en fondo claro)
-        pink: '#ff6a7a',              // rosa/coral vivo (más saturado que #F37676)
-        soft: 'rgba(255,196,201,.58)' // brillo rosado suave (sin tirarse a ámbar)
-      }
-    : {
-        red:  '#e43f5a',
-        pink: '#f37676',
-        soft: 'rgba(255,220,220,.6)'
-      };
-}
-
-
-
-    function resize(){
-      const rect = card.getBoundingClientRect();
-      w = Math.max(160, Math.floor(rect.width));   // sin "bleed", 1:1 con la tarjeta
-      h = Math.max(120, Math.floor(rect.height));
-      dpr = Math.min(window.devicePixelRatio || 1, 1.75);
-      canvas.width  = Math.floor(w * dpr);
-      canvas.height = Math.floor(h * dpr);
-      canvas.style.width = '100%';
-      canvas.style.height = '100%';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    function clearCanvas(){
-      ctx.save();
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.restore();
-    }
-
-    function drawWave(params, alpha){
-      const { amp, kx, speed, phase, lw, color, blur } = params;
-      ctx.save();
-      ctx.globalAlpha = alpha;  // <- fade aplicado aquí
-      ctx.beginPath();
-      ctx.lineWidth = lw;
-      ctx.lineCap = 'round';
-      ctx.shadowBlur = blur;
-      ctx.shadowColor = color;
-
-      for (let x = 0; x <= w; x += 1.5) {
-        const y = h * 0.2 + Math.sin(x * kx + t * speed + phase) * amp;
-        (x === 0) ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-      }
-
-      ctx.globalCompositeOperation = 'lighter';
-      ctx.strokeStyle = color;
-      ctx.stroke();
-      ctx.restore();
-    }
-
-    function render(){
-      const { red, pink, soft } = palette();
-      ctx.clearRect(0, 0, w, h);
-
-      const now = performance.now();
-      let alpha = 1;
-      if (state === 'fading') alpha = Math.max(0, (fadeUntil - now) / FADE_MS);
-
-      // mismos parámetros que tenías (sin cambios de tamaño/velocidad)
-      drawWave({ amp: h * 0.16, kx: 0.012, speed: 0.70, phase: 0.0, lw: 2.8, color: red,  blur: 18 }, alpha);
-      drawWave({ amp: h * 0.12, kx: 0.017, speed: 0.55, phase: 1.1, lw: 2.2, color: pink, blur: 14 }, alpha);
-      drawWave({ amp: h * 0.10, kx: 0.020, speed: 0.45, phase: 2.2, lw: 1.8, color: soft, blur: 12 }, alpha);
-
-      t += 0.015;
-
-      if (state === 'fading' && alpha === 0) {
-        // fin del fade: limpiar y cortar el loop
-        clearCanvas();
-        cancelAnimationFrame(raf);
-        raf = null;
-        state = 'stopped';
-        return;
-      }
-
-      raf = requestAnimationFrame(render);
-    }
-
-    function start(){
-      if (!raf){
-        resize();
-        state = 'running';
-        render();
-      } else {
-        state = 'running';
-      }
-    }
-
-    function stop(){
-      // no cortamos de golpe; iniciamos fade-out
-      if (raf && state !== 'fading') {
-        state = 'fading';
-        fadeStart = performance.now();
-        fadeUntil = fadeStart + FADE_MS;
-      }
-    }
-
-    // Arranca/para con hover
-    card.addEventListener('mouseenter', start);
-    card.addEventListener('mouseleave', stop);
-
-    // Si el card desaparece del viewport, que no quede pintado
-    const io = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting && raf) {
-        state = 'fading';
-        fadeStart = performance.now();
-        fadeUntil = fadeStart + FADE_MS;
-      }
-    });
-    io.observe(card);
-
-    // Recalcular en resize si está corriendo
-    window.addEventListener('resize', () => { if (raf) resize(); }, { passive:true });
-  }
-})();
-
-(() => {
-  const carousel = document.getElementById('projects-carousel');
-  const cards = carousel ? Array.from(carousel.querySelectorAll('.proj-card')) : [];
-  const prev = document.querySelector('[data-carousel-prev]');
-  const next = document.querySelector('[data-carousel-next]');
-  const dots = document.querySelector('.projects-carousel-dots');
-
-  if (!carousel || !cards.length) return;
-
-  const scrollToCard = (index) => {
-    const card = cards[Math.max(0, Math.min(index, cards.length - 1))];
-    card?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+  const FILTERS = {
+    all: null,
+    'de/dba': ['de', 'dba'],
+    ia: ['ia'],
+    web: ['web'],
+    arduino: ['arduino'],
   };
 
-  const getActiveIndex = () => {
-    const left = carousel.getBoundingClientRect().left;
-    let closest = 0;
-    let distance = Infinity;
+  const getCardTags = (card) => (card.dataset.tags || '')
+    .split(',')
+    .map((tag) => norm(tag))
+    .filter(Boolean);
 
-    cards.forEach((card, index) => {
-      const delta = Math.abs(card.getBoundingClientRect().left - left);
-      if (delta < distance) {
-        closest = index;
-        distance = delta;
-      }
-    });
-
-    return closest;
+  const matchesFilter = (card, key) => {
+    if (!key || key === 'all') return true;
+    const wanted = FILTERS[key] || [key];
+    const tags = getCardTags(card);
+    return wanted.some((tag) => tags.includes(tag));
   };
 
-  const setActive = () => {
-    const index = getActiveIndex();
-    prev?.toggleAttribute('disabled', index === 0);
-    next?.toggleAttribute('disabled', index === cards.length - 1);
-    dots?.querySelectorAll('button').forEach((dot, dotIndex) => {
-      dot.setAttribute('aria-current', String(dotIndex === index));
+  const setActive = (activeButton) => {
+    buttons.forEach((button) => {
+      button.setAttribute('aria-pressed', String(button === activeButton));
     });
   };
 
-  if (dots) {
-    cards.forEach((card, index) => {
-      const dot = document.createElement('button');
-      dot.type = 'button';
-      dot.setAttribute('aria-label', `Ver proyecto ${index + 1}: ${card.querySelector('.proj-title')?.textContent?.trim() || 'Proyecto'}`);
-      dot.addEventListener('click', () => scrollToCard(index));
-      dots.appendChild(dot);
+  const hideCard = (card) => {
+    if (card.classList.contains('hidden-display')) return;
+    card.classList.add('hiding');
+    const onEnd = () => {
+      card.classList.add('hidden-display');
+      card.classList.remove('hiding');
+      card.removeEventListener('transitionend', onEnd);
+    };
+    card.addEventListener('transitionend', onEnd);
+  };
+
+  const showCard = (card) => {
+    if (!card.classList.contains('hidden-display')) return;
+    card.classList.add('showing');
+    card.classList.remove('hidden-display');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => card.classList.remove('showing'));
     });
+  };
+
+  const applyFilter = (filter) => {
+    const key = norm(filter);
+    cards.forEach((card) => {
+      if (matchesFilter(card, key)) showCard(card);
+      else hideCard(card);
+    });
+  };
+
+  const defaultButton = buttons.find((button) => norm(button.dataset.filter) === 'de/dba') || buttons[0];
+  if (defaultButton) {
+    setActive(defaultButton);
+    applyFilter(defaultButton.dataset.filter || 'all');
   }
 
-  prev?.addEventListener('click', () => scrollToCard(getActiveIndex() - 1));
-  next?.addEventListener('click', () => scrollToCard(getActiveIndex() + 1));
-
-  carousel.addEventListener('keydown', (e) => {
-    if (!['ArrowLeft', 'ArrowRight'].includes(e.key)) return;
-    e.preventDefault();
-    scrollToCard(getActiveIndex() + (e.key === 'ArrowRight' ? 1 : -1));
+  toolbar.addEventListener('click', (event) => {
+    const button = event.target.closest('.filter-btn');
+    if (!button) return;
+    setActive(button);
+    applyFilter(button.dataset.filter || 'all');
   });
-
-  carousel.addEventListener('scroll', () => {
-    window.requestAnimationFrame(setActive);
-  }, { passive: true });
-
-  window.addEventListener('resize', setActive, { passive: true });
-  setActive();
 })();
 
 
