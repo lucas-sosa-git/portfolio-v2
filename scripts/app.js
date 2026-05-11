@@ -381,7 +381,6 @@ if (navToggle && navMenu) {
     'de/dba': ['de', 'dba'],
     ia: ['ia'],
     web: ['web'],
-    arduino: ['arduino'],
   };
 
   const getCardTags = (card) => (card.dataset.tags || '')
@@ -430,7 +429,7 @@ if (navToggle && navMenu) {
     });
   };
 
-  const defaultButton = buttons.find((button) => norm(button.dataset.filter) === 'de/dba') || buttons[0];
+  const defaultButton = buttons.find((button) => norm(button.dataset.filter) === 'all') || buttons[0];
   if (defaultButton) {
     setActive(defaultButton);
     applyFilter(defaultButton.dataset.filter || 'all');
