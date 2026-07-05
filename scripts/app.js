@@ -381,6 +381,7 @@ if (navToggle && navMenu) {
     'de/dba': ['de', 'dba'],
     ia: ['ia'],
     web: ['web'],
+    'full-stack': ['full-stack'],
   };
 
   const getCardTags = (card) => (card.dataset.tags || '')
