@@ -29,12 +29,8 @@
   <meta property="og:updated_time" content="2025-08-18T00:00:00Z" />
 
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles/main.css">
+  <link rel="stylesheet" href="styles/main.css?v=20260723-spiral-scroll-2">
 
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = { theme: { extend: { colors: { primary: '#D52A2A', accent: '#F37676' } } } };
-  </script>
 </head>
 
 <body class="dark">
@@ -165,7 +161,9 @@
       </div>
     </section>
 
-<section id="projects" class="projects-section">
+<section id="projects" class="projects-section projects-3d-section">
+  <div id="projects-root">
+  <div class="projects-fallback">
   <h2 class="section-title">Proyectos</h2>
 
   <p class="projects-disclaimer">
@@ -183,7 +181,7 @@
   <div class="projects-grid">
     <article class="proj-card proj-card-featured" data-tags="Web, Full-stack, Equipo, Flask, Jinja, SQL, JWT, Supabase, QR, GitHub">
       <div class="proj-thumb ids-thumb">
-        <img src="assets/projects/ids-turnos.svg" alt="Mockup de arquitectura del Gestor de Turnos IDS con agenda, frontend, backend, JWT, SQL y Supabase Storage" loading="lazy" decoding="async">
+        <img src="assets/projects/ids-turnos.svg" alt="Mockup de arquitectura del Gestor de Turnos IDS con agenda, frontend, backend, JWT, SQL y Supabase Storage" width="1200" height="760" loading="lazy" decoding="async">
       </div>
 
       <div class="proj-body ids-body">
@@ -202,66 +200,74 @@
           </a>
         </header>
 
-        <div class="proj-meta">
-          <span class="pill">Full-stack</span>
-          <span class="pill">Flask</span>
-          <span class="pill">Jinja</span>
-          <span class="pill">JWT</span>
-          <span class="pill">Supabase Storage</span>
-          <span class="pill">QR</span>
-          <span class="pill">Git/GitHub</span>
-        </div>
-
-        <p class="proj-desc">
-          Sistema web académico desarrollado en equipo para gestionar turnos de una barbería/peluquería, con backend y frontend separados, autenticación por roles, paneles para cliente, profesional y administrador, reservas, cancelaciones, reseñas, confirmación por mail/QR e integración con Supabase Storage para imágenes.
+        <p class="project-outcome">
+          <strong>Resultado:</strong> una aplicación operativa con reservas, roles, confirmaciones por mail/QR y almacenamiento de imágenes, construida de punta a punta en equipo.
         </p>
 
-        <div class="ids-architecture" aria-label="Arquitectura resumida del proyecto">
-          <span>Frontend Flask/Jinja</span>
-          <span>Backend Flask API</span>
-          <span>SQL</span>
-          <span>JWT/Auth</span>
-          <span>Supabase Storage</span>
-        </div>
+        <button type="button" class="project-details-trigger" aria-haspopup="dialog">Explorar caso</button>
+        <div class="project-details-source" hidden>
+          <div class="project-details-content">
+            <div class="proj-meta">
+              <span class="pill">Full-stack</span>
+              <span class="pill">Flask</span>
+              <span class="pill">Jinja</span>
+              <span class="pill">JWT</span>
+              <span class="pill">Supabase Storage</span>
+              <span class="pill">QR</span>
+              <span class="pill">Git/GitHub</span>
+            </div>
 
-        <details class="project-details">
-          <summary>Ver arquitectura y aprendizajes</summary>
-          <div class="details-grid">
-            <div>
-              <h4>Qué resolvía</h4>
-              <p>Un flujo real de turnos: elegir servicio y profesional, reservar, confirmar, cancelar y separar permisos por rol.</p>
+            <p class="proj-desc">
+              Sistema web académico desarrollado en equipo para gestionar turnos de una barbería/peluquería, con backend y frontend separados, autenticación por roles, paneles para cliente, profesional y administrador, reservas, cancelaciones, reseñas, confirmación por mail/QR e integración con Supabase Storage para imágenes.
+            </p>
+
+            <div class="ids-architecture" aria-label="Arquitectura resumida del proyecto">
+              <span>Frontend Flask/Jinja</span>
+              <span>Backend Flask API</span>
+              <span>SQL</span>
+              <span>JWT/Auth</span>
+              <span>Supabase Storage</span>
             </div>
-            <div>
-              <h4>Qué aprendí</h4>
-              <p>Consolidé una aplicación web de punta a punta, separando responsabilidades entre backend, frontend, base de datos, autenticación, permisos, vistas y flujos de usuario.</p>
+
+            <div class="details-grid">
+              <div>
+                <h4>Qué resolvía</h4>
+                <p>Un flujo real de turnos: elegir servicio y profesional, reservar, confirmar, cancelar y separar permisos por rol.</p>
+              </div>
+              <div>
+                <h4>Qué aprendí</h4>
+                <p>Consolidé una aplicación web de punta a punta, separando responsabilidades entre backend, frontend, base de datos, autenticación, permisos, vistas y flujos de usuario.</p>
+              </div>
             </div>
+            <ol class="ids-timeline" aria-label="Evolución del proyecto">
+              <li>Modelado inicial y roles.</li>
+              <li>Separación backend/frontend.</li>
+              <li>Autenticación, sesiones y vistas privadas.</li>
+              <li>ABM admin, turnos, QR y confirmaciones.</li>
+              <li>Storage de imágenes y documentación progresiva.</li>
+            </ol>
           </div>
-          <ol class="ids-timeline" aria-label="Evolución del proyecto">
-            <li>Modelado inicial y roles.</li>
-            <li>Separación backend/frontend.</li>
-            <li>Autenticación, sesiones y vistas privadas.</li>
-            <li>ABM admin, turnos, QR y confirmaciones.</li>
-            <li>Storage de imágenes y documentación progresiva.</li>
-          </ol>
-        </details>
-
-        <div class="project-actions">
-          <a class="project-cta" href="https://github.com/lucas-sosa-git/gestor-de-turnos-IDS" target="_blank" rel="noopener">Ver código</a>
         </div>
 
-        <ul class="tech-list">
-          <li><img src="assets/tech/python.svg" alt="Python" title="Python" width="26" height="26" decoding="async"></li>
-          <li><img src="assets/tech/flask.svg" alt="Flask" title="Flask" width="26" height="26" decoding="async"></li>
-          <li><img src="assets/tech/jinja.svg" alt="Jinja" title="Jinja" width="26" height="26" decoding="async"></li>
-          <li><img src="assets/tech/sql.svg" alt="SQL" title="SQL" width="26" height="26" decoding="async"></li>
-          <li><img src="assets/tech/github.svg" alt="GitHub" title="GitHub" width="26" height="26" decoding="async"></li>
-        </ul>
+        <div class="project-card-footer">
+          <div class="project-actions">
+            <a class="project-cta" href="https://github.com/lucas-sosa-git/gestor-de-turnos-IDS" target="_blank" rel="noopener">Ver código</a>
+          </div>
+
+          <ul class="tech-list">
+            <li><img src="assets/tech/python.svg" alt="Python" title="Python" width="26" height="26" decoding="async"></li>
+            <li><img src="assets/tech/flask.svg" alt="Flask" title="Flask" width="26" height="26" decoding="async"></li>
+            <li><img src="assets/tech/jinja.svg" alt="Jinja" title="Jinja" width="26" height="26" decoding="async"></li>
+            <li><img src="assets/tech/sql.svg" alt="SQL" title="SQL" width="26" height="26" decoding="async"></li>
+            <li><img src="assets/tech/github.svg" alt="GitHub" title="GitHub" width="26" height="26" decoding="async"></li>
+          </ul>
+        </div>
       </div>
     </article>
 
     <article class="proj-card proj-card-case" data-tags="DE, DBA, BI, Producción, Python, SQL">
       <div class="proj-thumb">
-        <img src="assets/projects/vla.png" alt="Tablero de mermas VLA en Power BI" loading="lazy" decoding="async">
+        <img src="assets/projects/vla.png" alt="Tablero de mermas VLA en Power BI" width="1225" height="687" loading="lazy" decoding="async">
       </div>
 
       <div class="proj-body">
@@ -280,54 +286,60 @@
 
         <p class="proj-subtitle">Python · SQL · Pandas · Power BI</p>
 
-        <div class="proj-meta">
-          <span class="pill">Data Quality</span>
-          <span class="pill">Python</span>
-          <span class="pill">SQL</span>
-          <span class="pill">Power BI</span>
-        </div>
+        <p class="project-outcome"><strong>Resultado:</strong> un proceso manual de varios días pasó a ejecutarse en aproximadamente una hora.</p>
 
-        <div class="project-summary">
-          <p><strong>Problema:</strong> procesar y validar información de productos/mermas para generar reportes confiables y detectar inconsistencias operativas.</p>
-          <p><strong>Solución:</strong> automaticé parte del flujo de ingesta y transformación con Python/Pandas, cruces de tablas y correcciones SQL.</p>
-          <p><strong>Resultado:</strong> reduje tareas manuales que podían llevar días a un flujo ejecutable en aproximadamente una hora.</p>
-        </div>
-
-        <div class="project-insight">
-          <strong>Aprendizaje</strong>
-          <p>Aprendí que un buen dashboard depende primero de datos confiables: validación, trazabilidad y control de errores pesan tanto como la visualización final.</p>
-        </div>
-
-        <details class="project-details">
-          <summary>Ver más</summary>
-          <div class="details-grid">
-            <div>
-              <h4>Foco técnico</h4>
-              <p>Calidad de datos, automatización de procesos manuales, SQL para correcciones y Power BI para revisar tendencias.</p>
+        <button type="button" class="project-details-trigger" aria-haspopup="dialog">Explorar caso</button>
+        <div class="project-details-source" hidden>
+          <div class="project-details-content">
+            <div class="proj-meta">
+              <span class="pill">Data Quality</span>
+              <span class="pill">Python</span>
+              <span class="pill">SQL</span>
+              <span class="pill">Power BI</span>
             </div>
-            <div>
-              <h4>Impacto</h4>
-              <p>Mayor trazabilidad para analizar mermas y menos dependencia de tareas repetitivas de preparación.</p>
+
+            <div class="project-summary">
+              <p><strong>Problema:</strong> procesar y validar información de productos/mermas para generar reportes confiables y detectar inconsistencias operativas.</p>
+              <p><strong>Solución:</strong> automaticé parte del flujo de ingesta y transformación con Python/Pandas, cruces de tablas y correcciones SQL.</p>
+              <p><strong>Resultado:</strong> reduje tareas manuales que podían llevar días a un flujo ejecutable en aproximadamente una hora.</p>
+            </div>
+
+            <div class="project-insight">
+              <strong>Aprendizaje</strong>
+              <p>Aprendí que un buen dashboard depende primero de datos confiables: validación, trazabilidad y control de errores pesan tanto como la visualización final.</p>
+            </div>
+
+            <div class="details-grid">
+              <div>
+                <h4>Foco técnico</h4>
+                <p>Calidad de datos, automatización de procesos manuales, SQL para correcciones y Power BI para revisar tendencias.</p>
+              </div>
+              <div>
+                <h4>Impacto</h4>
+                <p>Mayor trazabilidad para analizar mermas y menos dependencia de tareas repetitivas de preparación.</p>
+              </div>
             </div>
           </div>
-        </details>
-
-        <div class="project-actions">
-          <a class="project-cta" href="https://app.powerbi.com/view?r=eyJrIjoiYjFkZWJjZjQtOGZjNi00NDg5LWJkOTUtNDExYTEyNzAxMGViIiwidCI6ImEyMmNjNzFiLTA5MjQtNDQ4YS1hOTJhLTRiNjNlYjZkOWE3NiIsImMiOjR9" target="_blank" rel="noopener">Ver reporte</a>
         </div>
 
-        <ul class="tech-list">
-          <li><img src="assets/tech/python.svg" alt="Python" title="Python" width="26" height="26" decoding="async"></li>
-          <li><img src="assets/tech/pandas.svg" alt="Pandas" title="Pandas" width="26" height="26" decoding="async"></li>
-          <li><img src="assets/tech/sql.svg" alt="SQL" title="SQL" width="26" height="26" decoding="async"></li>
-          <li><img src="assets/tech/powerbi.svg" alt="Power BI" title="Power BI" width="26" height="26" decoding="async"></li>
-        </ul>
+        <div class="project-card-footer">
+          <div class="project-actions">
+            <a class="project-cta" href="https://app.powerbi.com/view?r=eyJrIjoiYjFkZWJjZjQtOGZjNi00NDg5LWJkOTUtNDExYTEyNzAxMGViIiwidCI6ImEyMmNjNzFiLTA5MjQtNDQ4YS1hOTJhLTRiNjNlYjZkOWE3NiIsImMiOjR9" target="_blank" rel="noopener">Ver reporte</a>
+          </div>
+
+          <ul class="tech-list">
+            <li><img src="assets/tech/python.svg" alt="Python" title="Python" width="26" height="26" decoding="async"></li>
+            <li><img src="assets/tech/pandas.svg" alt="Pandas" title="Pandas" width="26" height="26" decoding="async"></li>
+            <li><img src="assets/tech/sql.svg" alt="SQL" title="SQL" width="26" height="26" decoding="async"></li>
+            <li><img src="assets/tech/powerbi.svg" alt="Power BI" title="Power BI" width="26" height="26" decoding="async"></li>
+          </ul>
+        </div>
       </div>
     </article>
 
     <article class="proj-card proj-card-case" data-tags="IA, DE, Experimento">
       <div class="proj-thumb">
-        <img src="assets/projects/gpc-cpc.webp" alt="Matching de categorías GPC y CPC con embeddings" loading="lazy" decoding="async">
+        <img src="assets/projects/gpc-cpc.webp" alt="Matching de categorías GPC y CPC con embeddings" width="1112" height="622" loading="lazy" decoding="async">
       </div>
 
       <div class="proj-body">
@@ -346,6 +358,11 @@
 
         <p class="proj-subtitle">Python · Embeddings · Hugging Face · FAISS</p>
 
+        <p class="project-outcome"><strong>Resultado:</strong> candidatos de equivalencia semántica entre taxonomías, con criterios claros para evaluar precisión y falsos positivos.</p>
+
+        <button type="button" class="project-details-trigger" aria-haspopup="dialog">Explorar caso</button>
+        <div class="project-details-source" hidden>
+          <div class="project-details-content">
         <div class="proj-meta">
           <span class="pill">IA aplicada</span>
           <span class="pill">Embeddings</span>
@@ -364,8 +381,6 @@
           <p>Aprendí que aplicar IA no es solo correr un modelo: hay que medir precisión, revisar falsos positivos, ajustar criterios y validar con conocimiento funcional.</p>
         </div>
 
-        <details class="project-details">
-          <summary>Ver más</summary>
           <div class="details-grid">
             <div>
               <h4>Exploración</h4>
@@ -376,8 +391,10 @@
               <p>La precisión inicial fue limitada, pero sirvió para entender errores y definir mejores criterios de validación.</p>
             </div>
           </div>
-        </details>
+          </div>
+        </div>
 
+        <div class="project-card-footer">
         <div class="project-actions">
           <a class="project-cta" href="#contact">Consultar caso</a>
         </div>
@@ -387,12 +404,13 @@
           <li><img src="assets/tech/hf.svg" alt="Hugging Face" title="Hugging Face" width="26" height="26" decoding="async"></li>
           <li><img src="assets/tech/faiss.svg" alt="FAISS" title="FAISS" width="26" height="26" decoding="async"></li>
         </ul>
+        </div>
       </div>
     </article>
 
     <article class="proj-card proj-card-case" data-tags="Web, Demo">
       <div class="proj-thumb">
-        <img src="assets/projects/portfolio.png" alt="Portfolio personal de Lucas Sosa" loading="lazy" decoding="async">
+        <img src="assets/projects/portfolio.png" alt="Portfolio personal de Lucas Sosa" width="1232" height="748" loading="lazy" decoding="async">
       </div>
 
       <div class="proj-body">
@@ -411,6 +429,11 @@
 
         <p class="proj-subtitle">HTML · CSS · JavaScript · Responsive · Accesibilidad</p>
 
+        <p class="project-outcome"><strong>Resultado:</strong> una base responsive y accesible para comunicar proyectos técnicos con una narrativa profesional clara.</p>
+
+        <button type="button" class="project-details-trigger" aria-haspopup="dialog">Explorar caso</button>
+        <div class="project-details-source" hidden>
+          <div class="project-details-content">
         <div class="proj-meta">
           <span class="pill">Demo</span>
           <span class="pill">Responsive</span>
@@ -428,8 +451,6 @@
           <p>Aprendí a convertir experiencia técnica dispersa en una narrativa profesional clara, cuidando diseño, accesibilidad, performance y comunicación.</p>
         </div>
 
-        <details class="project-details">
-          <summary>Ver más</summary>
           <div class="details-grid">
             <div>
               <h4>Interfaz</h4>
@@ -440,8 +461,10 @@
               <p>Storytelling profesional para conectar datos, automatización, IA y herramientas internas.</p>
             </div>
           </div>
-        </details>
+          </div>
+        </div>
 
+        <div class="project-card-footer">
         <div class="project-actions">
           <a class="project-cta" href="https://github.com/lucas-sosa-git/portfolio-v2" target="_blank" rel="noopener">Ver código</a>
         </div>
@@ -451,12 +474,13 @@
           <li><img src="assets/tech/css.svg" alt="CSS" title="CSS" width="26" height="26" decoding="async"></li>
           <li><img src="assets/tech/js.svg" alt="JavaScript" title="JavaScript" width="26" height="26" decoding="async"></li>
         </ul>
+        </div>
       </div>
     </article>
 
     <article class="proj-card proj-card-case proj-card-nubenta" data-tags="Web, Demo, React, SQLAlchemy, Render, GitHub">
       <div class="proj-thumb">
-        <img src="assets/projects/nubenta.png" alt="Dashboard de Nubenta POS" loading="lazy" decoding="async">
+        <img src="assets/projects/nubenta.png" alt="Dashboard de Nubenta POS" width="608" height="464" loading="lazy" decoding="async">
       </div>
 
       <div class="proj-body">
@@ -475,6 +499,11 @@
 
         <p class="proj-subtitle">React · SQLAlchemy · Render · GitHub</p>
 
+        <p class="project-outcome"><strong>Resultado:</strong> un laboratorio de producto real para resolver ventas, inventario y caja mientras evoluciona la arquitectura.</p>
+
+        <button type="button" class="project-details-trigger" aria-haspopup="dialog">Explorar caso</button>
+        <div class="project-details-source" hidden>
+          <div class="project-details-content">
         <div class="proj-meta">
           <span class="pill pill-wip">En desarrollo</span>
           <span class="pill">Web App</span>
@@ -493,8 +522,6 @@
           <p>Estoy aprendiendo a pensar más allá del código: alcance, prioridades, deuda técnica, estados de negocio y coordinación con otra persona.</p>
         </div>
 
-        <details class="project-details">
-          <summary>Ver más</summary>
           <div class="details-grid">
             <div>
               <h4>Producto</h4>
@@ -505,8 +532,10 @@
               <p>Deploy, decisiones de arquitectura, colaboración técnica y mejora gradual del producto.</p>
             </div>
           </div>
-        </details>
+          </div>
+        </div>
 
+        <div class="project-card-footer">
         <div class="project-actions">
           <a class="project-cta" href="https://pos-pyme.vercel.app/" target="_blank" rel="noopener">Ver demo</a>
         </div>
@@ -517,12 +546,13 @@
           <li><img src="assets/tech/render.svg" alt="Render" title="Render" width="26" height="26" decoding="async"></li>
           <li><img src="assets/tech/github.svg" alt="GitHub" title="GitHub" width="26" height="26" decoding="async"></li>
         </ul>
+        </div>
       </div>
     </article>
 
     <article class="proj-card proj-card-case proj-card-gs1" data-tags="Web, Demo, GS1">
       <div class="proj-thumb">
-        <img src="assets/projects/gs1-qr-code.png" alt="Demo de GS1 Digital Link para Purina" loading="lazy" decoding="async">
+        <img src="assets/projects/gs1-qr-code.png" alt="Demo de GS1 Digital Link para Purina" width="957" height="313" loading="lazy" decoding="async">
       </div>
 
       <div class="proj-body">
@@ -541,6 +571,11 @@
 
         <p class="proj-subtitle">HTML · CSS · JavaScript · GS1 Digital Link</p>
 
+        <p class="project-outcome"><strong>Resultado:</strong> una demo rápida para visualizar datos GS1 desde la URL y validar el flujo sin construir un sistema completo.</p>
+
+        <button type="button" class="project-details-trigger" aria-haspopup="dialog">Explorar caso</button>
+        <div class="project-details-source" hidden>
+          <div class="project-details-content">
         <div class="proj-meta">
           <span class="pill">Demo interna</span>
           <span class="pill">HTML</span>
@@ -559,8 +594,6 @@
           <p>Aprendí el valor de un prototipo rápido: cuando una idea es difícil de explicar, una demo simple acelera la validación.</p>
         </div>
 
-        <details class="project-details">
-          <summary>Ver más</summary>
           <div class="details-grid">
             <div>
               <h4>Flujo</h4>
@@ -571,8 +604,10 @@
               <p>Demo para comunicación interna, validación rápida y conversación técnica.</p>
             </div>
           </div>
-        </details>
+          </div>
+        </div>
 
+        <div class="project-card-footer">
         <div class="project-actions">
           <a class="project-cta" href="https://gs1-purina.vercel.app/01/8445290971326/10/L001?17=260329&amp;240=COD1234" target="_blank" rel="noopener">Ver demo</a>
         </div>
@@ -582,12 +617,13 @@
           <li><img src="assets/tech/css.svg" alt="CSS" title="CSS" width="26" height="26" decoding="async"></li>
           <li><img src="assets/tech/js.svg" alt="JavaScript" title="JavaScript" width="26" height="26" decoding="async"></li>
         </ul>
+        </div>
       </div>
     </article>
 
     <article class="proj-card proj-card-case" data-tags="Web, Demo">
       <div class="proj-thumb">
-        <img src="assets/projects/rojas.png" alt="Sitio web consultorio odontológico" loading="lazy" decoding="async">
+        <img src="assets/projects/rojas.png" alt="Sitio web consultorio odontológico" width="956" height="851" loading="lazy" decoding="async">
       </div>
 
       <div class="proj-body">
@@ -606,6 +642,11 @@
 
         <p class="proj-subtitle">HTML · CSS · JavaScript · Responsive</p>
 
+        <p class="project-outcome"><strong>Resultado:</strong> una presencia web clara para un cliente real y un primer ejercicio de traducir necesidades en producto.</p>
+
+        <button type="button" class="project-details-trigger" aria-haspopup="dialog">Explorar caso</button>
+        <div class="project-details-source" hidden>
+          <div class="project-details-content">
         <div class="proj-meta">
           <span class="pill">Trabajo en equipo</span>
           <span class="pill">Web</span>
@@ -623,8 +664,6 @@
           <p>Aprendí que desarrollar para otros implica escuchar, simplificar, priorizar y adaptar la solución a una necesidad concreta.</p>
         </div>
 
-        <details class="project-details">
-          <summary>Ver más</summary>
           <div class="details-grid">
             <div>
               <h4>Trabajo</h4>
@@ -635,8 +674,10 @@
               <p>Primer producto web pensado para usuarios reales, con foco en claridad y necesidad concreta.</p>
             </div>
           </div>
-        </details>
+          </div>
+        </div>
 
+        <div class="project-card-footer">
         <div class="project-actions">
           <a class="project-cta" href="https://github.com/XeonnNK/Dental_Rojas" target="_blank" rel="noopener">Ver código</a>
         </div>
@@ -646,10 +687,30 @@
           <li><img src="assets/tech/css.svg" alt="CSS" title="CSS" width="26" height="26" decoding="async"></li>
           <li><img src="assets/tech/js.svg" alt="JavaScript" title="JavaScript" width="26" height="26" decoding="async"></li>
         </ul>
+        </div>
       </div>
     </article>
 
     </div>
+
+    <dialog class="project-modal" id="project-modal" aria-labelledby="project-modal-title">
+      <div class="project-modal-panel">
+        <header class="project-modal-header">
+          <div>
+            <p class="project-modal-eyebrow">Caso de proyecto</p>
+            <h3 id="project-modal-title">Proyecto</h3>
+          </div>
+          <button type="button" class="project-modal-close" aria-label="Cerrar caso de proyecto">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path d="M6 6l12 12M18 6 6 18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </header>
+        <div class="project-modal-content"></div>
+      </div>
+    </dialog>
+  </div>
+  </div>
 </section>
 
 <section id="skills" class="skills-section" aria-labelledby="skills-title">
@@ -990,6 +1051,7 @@ document.addEventListener("DOMContentLoaded", () => {
     <p>© 2026 Lucas Sosa</p>
   </footer>
 
-  <script src="scripts/app.js" defer></script>
+<script type="module" src="/src/main.jsx"></script>
+<script type="module" src="/scripts/app.js"></script>
 </body>
 </html>

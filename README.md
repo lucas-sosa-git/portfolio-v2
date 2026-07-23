@@ -45,3 +45,32 @@ Este es mi portfolio web, un espacio donde muestro mi experiencia, proyectos y a
 🎨 Inspiración
 
 El diseño busca transmitir un equilibrio entre rigor técnico y curiosidad experimental
+
+## Desarrollo local
+
+La página continúa siendo HTML/CSS/JavaScript y usa una isla React únicamente para la galería de proyectos.
+
+```bash
+npm install
+npm run dev
+```
+
+Build de producción:
+
+```bash
+npm run build
+npm run preview
+```
+
+Vite genera el sitio desplegable en `dist/` y usa rutas relativas para conservar la compatibilidad con GitHub Pages.
+
+## Galería 3D de proyectos
+
+- `src/data/projects.js`: fuente única de contenido, imágenes y enlaces reales.
+- `src/components/projects/`: transición narrativa, cilindro, tarjetas y navegación.
+- `src/hooks/`: rotación/snap, navegación por teclado y configuración responsive.
+- `src/components/projects/projects.css`: sistema visual, profundidad, mobile y reduced motion.
+
+Para agregar un proyecto, sumar un objeto a `projects` con un `id` único, textos, rol, tecnologías, imagen y al menos un enlace (`liveUrl` o `githubUrl`). El ángulo entre tarjetas se recalcula automáticamente según la cantidad de proyectos.
+
+Los principales valores configurables están en `useResponsiveCylinder.js` (radio, perspectiva, blur, paso helicoidal y breakpoints), `ProjectsSection.jsx` (distancia de scroll por proyecto) y `useCylinderRotation.js` (drag, proyección y snap). Los tamaños y alturas de tarjeta se controlan con `--projects-card-width` y `--projects-card-height` en `projects.css`. Las decisiones completas de interacción quedan registradas en `MEMORY.md`.

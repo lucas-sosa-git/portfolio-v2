@@ -445,6 +445,71 @@ if (navToggle && navMenu) {
 })();
 
 
+// ====== PROJECTS: casos en modal accesible ======
+(() => {
+  const section = document.querySelector('#projects');
+  const modal = document.querySelector('#project-modal');
+  const modalTitle = document.querySelector('#project-modal-title');
+  const modalContent = modal?.querySelector('.project-modal-content');
+  const closeButton = modal?.querySelector('.project-modal-close');
+
+  if (!section || !modal || !modalTitle || !modalContent || !closeButton) return;
+
+  let lastTrigger = null;
+
+  const openProject = (trigger) => {
+    const card = trigger.closest('.proj-card');
+    const source = card?.querySelector('.project-details-content');
+    const title = card?.querySelector('.proj-title')?.textContent?.trim();
+
+    if (!card || !source || !title) return;
+
+    const details = source.cloneNode(true);
+    const actions = card.querySelector('.project-actions');
+
+    modalTitle.textContent = title;
+    modalContent.replaceChildren(details);
+
+    if (actions) {
+      const modalActions = document.createElement('div');
+      modalActions.className = 'project-modal-actions';
+      modalActions.append(actions.cloneNode(true));
+      modalContent.append(modalActions);
+    }
+
+    lastTrigger = trigger;
+    document.body.classList.add('project-modal-open');
+    modal.showModal();
+    closeButton.focus();
+  };
+
+  section.addEventListener('click', (event) => {
+    const trigger = event.target.closest('.project-details-trigger');
+    if (trigger) openProject(trigger);
+  });
+
+  closeButton.addEventListener('click', () => modal.close());
+
+  modal.addEventListener('click', (event) => {
+    if (event.target === modal) modal.close();
+  });
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && modal.open) {
+      event.preventDefault();
+      modal.close();
+    }
+  });
+
+  modal.addEventListener('close', () => {
+    document.body.classList.remove('project-modal-open');
+    modalContent.replaceChildren();
+    lastTrigger?.focus();
+    lastTrigger = null;
+  });
+})();
+
+
 // ====== COURSES: fondo waves por card (hover) ======
 (() => {
   const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
