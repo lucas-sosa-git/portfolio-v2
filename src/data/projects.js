@@ -11,12 +11,23 @@ export const projects = [
       "Sistema web académico para gestionar reservas, roles, cancelaciones, reseñas y confirmaciones por mail y QR.",
     problem:
       "Resolver un flujo real de turnos y separar permisos para clientes, profesionales y administración.",
-    learning:
-      "Consolidé una aplicación de punta a punta: backend, frontend, base de datos, autenticación, permisos y flujos de usuario.",
+    role:
+      "Desarrollo full-stack colaborativo: integración de frontend y backend, autenticación, permisos, almacenamiento y control de versiones.",
+    challenge:
+      "Coordinar los flujos entre interfaces, API y persistencia, sostener los roles con JWT e integrar Supabase Storage dentro de una base compartida por el equipo.",
     result:
-      "Aplicación operativa construida en equipo, con almacenamiento de imágenes y responsabilidades separadas.",
-    role: "Desarrollo full-stack en equipo",
-    technologies: ["Flask", "Jinja", "SQL", "JWT", "Supabase Storage"],
+      "Aplicación operativa construida en equipo, con responsabilidades separadas, autenticación y almacenamiento de imágenes.",
+    learning:
+      "Consolidé la integración de una aplicación de punta a punta. Git y Docker acompañaron el desarrollo y la integración local; Docker no se presenta como despliegue productivo.",
+    technologies: [
+      "Flask",
+      "Jinja",
+      "SQL",
+      "JWT",
+      "Supabase Storage",
+      "Git",
+      "Docker",
+    ],
     image: projectImage("ids-turnos.svg"),
     imageAlt:
       "Arquitectura del Gestor de Turnos IDS con frontend, backend, JWT, SQL y Supabase Storage",
@@ -32,11 +43,13 @@ export const projects = [
       "Automatización del procesamiento y validación de información de productos y mermas para reportes confiables.",
     problem:
       "Preparar, cruzar y corregir datos que antes requerían varios días de trabajo manual.",
-    learning:
-      "Un buen dashboard empieza por validación, trazabilidad y control de errores; la visualización viene después.",
+    role: "Automatización y análisis de datos",
+    challenge:
+      "Convertir fuentes heterogéneas y errores de calidad en un proceso trazable, repetible y apto para alimentar el reporte.",
     result:
       "El flujo pasó de varios días de trabajo manual a ejecutarse en aproximadamente una hora.",
-    role: "Automatización y análisis de datos",
+    learning:
+      "Un buen dashboard empieza por validación, trazabilidad y control de errores; la visualización viene después.",
     technologies: ["Python", "Pandas", "SQL", "Power BI"],
     image: projectImage("vla.png"),
     imageAlt: "Tablero de mermas VLA en Power BI",
@@ -53,11 +66,13 @@ export const projects = [
       "Prueba de equivalencias semánticas entre taxonomías mediante embeddings y búsqueda por similitud.",
     problem:
       "Comparar categorías con descripciones distintas para detectar candidatos de equivalencia.",
-    learning:
-      "Aplicar IA exige medir precisión, revisar falsos positivos y validar cada criterio con conocimiento funcional.",
+    role: "Exploración y validación técnica",
+    challenge:
+      "Distinguir similitud lingüística de equivalencia funcional y hacer visibles los falsos positivos del modelo.",
     result:
       "Candidatos de coincidencia y criterios más claros para evaluar precisión y limitaciones.",
-    role: "Exploración y validación técnica",
+    learning:
+      "Aplicar IA exige medir precisión, revisar falsos positivos y validar cada criterio con conocimiento funcional.",
     technologies: ["Python", "Embeddings", "Hugging Face", "FAISS"],
     image: projectImage("gpc-cpc.webp"),
     imageAlt: "Matching de categorías GPC y CPC con embeddings",
@@ -73,11 +88,13 @@ export const projects = [
       "Sitio responsive para presentar experiencia, proyectos, aprendizajes y foco profesional con lectura rápida.",
     problem:
       "Convertir experiencia técnica dispersa en una narrativa clara para recruiters y equipos técnicos.",
-    learning:
-      "Aprendí a equilibrar diseño, accesibilidad, rendimiento y comunicación en una base mantenible.",
+    role: "Diseño y desarrollo frontend",
+    challenge:
+      "Combinar una identidad visual profunda con navegación accesible, rendimiento y una lectura clara en distintas pantallas.",
     result:
       "Una experiencia accesible para comunicar proyectos técnicos y mostrar evolución profesional.",
-    role: "Diseño y desarrollo frontend",
+    learning:
+      "Aprendí a equilibrar diseño, accesibilidad, rendimiento y comunicación en una base mantenible.",
     technologies: ["HTML", "CSS", "JavaScript", "Accesibilidad"],
     image: projectImage("portfolio.png"),
     imageAlt: "Portfolio personal de Lucas Sosa",
@@ -93,11 +110,13 @@ export const projects = [
       "Aplicación tipo POS para gestionar ventas, inventario, caja y la operación diaria de comercios.",
     problem:
       "Diseñar un producto útil para comercios y sostener su evolución técnica de manera incremental.",
-    learning:
-      "Estoy aprendiendo a pensar en alcance, prioridades, deuda técnica, estados de negocio y coordinación.",
+    role: "Producto y desarrollo en equipo",
+    challenge:
+      "Priorizar flujos de negocio conectados sin perder claridad entre inventario, ventas, caja y evolución técnica.",
     result:
       "Un laboratorio de producto real donde conviven arquitectura, UX, despliegue y decisiones de negocio.",
-    role: "Producto y desarrollo en equipo",
+    learning:
+      "Estoy aprendiendo a pensar en alcance, prioridades, deuda técnica, estados de negocio y coordinación.",
     technologies: ["React", "SQLAlchemy", "Render", "GitHub"],
     image: projectImage("nubenta.png"),
     imageAlt: "Dashboard de Nubenta POS",
@@ -113,11 +132,13 @@ export const projects = [
       "Frontend que interpreta GTIN, lote, vencimiento y código de material desde un GS1 Digital Link.",
     problem:
       "Validar y comunicar rápidamente cómo visualizar la información codificada en una URL GS1.",
-    learning:
-      "Cuando una idea técnica es difícil de explicar, un prototipo pequeño acelera la conversación y la validación.",
+    role: "Prototipado frontend",
+    challenge:
+      "Traducir identificadores y atributos técnicos en una interfaz comprensible para validar el flujo con rapidez.",
     result:
       "Una demo funcional para probar el flujo sin construir primero un sistema completo.",
-    role: "Prototipado frontend",
+    learning:
+      "Cuando una idea técnica es difícil de explicar, un prototipo pequeño acelera la conversación y la validación.",
     technologies: ["HTML", "CSS", "JavaScript", "GS1 Digital Link"],
     image: projectImage("gs1-qr-code.png"),
     imageAlt: "Demo de GS1 Digital Link para Purina",
@@ -134,11 +155,13 @@ export const projects = [
       "Sitio responsive con contenido institucional ordenado para un consultorio odontológico.",
     problem:
       "Traducir las necesidades de un cliente en una presencia web simple, clara y accesible.",
-    learning:
-      "Desarrollar para otros implica escuchar, simplificar, priorizar y adaptar la solución a una necesidad concreta.",
+    role: "Desarrollo web en equipo",
+    challenge:
+      "Ordenar contenido y decisiones visuales con el equipo para responder a una necesidad concreta del cliente.",
     result:
       "Un primer producto web pensado para usuarios reales y construido de manera colaborativa.",
-    role: "Desarrollo web en equipo",
+    learning:
+      "Desarrollar para otros implica escuchar, simplificar, priorizar y adaptar la solución a una necesidad concreta.",
     technologies: ["HTML", "CSS", "JavaScript", "Responsive"],
     image: projectImage("rojas.png"),
     imageAlt: "Sitio web del consultorio odontológico Rojas",

@@ -1,89 +1,98 @@
-import { motion, useReducedMotion } from "motion/react";
-import { useEffect, useRef } from "react";
+import { useRef, useState } from "react";
 import { projects } from "../../data/projects";
-import { useResponsiveCylinder } from "../../hooks/useResponsiveCylinder";
-import { ProjectsCylinder } from "./ProjectsCylinder";
-import { ProjectsTransition } from "./ProjectsTransition";
+import { ProjectDetailsDialog } from "../ProjectDetailsDialog";
 
 export function ProjectsSection() {
-  const reducedMotion = Boolean(useReducedMotion());
-  const config = useResponsiveCylinder(projects.length);
-  const storyRef = useRef(null);
-  const shellRef = useRef(null);
-  const scrollStep = config.isMobile ? 40 : 32;
-  const storyHeight = reducedMotion
-    ? "auto"
-    : `calc(100svh - var(--nav-h) - var(--projects-bottom-reserve) + ${
-        (projects.length - 1) * scrollStep
-      }svh)`;
+  const [selectedProject, setSelectedProject] = useState(null);
+  const openerRef = useRef(null);
 
-  useEffect(() => {
-    const section = shellRef.current?.closest("#projects");
-    if (!section) return undefined;
-
-    section.style.setProperty(
-      "--projects-viewport-inline-size",
-      `${document.documentElement.clientWidth}px`,
-    );
-
-    return () =>
-      section.style.removeProperty("--projects-viewport-inline-size");
-  }, [config.viewportWidth]);
+  const openDetails = (project, opener) => {
+    openerRef.current = opener;
+    setSelectedProject(project);
+  };
 
   return (
-    <div
-      className="projects-shell"
-      ref={shellRef}
-      data-reduced-motion={reducedMotion ? "true" : "false"}
-      data-layout={config.isMobile ? "mobile" : config.isTablet ? "tablet" : "desktop"}
-    >
-      <ProjectsTransition reducedMotion={reducedMotion} />
+    <>
+      <div className="projects-gallery">
+        <ol className="projects-gallery__list">
+          {projects.map((project, index) => {
+            const primaryUrl = project.liveUrl || project.githubUrl;
 
-      <motion.header
-        className="projects-intro"
-        initial={reducedMotion ? false : { opacity: 0, y: 28 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.55 }}
-        transition={{ duration: reducedMotion ? 0.01 : 0.62, ease: [0.22, 1, 0.36, 1] }}
-      >
-        <div className="projects-intro__index" aria-hidden="true">
-          <span>01</span>
-          <i />
-          <span>PROYECTOS</span>
-        </div>
-        <div className="projects-intro__copy">
-          <p>Selección 2026</p>
-          <h2 id="projects-title">
-            Sistemas, herramientas y experiencias
-            <span> construidas para aprender haciendo.</span>
-          </h2>
-        </div>
-        <p className="projects-intro__aside">
-          Datos, automatización, producto e IA aplicada. Cada proyecto registra una
-          decisión, un problema y un aprendizaje concreto. Scrolleá para recorrerlos.
-        </p>
-      </motion.header>
+            return (
+              <li key={project.id} className="project-entry">
+                <article aria-labelledby={`${project.id}-title`}>
+                  <figure className="project-entry__visual">
+                    <img
+                      src={project.image}
+                      alt={project.imageAlt}
+                      loading={index < 2 ? "eager" : "lazy"}
+                      fetchPriority={index === 0 ? "high" : "auto"}
+                      decoding="async"
+                    />
+                    <figcaption>
+                      <span>{String(index + 1).padStart(2, "0")}</span>
+                      <span>{project.status}</span>
+                    </figcaption>
+                  </figure>
 
-      <div
-        className="projects-scroll-story"
-        ref={storyRef}
-        style={{ minHeight: storyHeight }}
-      >
-        <div className="projects-scroll-sticky">
-          <ProjectsCylinder
-            projects={projects}
-            config={config}
-            reducedMotion={reducedMotion}
-            storyRef={storyRef}
-          />
+                  <div className="project-entry__content">
+                    <p className="project-entry__eyebrow">{project.eyebrow}</p>
+                    <h3 id={`${project.id}-title`}>{project.title}</h3>
+                    <p className="project-entry__summary">{project.summary}</p>
+                    <p className="project-entry__result">
+                      <span>Resultado</span>
+                      {project.result}
+                    </p>
 
-          <p className="projects-gesture-hint" aria-hidden="true">
-            <span>Scroll para avanzar</span>
-            <i />
-            <span>Arrastrá o usá las flechas</span>
-          </p>
-        </div>
+                    <ul aria-label="Tecnologías principales">
+                      {project.technologies.map((technology) => (
+                        <li key={technology}>{technology}</li>
+                      ))}
+                    </ul>
+
+                    <div className="project-entry__actions">
+                      <button
+                        type="button"
+                        aria-controls="project-details-dialog"
+                        aria-expanded={selectedProject?.id === project.id}
+                        onClick={(event) =>
+                          openDetails(project, event.currentTarget)
+                        }
+                      >
+                        Explorar caso
+                      </button>
+                      {primaryUrl && (
+                        <a
+                          href={primaryUrl}
+                          target={
+                            primaryUrl.startsWith("http")
+                              ? "_blank"
+                              : undefined
+                          }
+                          rel={
+                            primaryUrl.startsWith("http")
+                              ? "noopener noreferrer"
+                              : undefined
+                          }
+                        >
+                          {project.primaryLabel}
+                          <span aria-hidden="true">↗</span>
+                        </a>
+                      )}
+                    </div>
+                  </div>
+                </article>
+              </li>
+            );
+          })}
+        </ol>
       </div>
-    </div>
+
+      <ProjectDetailsDialog
+        project={selectedProject}
+        opener={openerRef.current}
+        onClose={() => setSelectedProject(null)}
+      />
+    </>
   );
 }

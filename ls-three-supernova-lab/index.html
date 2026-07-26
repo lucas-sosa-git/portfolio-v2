@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark" />
+    <meta
+      name="description"
+      content="Laboratorio independiente de supernova LS renderizada con Three.js."
+    />
+    <title>LS — Core Collapse Lab</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="lab-shell">
+      <canvas id="supernovaCanvas" aria-label="Simulación Three.js de una supernova naciendo desde el logo LS"></canvas>
+
+      <header class="lab-header">
+        <div>
+          <p class="eyebrow"><span></span> Three.js · GLSL · GPU particles</p>
+          <h1>Core Collapse<br /><em>LS—01</em></h1>
+        </div>
+        <div class="telemetry" aria-live="polite">
+          <span><b id="phaseValue">IDLE</b> fase</span>
+          <span><b id="fpsValue">—</b> FPS</span>
+          <span><b id="drawCallsValue">—</b> draws</span>
+          <span><b id="particlesValue">—</b> partículas</span>
+        </div>
+      </header>
+
+      <aside class="control-panel" aria-label="Controles del laboratorio">
+        <div class="panel-heading">
+          <div>
+            <span class="panel-index">LAB / 001</span>
+            <h2>Control gravitacional</h2>
+          </div>
+          <output id="globalProgressValue">0%</output>
+        </div>
+
+        <div class="progress-track" aria-hidden="true">
+          <span id="globalProgressBar"></span>
+        </div>
+        <p class="phase-clock">
+          <span id="phaseLabel">Sistema estable</span>
+          <time id="phaseTimeValue">0.00 s</time>
+        </p>
+
+        <div class="primary-actions">
+          <button id="playButton" class="action action-primary" type="button">
+            Invocar supernova
+          </button>
+          <button id="pauseButton" class="action" type="button" disabled>
+            Pausar
+          </button>
+          <button id="resetButton" class="action action-icon" type="button" aria-label="Resetear">
+            ↺
+          </button>
+        </div>
+
+        <details open>
+          <summary>Dinámica del colapso</summary>
+          <div class="control-grid">
+            <label>
+              <span>Velocidad <output data-output-for="speed">1.00×</output></span>
+              <input id="speed" type="range" min="0.5" max="1.5" value="1" step="0.05" />
+            </label>
+            <label>
+              <span>Tamaño de entrega <output data-output-for="coreScale">30%</output></span>
+              <input id="coreScale" type="range" min="20" max="35" value="30" step="1" />
+            </label>
+            <label>
+              <span>Duración <output data-output-for="implosionDuration">720 ms</output></span>
+              <input id="implosionDuration" type="range" min="600" max="850" value="720" step="10" />
+            </label>
+            <label>
+              <span>Concavidad <output data-output-for="concavity">72%</output></span>
+              <input id="concavity" type="range" min="0" max="100" value="72" step="2" />
+            </label>
+            <label>
+              <span>Resistencia esquinas <output data-output-for="cornerResistance">76%</output></span>
+              <input id="cornerResistance" type="range" min="30" max="100" value="76" step="2" />
+            </label>
+            <label>
+              <span>Asimetría <output data-output-for="implosionAsymmetry">68%</output></span>
+              <input id="implosionAsymmetry" type="range" min="0" max="100" value="68" step="2" />
+            </label>
+            <label>
+              <span>Ruido máximo <output data-output-for="noise">6%</output></span>
+              <input id="noise" type="range" min="0" max="10" value="6" step="1" />
+            </label>
+            <label>
+              <span>Pausa de tensión <output data-output-for="tensionDuration">170 ms</output></span>
+              <input id="tensionDuration" type="range" min="120" max="220" value="170" step="10" />
+            </label>
+          </div>
+        </details>
+
+        <details>
+          <summary>Explosión aprobada · valores existentes</summary>
+          <div class="control-grid">
+            <label>
+              <span>Inestabilidad <output data-output-for="instability">58%</output></span>
+              <input id="instability" type="range" min="0" max="100" value="58" step="2" />
+            </label>
+            <label>
+              <span>Choque detenido <output data-output-for="stallDuration">180 ms</output></span>
+              <input id="stallDuration" type="range" min="120" max="220" value="180" step="10" />
+            </label>
+            <label>
+              <span>Bloom <output data-output-for="bloom">100%</output></span>
+              <input id="bloom" type="range" min="40" max="130" value="100" step="5" />
+            </label>
+            <label>
+              <span>Partículas <output data-output-for="particleAmount">100%</output></span>
+              <input id="particleAmount" type="range" min="35" max="100" value="100" step="5" />
+            </label>
+            <label>
+              <span>Asimetría <output data-output-for="asymmetry">68%</output></span>
+              <input id="asymmetry" type="range" min="20" max="100" value="68" step="4" />
+            </label>
+            <label>
+              <span>Fuerza de lóbulos <output data-output-for="lobeStrength">82%</output></span>
+              <input id="lobeStrength" type="range" min="30" max="120" value="82" step="4" />
+            </label>
+            <label>
+              <span>Disipación <output data-output-for="dissipation">720 ms</output></span>
+              <input id="dissipation" type="range" min="450" max="1000" value="720" step="10" />
+            </label>
+          </div>
+        </details>
+
+        <fieldset class="debug-modes">
+          <legend>Debug de geometría</legend>
+          <div class="debug-options">
+            <label>
+              <input type="radio" name="debugMode" value="solid" checked />
+              <span>Solid</span>
+            </label>
+            <label>
+              <input type="radio" name="debugMode" value="wireframe" />
+              <span>Wireframe</span>
+            </label>
+            <label>
+              <input type="radio" name="debugMode" value="weights" />
+              <span>Pesos</span>
+            </label>
+          </div>
+        </fieldset>
+
+        <div class="phase-jump">
+          <label for="phaseSelect">Inspeccionar fase</label>
+          <select id="phaseSelect">
+            <option value="">Elegir fase…</option>
+            <option value="implosion">Implosión</option>
+            <option value="core">Núcleo</option>
+            <option value="tension">Pausa de tensión</option>
+            <option value="stalled-shock">Choque detenido</option>
+            <option value="ignition">Ignición</option>
+            <option value="explosion">Supernova</option>
+          </select>
+        </div>
+      </aside>
+
+      <p class="lab-caption">
+        La gravedad gana primero. Luz, onda y materia escapan después.
+      </p>
+
+      <div id="webglFallback" class="fallback" hidden>
+        <strong>WebGL no está disponible.</strong>
+        <span>El laboratorio necesita aceleración gráfica para renderizar sus shaders.</span>
+      </div>
+    </main>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

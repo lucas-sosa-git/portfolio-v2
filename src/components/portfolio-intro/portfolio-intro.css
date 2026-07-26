@@ -1,0 +1,242 @@
+body.intro-running {
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+.portfolio-intro-overlay {
+  --intro-wave-diameter: 18px;
+  --intro-impact-x: 50vw;
+  --intro-impact-y: 50vh;
+  position: fixed;
+  z-index: 2000;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: auto;
+  cursor: pointer;
+  touch-action: manipulation;
+  background: transparent;
+  isolation: isolate;
+}
+
+.portfolio-intro-stage {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  width: clamp(72px, 7vw, 112px);
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  perspective: 800px;
+}
+
+.portfolio-intro-implosion-canvas {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  width: 190%;
+  height: 190%;
+  translate: -50% -50%;
+  pointer-events: none;
+  filter:
+    drop-shadow(0 0 12px rgba(213, 42, 42, 0.26))
+    drop-shadow(0 14px 26px rgba(0, 0, 0, 0.34));
+}
+
+.portfolio-intro-logo-motion {
+  position: absolute;
+  z-index: 3;
+  inset: 0;
+  transform-origin: 50% 100%;
+  will-change: transform, opacity;
+  filter:
+    drop-shadow(0 0 12px rgba(213, 42, 42, 0.24))
+    drop-shadow(0 12px 22px rgba(0, 0, 0, 0.28));
+}
+
+.portfolio-intro-logo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.portfolio-intro-shadow {
+  position: absolute;
+  z-index: 1;
+  left: 12%;
+  right: 12%;
+  top: 91%;
+  height: 16%;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.78);
+  filter: blur(8px);
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
+}
+
+.portfolio-intro-energy {
+  position: absolute;
+  z-index: 4;
+  left: 50%;
+  top: 50%;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  translate: -50% -50%;
+  background: #fff;
+  box-shadow:
+    0 0 10px 3px #fff,
+    0 0 30px 10px rgba(213, 42, 42, 0.95),
+    0 0 90px 28px rgba(213, 42, 42, 0.42);
+  will-change: transform, opacity;
+}
+
+.portfolio-intro-flash {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  top: 50%;
+  width: var(--intro-wave-diameter);
+  height: var(--intro-wave-diameter);
+  border-radius: 50%;
+  translate: -50% -50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.95) 0 1%,
+    rgba(213, 42, 42, 0.55) 7%,
+    rgba(213, 42, 42, 0.13) 24%,
+    transparent 56%
+  );
+  will-change: transform, opacity;
+}
+
+.portfolio-intro-rays {
+  position: absolute;
+  z-index: 3;
+  left: 50%;
+  top: 50%;
+  width: 1px;
+  height: 1px;
+  pointer-events: none;
+  will-change: opacity;
+}
+
+.portfolio-intro-rays i {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: min(34vw, 440px);
+  height: 1px;
+  transform-origin: left center;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.9),
+    rgba(213, 42, 42, 0.38),
+    transparent
+  );
+  filter: blur(0.2px) drop-shadow(0 0 8px rgba(213, 42, 42, 0.6));
+  will-change: transform;
+}
+
+.portfolio-intro-wave-anchor {
+  position: absolute;
+  z-index: 1;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.portfolio-intro-wave {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: var(--intro-wave-diameter);
+  height: var(--intro-wave-diameter);
+  border: 1px solid rgba(255, 239, 236, 0.92);
+  border-radius: 50%;
+  translate: -50% -50%;
+  transform: scale(0.01);
+  transform-origin: 50% 50%;
+  background: radial-gradient(
+    circle at center,
+    transparent 65%,
+    rgba(213, 42, 42, 0.025) 72%,
+    rgba(243, 118, 118, 0.08) 78%,
+    transparent 82%
+  );
+  box-shadow:
+    0 0 12px rgba(255, 236, 232, 0.68),
+    0 0 28px rgba(213, 42, 42, 0.36),
+    inset 0 0 12px rgba(255, 236, 232, 0.35);
+  will-change: transform, opacity;
+}
+
+.portfolio-intro-skip-hint {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: max(1rem, env(safe-area-inset-bottom));
+  padding: 0.35rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+  color: rgba(255, 255, 255, 0.48);
+  background: rgba(11, 11, 12, 0.2);
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  backdrop-filter: blur(4px);
+}
+
+body.light .portfolio-intro-shadow {
+  background: rgba(67, 12, 12, 0.3);
+}
+
+body.light .portfolio-intro-skip-hint {
+  color: rgba(67, 12, 12, 0.54);
+  border-color: rgba(67, 12, 12, 0.1);
+  background: rgba(255, 255, 255, 0.18);
+}
+
+body.light .portfolio-intro-wave {
+  border-color: rgba(213, 42, 42, 0.82);
+  box-shadow:
+    0 0 10px rgba(213, 42, 42, 0.44),
+    0 0 24px rgba(243, 118, 118, 0.22);
+}
+
+@media (max-width: 640px) {
+  .portfolio-intro-shadow {
+    filter: blur(5px);
+  }
+
+  .portfolio-intro-logo-motion {
+    filter:
+      drop-shadow(0 0 8px rgba(213, 42, 42, 0.2))
+      drop-shadow(0 9px 16px rgba(0, 0, 0, 0.24));
+  }
+
+  .portfolio-intro-skip-hint {
+    bottom: calc(76px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-intro-overlay {
+    display: none !important;
+  }
+
+  html.intro-pending [data-wave-reveal] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    filter: none;
+  }
+}
+
+@media print {
+  .portfolio-intro-overlay {
+    display: none !important;
+  }
+}

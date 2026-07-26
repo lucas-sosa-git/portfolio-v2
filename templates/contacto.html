@@ -1,0 +1,86 @@
+<section id="contact" class="contact-split">
+  <div class="c-left">
+    <h2 class="c-title">Contacto</h2>
+
+    <div class="c-row">
+      <div class="c-icon">
+        <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="3" y="5" width="18" height="14" rx="2" ry="2" />
+          <path d="M3 7l9 6 9-6" />
+        </svg>
+      </div>
+
+      <div class="c-text">
+        <div class="c-label">Mail</div>
+        <div class="c-line">
+          <a class="c-link" href="mailto:lsosaa@fi.uba.ar">lsosaa@fi.uba.ar</a>
+          <button class="copy-btn dl-btn" data-copy="lsosaa@fi.uba.ar" aria-label="Copiar email" title="Copiar email">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <rect x="9" y="9" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
+              <rect x="3" y="3" width="12" height="12" rx="2" ry="2" fill="none" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span class="copy-tip" role="status" aria-live="polite">Copiado</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="c-row">
+      <div class="c-icon">
+        <svg class="glyph" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 3v10" />
+          <path d="M8 11l4 4 4-4" />
+          <path d="M5 20h14" />
+        </svg>
+      </div>
+
+      <div class="c-text">
+        <div class="c-label">Currículum</div>
+        <div class="c-line">
+          <a class="c-link" target="_blank" rel="noopener noreferrer" href="assets/cv_sosa_lucas.pdf" download>Descargar CV</a>
+          <a class="copy-btn dl-btn" target="_blank" rel="noopener noreferrer" href="assets/cv_sosa_lucas.pdf" download aria-label="Descargar CV" title="Descargar CV">
+            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path d="M12 3v10" fill="none" stroke="currentColor" stroke-width="2"/>
+              <path d="M8 11l4 4 4-4" fill="none" stroke="currentColor" stroke-width="2"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="c-socials">
+      <a href="https://github.com/lucas-sosa-git" target="_blank" rel="noopener noreferrer" class="social" aria-label="GitHub" title="GitHub">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path fill="currentColor" d="M12 .5A12 12 0 0 0 0 12.8c0 5.4 3.4 10 8.2 11.6.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.5-1.4-1.9-1.4-1.9-1.1-.8.1-.8.1-.8 1.2.1 1.8 1.3 1.8 1.3 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.7-1.7-2.7-.3-5.5-1.4-5.5-6.2 0-1.4.5-2.6 1.3-3.5-.1-.3-.6-1.7.1-3.5 0 0 1.1-.4 3.6 1.3a12.2 12.2 0 0 1 6.6 0c2.5-1.7 3.6-1.3 3.6-1.3.7 1.8.2 3.2.1 3.5.8.9 1.3 2.1 1.3 3.5 0 4.9-2.8 5.9-5.5 6.2.4.4.7 1 .7 2v3c0 .3.2.7.8.6A12.3 12.3 0 0 0 24 12.8 12 12 0 0 0 12 .5Z"/>
+        </svg>
+      </a>
+      <a href="https://www.linkedin.com/in/lucas-sosa-b0533127b/" target="_blank" rel="noopener noreferrer" class="social" aria-label="LinkedIn" title="LinkedIn">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+          <path fill="currentColor" d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3.5 8.98h3v11.5h-3V8.98Zm6 0h2.9v1.6h.1c.4-.8 1.5-1.7 3.1-1.7 3.3 0 3.9 2.2 3.9 5v6.6h-3V14.9c0-1.2 0-2.8-1.7-2.8-1.7 0-2 1.3-2 2.7v5.7h-3V8.98Z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+
+  <div class="c-right">
+    <form id="contact-form" class="c-form" action="https://formspree.io/f/xrbldnlv" method="POST" novalidate>
+      <div class="field">
+        <label for="name">Nombre</label>
+        <input id="name" name="name" type="text" placeholder="Lucas Sosa…" required aria-invalid="false" aria-describedby="name-hint" autocomplete="name">
+        <small id="name-hint" class="hint" aria-live="polite">Nombre obligatorio</small>
+      </div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" placeholder="nombre@ejemplo.com" required aria-invalid="false" aria-describedby="email-hint" autocomplete="email">
+        <small id="email-hint" class="hint" aria-live="polite">Email obligatorio</small>
+      </div>
+      <div class="field">
+        <label for="message">Mensaje</label>
+        <textarea id="message" name="message" rows="7" placeholder="Contame sobre el proyecto…" required aria-invalid="false" aria-describedby="message-hint" autocomplete="off"></textarea>
+        <small id="message-hint" class="hint" aria-live="polite">Mensaje obligatorio</small>
+      </div>
+      <button type="submit" class="submit-btn">Enviar</button>
+      <div class="form-status" role="status" aria-live="polite" hidden></div>
+    </form>
+  </div>
+</section>

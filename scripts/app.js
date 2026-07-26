@@ -1,693 +1,256 @@
-// ============================
-// THEME (claro/oscuro)
-// ============================
-const themeBtn = document.getElementById('theme-toggle');
-const savedTheme = localStorage.getItem('theme');
-const mqlDark = window.matchMedia('(prefers-color-scheme: dark)');
-const userHasChoice = savedTheme === 'light' || savedTheme === 'dark';
-const startLight = userHasChoice ? savedTheme === 'light' : !mqlDark.matches;
+const themeButton = document.getElementById("theme-toggle");
+const darkModeQuery = window.matchMedia("(prefers-color-scheme: dark)");
+let savedTheme = null;
+
+try {
+  savedTheme = localStorage.getItem("theme");
+} catch {
+  // The system preference remains available when storage is disabled.
+}
+
+const userHasThemeChoice = savedTheme === "light" || savedTheme === "dark";
 
 function setTheme(mode) {
-  document.body.classList.toggle('light', mode === 'light');
-  if (themeBtn) {
-    themeBtn.textContent = mode === 'light' ? '🌞' : '🌙';
-    themeBtn.setAttribute('aria-label', mode === 'light' ? 'Cambiar a tema oscuro' : 'Cambiar a tema claro');
-  }
+  document.body.classList.toggle("light", mode === "light");
+  if (!themeButton) return;
+  themeButton.textContent = mode === "light" ? "☀️" : "🌙";
+  themeButton.setAttribute(
+    "aria-label",
+    mode === "light" ? "Cambiar a tema oscuro" : "Cambiar a tema claro",
+  );
 }
-setTheme(startLight ? 'light' : 'dark');
 
-themeBtn?.addEventListener('click', () => {
-  const next = document.body.classList.contains('light') ? 'dark' : 'light';
+setTheme(
+  userHasThemeChoice
+    ? savedTheme
+    : darkModeQuery.matches
+      ? "dark"
+      : "light",
+);
+
+themeButton?.addEventListener("click", () => {
+  const next = document.body.classList.contains("light") ? "dark" : "light";
   setTheme(next);
-  localStorage.setItem('theme', next);
+  try {
+    localStorage.setItem("theme", next);
+  } catch {
+    // Theme selection still applies to the current page.
+  }
 });
 
-if (!userHasChoice) {
-  mqlDark.addEventListener('change', (e) => setTheme(e.matches ? 'dark' : 'light'));
+if (!userHasThemeChoice) {
+  const followSystemTheme = (event) => setTheme(event.matches ? "dark" : "light");
+  darkModeQuery.addEventListener?.("change", followSystemTheme);
 }
 
-// ============================
-// COPIAR AL PORTAPAPELES
-// ============================
-document.querySelectorAll('.copy-btn').forEach((btn) => {
-  btn.addEventListener('click', async () => {
-    const text = btn.dataset.copy || '';
+document.querySelectorAll(".copy-btn").forEach((button) => {
+  button.addEventListener("click", async () => {
+    const value = button.dataset.copy || "";
     try {
-      await navigator.clipboard.writeText(text);
+      await navigator.clipboard.writeText(value);
     } catch {
-      const input = document.createElement('input');
-      input.value = text;
+      const input = document.createElement("input");
+      input.value = value;
       document.body.appendChild(input);
       input.select();
-      document.execCommand('copy');
+      document.execCommand("copy");
       input.remove();
     }
-    btn.classList.add('ok');
-    setTimeout(() => btn.classList.remove('ok'), 1200);
+    button.classList.add("ok");
+    window.setTimeout(() => button.classList.remove("ok"), 1200);
   });
 });
 
-// ============================
-// VALIDACIÓN FORMULARIO (ES)
-// ============================
-(function () {
-  const form = document.getElementById('contact-form');
+(() => {
+  const form = document.getElementById("contact-form");
   if (!form) return;
 
-  const fields = Array.from(form.querySelectorAll('.field'));
+  const fields = Array.from(form.querySelectorAll(".field"));
+  const submitButton = form.querySelector('[type="submit"]');
+  const status = form.querySelector(".form-status");
+  let statusTimer = 0;
 
   const validateField = (field) => {
-    const input = field.querySelector('input, textarea');
+    const input = field.querySelector("input, textarea");
+    const hint = field.querySelector(".hint");
     if (!input) return true;
 
-    let valid = true;
-
-    if (input.hasAttribute('required') && !input.value.trim()) valid = false;
-
-    if (valid && input.type === 'email') {
-      const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim());
-      if (!ok) valid = false;
+    let message = "";
+    if (input.required && !input.value.trim()) {
+      message =
+        input.type === "email"
+          ? "Ingresá tu email."
+          : input.tagName === "TEXTAREA"
+            ? "Escribí un mensaje."
+            : "Ingresá tu nombre.";
+    } else if (
+      input.type === "email" &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input.value.trim())
+    ) {
+      message = "Ingresá un email válido.";
     }
 
-    field.classList.toggle('error', !valid);
+    const valid = !message;
+    field.classList.toggle("error", !valid);
+    input.setAttribute("aria-invalid", String(!valid));
+    if (hint && message) hint.textContent = message;
     return valid;
   };
 
   fields.forEach((field) => {
-    const input = field.querySelector('input, textarea');
-    if (!input) return;
-
-    input.addEventListener('blur', () => validateField(field));
-    input.addEventListener('input', () => {
-      if (field.classList.contains('error')) validateField(field);
+    const input = field.querySelector("input, textarea");
+    input?.addEventListener("blur", () => validateField(field));
+    input?.addEventListener("input", () => {
+      if (field.classList.contains("error")) validateField(field);
     });
   });
 
-  form.addEventListener('submit', (e) => {
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
     const allValid = fields.map(validateField).every(Boolean);
     if (!allValid) {
-      e.preventDefault();
-      const firstError = form.querySelector('.field.error input, .field.error textarea');
-      firstError?.focus();
+      form.querySelector('.field.error input, .field.error textarea')?.focus();
+      return;
     }
+    if (!submitButton || !status) return;
+
+    window.clearTimeout(statusTimer);
+    status.hidden = true;
+    status.className = "form-status";
+    submitButton.disabled = true;
+    submitButton.textContent = "Enviando…";
+
+    try {
+      const response = await fetch(form.action, {
+        method: form.method,
+        body: new FormData(form),
+        headers: { Accept: "application/json" },
+      });
+
+      if (response.ok) {
+        status.textContent = "Gracias. Tu mensaje fue enviado correctamente.";
+        status.classList.add("success");
+        form.reset();
+        fields.forEach((field) => {
+          field.classList.remove("error");
+          field
+            .querySelector("input, textarea")
+            ?.setAttribute("aria-invalid", "false");
+        });
+      } else {
+        status.textContent = "Ocurrió un problema. Intentá de nuevo.";
+        status.classList.add("error");
+      }
+    } catch {
+      status.textContent = "Error de conexión. Intentá más tarde.";
+      status.classList.add("error");
+    } finally {
+      submitButton.disabled = false;
+      submitButton.textContent = "Enviar";
+      status.hidden = false;
+    }
+
+    statusTimer = window.setTimeout(() => {
+      status.hidden = true;
+      status.textContent = "";
+      status.className = "form-status";
+      statusTimer = 0;
+    }, 4000);
   });
 })();
 
-// ============================
-// MENÚ MÓVIL (accesible)
-// ============================
-if (!userHasChoice) {
-  (mqlDark.addEventListener ? mqlDark.addEventListener('change', (e)=>setTheme(e.matches?'dark':'light'))
-                            : mqlDark.addListener && mqlDark.addListener((e)=>setTheme(e.matches?'dark':'light')));
-}
-
-const navToggle = document.querySelector('.nav-toggle');
-const navMenu = document.getElementById('nav-menu');
+const navToggle = document.querySelector(".nav-toggle");
+const navMenu = document.getElementById("nav-menu");
 
 if (navToggle && navMenu) {
-  const setHidden = (hidden) => {
-    navMenu.setAttribute('aria-hidden', String(hidden));
-    navToggle.setAttribute('aria-expanded', String(!hidden));
+  const setMenuHidden = (hidden) => {
+    navMenu.setAttribute("aria-hidden", String(hidden));
+    navToggle.setAttribute("aria-expanded", String(!hidden));
   };
+  setMenuHidden(true);
 
-  setHidden(true); // estado inicial
-
-  navToggle.addEventListener('click', () => {
-    const hidden = navMenu.getAttribute('aria-hidden') === 'true';
-    setHidden(!hidden);
+  navToggle.addEventListener("click", () => {
+    setMenuHidden(navMenu.getAttribute("aria-hidden") !== "true");
   });
-
-  navMenu.querySelectorAll('a').forEach((a) => {
-    a.addEventListener('click', (e) => {
-      const isMobileMenu = window.matchMedia('(max-width: 840px)').matches;
-      const href = a.getAttribute('href') || '';
-      const target = href.startsWith('#') ? document.querySelector(href) : null;
-
-      if (!target || !isMobileMenu) {
-        setHidden(true);
+  navMenu.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const href = link.getAttribute("href") || "";
+      const target = href.startsWith("#") ? document.querySelector(href) : null;
+      if (!target || !window.matchMedia("(max-width: 840px)").matches) {
+        setMenuHidden(true);
         return;
       }
-
-      e.preventDefault();
-      setHidden(true);
+      event.preventDefault();
+      setMenuHidden(true);
       window.setTimeout(() => {
-        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        history.pushState(null, '', href);
+        target.scrollIntoView({ behavior: "smooth", block: "start" });
+        history.pushState(null, "", href);
       }, 120);
     });
   });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') setHidden(true);
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") setMenuHidden(true);
   });
-
-  document.addEventListener('click', (e) => {
-    if (navMenu.contains(e.target) || navToggle.contains(e.target)) return;
-    setHidden(true);
+  document.addEventListener("click", (event) => {
+    if (!navMenu.contains(event.target) && !navToggle.contains(event.target)) {
+      setMenuHidden(true);
+    }
   });
 }
 
-// ============================
-// BOTTOM NAV MOBILE: estado activo
-// ============================
 (() => {
-  const items = Array.from(document.querySelectorAll('.mobile-bottom-nav .mbn-item'));
-  if (!items.length) return;
-
-  const byId = new Map(
-    items
-      .map((item) => {
-        const id = (item.getAttribute('href') || '').replace('#', '');
-        const section = id ? document.getElementById(id) : null;
-        return section ? [id, { item, section }] : null;
-      })
-      .filter(Boolean)
-  );
-
-  const setActive = (id) => {
-    items.forEach((item) => {
-      item.classList.toggle('active', (item.getAttribute('href') || '') === `#${id}`);
-    });
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    const visible = entries
-      .filter((entry) => entry.isIntersecting)
-      .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-
-    if (visible?.target?.id) setActive(visible.target.id);
-  }, {
-    rootMargin: '-35% 0px -45% 0px',
-    threshold: [0.15, 0.35, 0.6],
-  });
-
-  byId.forEach(({ section }) => observer.observe(section));
-})();
-
-
-
-// ==== HERO · Lissajous 3D (con bleed dinámico) =================
-(() => {
-  const canvas = document.getElementById('hero-waves');
-  if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-
-  const L3D = {
-    freq: { ax: 3, by: 2, cz: 1 },
-
-    center: { x: 0.54, y: 0.50 },
-    radiusScale: 0.33,
-    perspective: 3.0,
-
-    rotation:      { x: 0.009, y: 0.00, z: 0.00 },
-    rotationSpeed: { x: 0.00,  y: 0.03, z: 0.02 },
-
-    paramSpeed: 0.25,
-    phaseDrift: 0.00,
-
-    passes: 3,
-    colorsFromCSS: true,
-    colors: ['#e43f5a', '#f37676', 'rgba(255,220,220,.65)'],
-
-    glowBlur:  [18, 14, 10],
-    glowAlpha: [0.55, 0.38, 0.30],
-    glowScale: 1.6,
-    coreWidth: [3.0, 2.2, 1.6],
-    compositeGlow: 'screen',
-    compositeCore: 'source-over',
-
-    quality: 720,
-    dprMax: 2,
-    jitter: 0.03,
-  };
-
-  // Random SOLO del estado inicial (posición de arranque)
-  const START = {
-    time:  Math.random() * 1000,
-    phase: Math.random() * Math.PI * 2
-  };
-  const PASS_PHASE = [0.0, 0.8, 1.6];
-
-  // ------- BLEED dinámico (borde extra) ------------------------------------
-  let w, h, dpr, time = START.time;
-  let bleed = 0;
-  const bleedMin = 72;
-  const bleedRatio = 0.20;
-
-  function resize() {
-    dpr = Math.min(window.devicePixelRatio || 1, L3D.dprMax);
-    w = canvas.clientWidth;
-    h = canvas.clientHeight;
-
-    bleed = Math.max(bleedMin, Math.round(Math.min(w, h) * bleedRatio));
-
-    const Wbuf = w + bleed * 2;
-    const Hbuf = h + bleed * 2;
-    canvas.width  = Math.floor(Wbuf * dpr);
-    canvas.height = Math.floor(Hbuf * dpr);
-
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.translate(bleed, bleed);
-    ctx.scale(dpr, dpr);
-  }
-  window.addEventListener('resize', resize, { passive: true });
-  resize();
-
-  function cssVar(name, fallback) {
-    const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-    return v || fallback;
-  }
-  // **Ajuste de color en LIGHT (solo color, sin tocar tamaños)**
-  function updatePalette() {
-    if (!L3D.colorsFromCSS) return;
-    const isLight = document.body.classList.contains('light');
-    L3D.colors = [
-      cssVar('--contact-accent', '#e43f5a'),
-      cssVar('--accent', '#f37676'),
-      isLight ? 'rgba(255,170,170,.65)' : 'rgba(255,220,220,.65)',
-    ];
-  }
-  updatePalette();
-
-  function project3D(x, y, z, s, cx, cy, rx, ry, rz, persp) {
-    let c = Math.cos(rx), srx = Math.sin(rx);
-    let Y = y * c - z * srx, Z = y * srx + z * c, X = x;
-    c = Math.cos(ry); let sry = Math.sin(ry);
-    let X2 = X * c + Z * sry, Z2 = -X * sry + Z * c; X = X2; Z = Z2;
-    c = Math.cos(rz); let szz = Math.sin(rz);
-    let X3 = X * c - Y * szz, Y3 = X * szz + Y * c; X = X3; Y = Y3;
-    const k = persp / (persp + Z * 0.8);
-    return { x: cx + X * s * k, y: cy + Y * s * k };
-  }
-
-  function buildPath(pIndex, steps, ax, by, cz, cx, cy, s, rx, ry, rz) {
-    const off = PASS_PHASE[pIndex % PASS_PHASE.length];
-    ctx.beginPath();
-    for (let i = 0; i <= steps; i++) {
-      const u = (i / steps) * Math.PI * 2;
-      const jitter = L3D.jitter ? Math.sin(i * 0.07 + pIndex * 1.3 + time) * L3D.jitter : 0;
-
-      const px = Math.sin(ax * u + L3D.paramSpeed * time + START.phase + off + L3D.phaseDrift * time) + jitter;
-      const py = Math.sin(by * u + L3D.paramSpeed * 1.22 * time + START.phase * 0.9 + off * 0.8) + jitter;
-      const pz = Math.sin(cz * u + START.phase * 1.1 + off * 1.1);
-
-      const P = project3D(px, py, pz, s, cx, cy, rx, ry, rz, L3D.perspective);
-      (i === 0) ? ctx.moveTo(P.x, P.y) : ctx.lineTo(P.x, P.y);
-    }
-  }
-
-  function drawLissajous() {
-    const cx = w * L3D.center.x, cy = h * L3D.center.y;
-    const safeScale = 0.98;
-    const s  = Math.min(w, h) * L3D.radiusScale * safeScale;
-
-    const rx = L3D.rotation.x + L3D.rotationSpeed.x * time;
-    const ry = L3D.rotation.y + L3D.rotationSpeed.y * time;
-    const rz = L3D.rotation.z + L3D.rotationSpeed.z * time;
-
-    const { ax, by, cz } = L3D.freq;
-    const steps = Math.max(120, Math.floor(L3D.quality));
-
-    ctx.lineCap = 'round';
-    ctx.lineJoin = 'round';
-    ctx.miterLimit = 2;
-
-    for (let p = 0; p < L3D.passes; p++) {
-      const col = L3D.colors[p % L3D.colors.length];
-
-      buildPath(p, steps, ax, by, cz, cx, cy, s, rx, ry, rz);
-
-      // Glow
-      ctx.save();
-      ctx.globalCompositeOperation = L3D.compositeGlow;
-      ctx.globalAlpha = L3D.glowAlpha[p] ?? L3D.glowAlpha.at(-1);
-      ctx.strokeStyle = col;
-      ctx.shadowBlur  = L3D.glowBlur[p] ?? L3D.glowBlur.at(-1);
-      ctx.shadowColor = col;
-      ctx.lineWidth   = (L3D.coreWidth[p] ?? L3D.coreWidth.at(-1)) * L3D.glowScale;
-      ctx.stroke();
-      ctx.restore();
-
-      // Trazo nítido
-      ctx.save();
-      ctx.globalCompositeOperation = L3D.compositeCore;
-      ctx.globalAlpha = 1;
-      ctx.strokeStyle = col;
-      ctx.shadowBlur  = 0;
-      ctx.lineWidth   = (L3D.coreWidth[p] ?? L3D.coreWidth.at(-1));
-      ctx.stroke();
-      ctx.restore();
-    }
-  }
-
-  function clearAll() {
-    ctx.save();
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.restore();
-  }
-
-  function frame() {
-    clearAll();
-    drawLissajous();
-    time += 0.005;
-    requestAnimationFrame(frame);
-  }
-  frame();
-
-  const mo = new MutationObserver(updatePalette);
-  mo.observe(document.documentElement, { attributes: true, attributeFilter: ['class', 'style'] });
-})();
-
-
-// ====== PROJECTS: filtros por categoria ======
-(() => {
-  const toolbar = document.querySelector('#projects .filters-toolbar');
-  const buttons = toolbar ? Array.from(toolbar.querySelectorAll('.filter-btn')) : [];
-  const grid = document.querySelector('#projects .projects-grid');
-  const cards = grid ? Array.from(grid.querySelectorAll('.proj-card')) : [];
-
-  if (!toolbar || !grid || !cards.length) return;
-
-  const norm = (value) => (value || '')
-    .toString()
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/\p{Diacritic}/gu, '')
-    .trim();
-
-  const FILTERS = {
-    all: null,
-    'de/dba': ['de', 'dba'],
-    ia: ['ia'],
-    web: ['web'],
-    'full-stack': ['full-stack'],
-  };
-
-  const getCardTags = (card) => (card.dataset.tags || '')
-    .split(',')
-    .map((tag) => norm(tag))
+  const items = Array.from(document.querySelectorAll(".mobile-bottom-nav .mbn-item"));
+  const observedSections = items
+    .map((item) => document.querySelector(item.getAttribute("href") || ""))
     .filter(Boolean);
+  if (!items.length || !observedSections.length) return;
 
-  const matchesFilter = (card, key) => {
-    if (!key || key === 'all') return true;
-    const wanted = FILTERS[key] || [key];
-    const tags = getCardTags(card);
-    return wanted.some((tag) => tags.includes(tag));
-  };
+  const observer = new IntersectionObserver(
+    (entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+      if (!visible?.target?.id) return;
+      items.forEach((item) => {
+        item.classList.toggle(
+          "active",
+          item.getAttribute("href") === `#${visible.target.id}`,
+        );
+      });
+    },
+    { rootMargin: "-35% 0px -45% 0px", threshold: [0.15, 0.35, 0.6] },
+  );
+  observedSections.forEach((section) => observer.observe(section));
+})();
 
-  const setActive = (activeButton) => {
-    buttons.forEach((button) => {
-      button.setAttribute('aria-pressed', String(button === activeButton));
-    });
-  };
+(() => {
+  const section = document.querySelector("#courses");
+  const toolbar = section?.querySelector(".courses-toolbar");
+  if (!section || !toolbar) return;
+  const buttons = Array.from(toolbar.querySelectorAll(".chip-btn"));
+  const cards = Array.from(section.querySelectorAll(".course-card"));
 
-  const hideCard = (card) => {
-    if (card.classList.contains('hidden-display')) return;
-    card.classList.add('hiding');
-    const onEnd = () => {
-      card.classList.add('hidden-display');
-      card.classList.remove('hiding');
-      card.removeEventListener('transitionend', onEnd);
-    };
-    card.addEventListener('transitionend', onEnd);
-  };
-
-  const showCard = (card) => {
-    if (!card.classList.contains('hidden-display')) return;
-    card.classList.add('showing');
-    card.classList.remove('hidden-display');
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => card.classList.remove('showing'));
-    });
-  };
-
-  const applyFilter = (filter) => {
-    const key = norm(filter);
+  const applyFilter = (button) => {
+    buttons.forEach((item) =>
+      item.setAttribute("aria-pressed", String(item === button)),
+    );
+    const selected = button.dataset.cat.toLowerCase();
     cards.forEach((card) => {
-      if (matchesFilter(card, key)) showCard(card);
-      else hideCard(card);
+      const categories = (card.dataset.cat || "")
+        .split(",")
+        .map((category) => category.trim().toLowerCase());
+      card.classList.toggle(
+        "hidden-display",
+        selected !== "all" && !categories.includes(selected),
+      );
     });
   };
 
-  const defaultButton = buttons.find((button) => norm(button.dataset.filter) === 'all') || buttons[0];
-  if (defaultButton) {
-    setActive(defaultButton);
-    applyFilter(defaultButton.dataset.filter || 'all');
-  }
-
-  toolbar.addEventListener('click', (event) => {
-    const button = event.target.closest('.filter-btn');
-    if (!button) return;
-    setActive(button);
-    applyFilter(button.dataset.filter || 'all');
+  toolbar.addEventListener("click", (event) => {
+    const button = event.target.closest(".chip-btn");
+    if (button) applyFilter(button);
   });
-})();
-
-
-// ====== PROJECTS: casos en modal accesible ======
-(() => {
-  const section = document.querySelector('#projects');
-  const modal = document.querySelector('#project-modal');
-  const modalTitle = document.querySelector('#project-modal-title');
-  const modalContent = modal?.querySelector('.project-modal-content');
-  const closeButton = modal?.querySelector('.project-modal-close');
-
-  if (!section || !modal || !modalTitle || !modalContent || !closeButton) return;
-
-  let lastTrigger = null;
-
-  const openProject = (trigger) => {
-    const card = trigger.closest('.proj-card');
-    const source = card?.querySelector('.project-details-content');
-    const title = card?.querySelector('.proj-title')?.textContent?.trim();
-
-    if (!card || !source || !title) return;
-
-    const details = source.cloneNode(true);
-    const actions = card.querySelector('.project-actions');
-
-    modalTitle.textContent = title;
-    modalContent.replaceChildren(details);
-
-    if (actions) {
-      const modalActions = document.createElement('div');
-      modalActions.className = 'project-modal-actions';
-      modalActions.append(actions.cloneNode(true));
-      modalContent.append(modalActions);
-    }
-
-    lastTrigger = trigger;
-    document.body.classList.add('project-modal-open');
-    modal.showModal();
-    closeButton.focus();
-  };
-
-  section.addEventListener('click', (event) => {
-    const trigger = event.target.closest('.project-details-trigger');
-    if (trigger) openProject(trigger);
-  });
-
-  closeButton.addEventListener('click', () => modal.close());
-
-  modal.addEventListener('click', (event) => {
-    if (event.target === modal) modal.close();
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if (event.key === 'Escape' && modal.open) {
-      event.preventDefault();
-      modal.close();
-    }
-  });
-
-  modal.addEventListener('close', () => {
-    document.body.classList.remove('project-modal-open');
-    modalContent.replaceChildren();
-    lastTrigger?.focus();
-    lastTrigger = null;
-  });
-})();
-
-
-// ====== COURSES: fondo waves por card (hover) ======
-(() => {
-  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (prefersReduced) return;
-
-  // Reutilizo la misma idea que en Proyectos, con fade-out al salir
-  function setupCourseWave(card){
-    // Si la tarjeta no tiene canvas, lo insertamos como primer hijo
-    let canvas = card.querySelector('.course-bg');
-    if (!canvas) {
-      canvas = document.createElement('canvas');
-      canvas.className = 'course-bg';
-      canvas.setAttribute('aria-hidden', 'true');
-      card.prepend(canvas);
-    }
-
-    const ctx = canvas.getContext('2d');
-    let w=0, h=0, dpr=1, t=0, raf=null;
-    // --- Fade-out sin cambiar tamaños ---
-    const FADE_MS = 260;
-    let state = 'stopped';        // 'running' | 'fading' | 'stopped'
-    let fadeStart = 0, fadeUntil = 0;
-
-function palette(){
-  return document.body.classList.contains('light')
-    ? {
-        red:  '#c81e1e',              // rojo profundo (más contraste en fondo claro)
-        pink: '#ff6a7a',              // rosa/coral vivo (más saturado que #F37676)
-        soft: 'rgba(255,196,201,.58)' // brillo rosado suave (sin tirarse a ámbar)
-      }
-    : {
-        red:  '#e43f5a',
-        pink: '#f37676',
-        soft: 'rgba(255,220,220,.6)'
-      };
-}
-
-
-
-    function resize(){
-      const rect = card.getBoundingClientRect();
-      w = Math.max(160, Math.floor(rect.width));
-      h = Math.max(120, Math.floor(rect.height));
-      dpr = Math.min(window.devicePixelRatio || 1, 1.75);
-
-      canvas.width  = Math.floor(w * dpr);
-      canvas.height = Math.floor(h * dpr);
-      canvas.style.width = '100%';
-      canvas.style.height = '100%';
-
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    function clearCanvas(){
-      ctx.save();
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.restore();
-    }
-
-    function drawWave(params, alpha){
-      const { amp, kx, speed, phase, lw, color, blur } = params;
-      ctx.save();
-      ctx.globalAlpha   = alpha;   // <- fade aplicado aquí
-      ctx.beginPath();
-      ctx.lineWidth     = lw;
-      ctx.lineCap       = 'round';
-      ctx.shadowBlur    = blur;
-      ctx.shadowColor   = color;
-
-      // Base un poco más baja que en proyectos para no invadir los títulos
-      const yBase = h * 0.22;
-      for (let x = 0; x <= w; x += 1.5) {
-        const y = yBase + Math.sin(x * kx + t * speed + phase) * amp;
-        (x === 0) ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
-      }
-
-      ctx.globalCompositeOperation = 'lighter';
-      ctx.strokeStyle = color;
-      ctx.stroke();
-      ctx.restore();
-    }
-
-    function render(){
-      const { red, pink, soft } = palette();
-      ctx.clearRect(0, 0, w, h);
-
-      const now = performance.now();
-      let alpha = 1;
-      if (state === 'fading') alpha = Math.max(0, (fadeUntil - now) / FADE_MS);
-
-      // mismos parámetros que tenías
-      drawWave({ amp: h * 2,   kx: 0.012, speed: 0.1,  phase: 0.0, lw: 2.4, color: red,  blur: 14 }, alpha);
-      drawWave({ amp: h * 2.1, kx: 0.017, speed: 0.05, phase: 1.1, lw: 2.0, color: pink, blur: 12 }, alpha);
-      drawWave({ amp: h * 1.9, kx: 0.020, speed: 0.23, phase: 2.2, lw: 1.6, color: soft, blur: 10 }, alpha);
-
-      t += 0.015;
-
-      if (state === 'fading' && alpha === 0) {
-        clearCanvas();
-        cancelAnimationFrame(raf);
-        raf = null;
-        state = 'stopped';
-        return;
-      }
-
-      raf = requestAnimationFrame(render);
-    }
-
-    function start(){
-      if (!raf){
-        resize();
-        state = 'running';
-        render();
-      } else {
-        state = 'running';
-      }
-    }
-    function stop(){
-      if (raf && state !== 'fading') {
-        state = 'fading';
-        fadeStart = performance.now();
-        fadeUntil = fadeStart + FADE_MS;
-      }
-    }
-
-    card.addEventListener('mouseenter', start);
-    card.addEventListener('mouseleave', stop);
-
-    const io = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting && raf) {
-        state = 'fading';
-        fadeStart = performance.now();
-        fadeUntil = fadeStart + FADE_MS;
-      }
-    });
-    io.observe(card);
-
-    window.addEventListener('resize', () => { if (raf) resize(); }, { passive:true });
-  }
-
-  const cards = document.querySelectorAll('.course-card');
-  if (!cards.length) return;
-  cards.forEach(setupCourseWave);
-})();
-
-// ============================
-// CURSOS: filtro por categoría
-// ============================
-(() => {
-  const section = document.querySelector('#courses');
-  if (!section) return;
-
-  const toolbar = section.querySelector('.courses-toolbar');
-  const buttons = [...toolbar.querySelectorAll('.chip-btn')];
-  const cards   = [...section.querySelectorAll('.course-card')];
-
-  function setActive(btn) {
-    buttons.forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
-  }
-  function applyFilter(cat) {
-    const wanted = cat.toLowerCase();
-    cards.forEach(card => {
-      const list = (card.dataset.cat || '').split(',').map(s => s.trim().toLowerCase());
-      const show = (wanted === 'all') || list.includes(wanted);
-      card.classList.toggle('hidden-display', !show);
-    });
-  }
-
-  toolbar.addEventListener('click', (e) => {
-    const btn = e.target.closest('.chip-btn');
-    if (!btn) return;
-    setActive(btn);
-    applyFilter(btn.dataset.cat);
-  });
-
-  // Estado inicial: Avanzados
-  const defaultBtn = buttons.find(b => b.dataset.cat === 'Avanzado') || buttons[0];
-  setActive(defaultBtn);
-  applyFilter(defaultBtn.dataset.cat);
+  applyFilter(
+    buttons.find((button) => button.dataset.cat === "Avanzado") || buttons[0],
+  );
 })();
