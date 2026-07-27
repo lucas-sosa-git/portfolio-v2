@@ -18,6 +18,16 @@
   --scrollbar-thumb:#fff7f2;
   --scrollbar-thumb-hover:var(--red-200);
   --nav-h: 64px;
+  --nav-top:12px;
+  --nav-expanded-height:68px;
+  --nav-hero-gap:48px;
+  --nav-shell-expanded-max:1440px;
+  --nav-shell-compact-max:1120px;
+  --nav-compact-padding:18px;
+  --nav-compact-bg:color-mix(in srgb, var(--surface) 84%, transparent);
+  --nav-compact-border:color-mix(in srgb, var(--text) 12%, transparent);
+  --nav-contract-motion:650ms cubic-bezier(0.22, 1, 0.36, 1);
+  --nav-surface-motion:450ms cubic-bezier(0.22, 1, 0.36, 1);
   --content-max:1100px;
   --content-gutter:1rem;
 }
@@ -29,6 +39,8 @@ body.light{
   --scrollbar-track:color-mix(in srgb, var(--red-600) 14%, transparent);
   --scrollbar-thumb:var(--red-600);
   --scrollbar-thumb-hover:var(--red-700);
+  --nav-compact-bg:color-mix(in srgb, var(--surface) 88%, transparent);
+  --nav-compact-border:color-mix(in srgb, var(--text) 14%, transparent);
 }
 
 /* =====================  BASE  ===================== */
@@ -94,23 +106,62 @@ h1,h2{ color:var(--primary); margin:0 0 .75rem; }
 
 /* =====================  NAVBAR  ===================== */
 .site-header{
-  position:sticky;
-  top:0;
+  position:fixed;
+  inset:0 0 auto;
+  height:calc(var(--nav-top) + var(--nav-expanded-height));
   z-index:1000;
-  background:color-mix(in srgb, var(--bg) 82%, transparent);
-  backdrop-filter:blur(14px) saturate(1.15);
-  -webkit-backdrop-filter:blur(14px) saturate(1.15);
+  background:transparent;
+  pointer-events:none;
 }
 .navbar{
-  height:var(--nav-h);
-  display:flex; align-items:center; gap:1.25rem;
-  max-width:var(--content-max);
+  box-sizing:border-box;
+  width:100%;
+  display:flex;
+  justify-content:center;
   margin:0 auto;
-  padding-inline:var(--content-gutter);
-  background:transparent;
-  transition:background .2s, box-shadow .2s, border-color .2s;
+  padding:var(--nav-top) var(--content-gutter) 0;
+  pointer-events:none;
 }
-.navbar-links{ display:flex; gap:1rem; list-style:none; margin:0; padding:0; }
+.navbar-shell{
+  box-sizing:border-box;
+  width:100%;
+  max-width:var(--nav-shell-expanded-max);
+  height:var(--nav-expanded-height);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-inline:0;
+  background:transparent;
+  border:1px solid transparent;
+  border-radius:0;
+  box-shadow:0 0 0 rgba(0,0,0,0);
+  backdrop-filter:blur(0) saturate(1);
+  -webkit-backdrop-filter:blur(0) saturate(1);
+  pointer-events:auto;
+  transition:
+    max-width var(--nav-contract-motion),
+    padding-inline var(--nav-contract-motion),
+    background-color var(--nav-surface-motion),
+    border-color var(--nav-surface-motion),
+    border-radius var(--nav-surface-motion),
+    box-shadow var(--nav-surface-motion),
+    backdrop-filter var(--nav-surface-motion),
+    -webkit-backdrop-filter var(--nav-surface-motion);
+}
+.navbar[data-compact="true"] .navbar-shell{
+  max-width:var(--nav-shell-compact-max);
+  padding-inline:var(--nav-compact-padding);
+  background:var(--nav-compact-bg);
+  border-color:var(--nav-compact-border);
+  border-radius:14px;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
+  backdrop-filter:blur(14px) saturate(1.2);
+  -webkit-backdrop-filter:blur(14px) saturate(1.2);
+}
+.navbar-group{ display:flex; align-items:center; }
+.navbar-group-left{ gap:2rem; }
+.navbar-group-right{ gap:.75rem; }
+.navbar-links{ display:flex; gap:1.25rem; list-style:none; margin:0; padding:0; }
 .navbar-links a{
   position:relative; color:var(--text); text-decoration:none; font-weight:500;
   padding:.25rem 0; transition:color .18s ease;
@@ -140,17 +191,10 @@ h1,h2{ color:var(--primary); margin:0 0 .75rem; }
 .navbar-logo:hover, .navbar-logo:focus-visible{ color: var(--accent); }
 .navbar-logo:hover::after, .navbar-logo:focus-visible::after{ transform: scaleX(1); }
 
-.navbar[data-elevated="true"]{
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 4px 16px rgba(0,0,0,.16);
-  backdrop-filter: saturate(1.1) blur(8px);
-}
-
 /* Menú móvil */
 .theme-toggle{
-  margin-left:auto; display:inline-flex; align-items:center; justify-content:center;
-  width:36px; height:36px; border-radius:.6rem; border:1px solid var(--border);
+  display:inline-flex; align-items:center; justify-content:center;
+  width:40px; height:40px; border-radius:.6rem; border:1px solid var(--border);
   background:var(--card); color:var(--primary); font-size:1.1rem; cursor:pointer;
   transition: background .18s, color .18s, transform .18s, border-color .18s;
 }
@@ -165,9 +209,13 @@ h1,h2{ color:var(--primary); margin:0 0 .75rem; }
 .nav-toggle[aria-expanded="true"]{ color:var(--primary); border-color:var(--primary); }
 
 @media (max-width:840px){
-  .navbar{ gap:.75rem; }
+  :root{
+    --nav-top:8px;
+    --nav-expanded-height:64px;
+    --nav-compact-padding:12px;
+  }
+  .navbar-group-left{ gap:.75rem; }
   .nav-toggle{ display:none !important; }
-  .theme-toggle{ margin-left:0; }
 
   .navbar-links{ display:none !important; }
   body{ padding-bottom:72px; }
@@ -225,6 +273,17 @@ h1,h2{ color:var(--primary); margin:0 0 .75rem; }
     border-radius:50%;
     background:var(--contact-accent);
   }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .navbar-shell,
+  .navbar-links,
+  .navbar-logo,
+  .theme-toggle,
+  .nav-toggle{
+    transition:none;
+  }
+  .theme-toggle:hover{ transform:none; }
 }
 
 /* =====================  HERO  ===================== */
@@ -348,7 +407,11 @@ h1,h2{ color:var(--primary); margin:0 0 .75rem; }
   }
 }
 @media (max-width: 640px){
-  .hero-2col{ min-height:auto; padding-block:clamp(2.5rem, 6vh, 4rem); }
+  .hero-2col{
+    min-height:auto;
+    padding-top:calc(var(--nav-top) + var(--nav-expanded-height) + var(--nav-hero-gap));
+    padding-bottom:clamp(2.5rem, 6vh, 4rem);
+  }
   .hero-kicker{ font-size:.82rem; }
   .hero-title{ font-size:clamp(2rem, 12vw, 2.65rem); }
   .hero-subtitle{ font-size:clamp(.9rem, 4vw, 1rem); }
@@ -803,15 +866,10 @@ body.light .submit-btn{
   border-color: var(--accent);
 }
 
-/* Navbar elevada en light: sombra suave y fondo no translúcido oscuro */
-body.light .site-header{
-  background:color-mix(in srgb, var(--bg) 82%, transparent);
-}
-body.light .navbar{ background:transparent; }
-body.light .navbar[data-elevated="true"]{
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
-  border-bottom: 1px solid var(--border);
-  box-shadow: 0 4px 16px rgba(0,0,0,.08);
+/* Navbar compacta en light */
+body.light .navbar[data-compact="true"] .navbar-shell{
+  background:var(--nav-compact-bg);
+  box-shadow:0 10px 28px rgba(60,20,20,.1);
 }
 
 /* ===== Cursos (LIGHT) ===== */

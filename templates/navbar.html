@@ -1,26 +1,32 @@
-<header class="site-header" data-wave-reveal>
+<header class="site-header" data-hero-intro>
   <nav class="navbar" aria-label="Principal">
-    <a href="#hero" class="navbar-logo" aria-label="Inicio">L-Sosa</a>
+    <div class="navbar-shell">
+      <div class="navbar-group navbar-group-left">
+        <a href="#hero" class="navbar-logo" aria-label="Inicio">L-Sosa</a>
 
-    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Abrir menú">
-      <span class="nav-toggle-bar"></span>
-      <span class="nav-toggle-bar"></span>
-      <span class="nav-toggle-bar"></span>
-    </button>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Abrir menú">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
 
-    <ul id="nav-menu" class="navbar-links" aria-hidden="true">
-      <li><a href="#about">Sobre mí</a></li>
-      <li><a href="#projects">Proyectos</a></li>
-      <li><a href="#skills">Skills</a></li>
-      <li><a href="#courses">Cursos</a></li>
-      <li><a href="#contact">Contacto</a></li>
-    </ul>
+        <ul id="nav-menu" class="navbar-links" aria-hidden="true">
+          <li><a href="#about">Sobre mí</a></li>
+          <li><a href="#projects">Proyectos</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="#courses">Cursos</a></li>
+          <li><a href="#contact">Contacto</a></li>
+        </ul>
+      </div>
 
-    <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
+      <div class="navbar-group navbar-group-right">
+        <button id="theme-toggle" class="theme-toggle" aria-label="Cambiar tema" title="Cambiar tema">🌙</button>
+      </div>
+    </div>
   </nav>
 </header>
 
-<nav class="mobile-bottom-nav" aria-label="Navegación principal">
+<nav class="mobile-bottom-nav" aria-label="Navegación principal" data-hero-intro>
   <a href="#about" class="mbn-item">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Zm0 2c-3.3 0-6 1.7-6 3.8V20h12v-2.2c0-2.1-2.7-3.8-6-3.8Z"/></svg>
     <span>Sobre mí</span>

@@ -1,49 +1,20 @@
-export const INTRO_SESSION_KEY = "ls-portfolio-intro-played";
+export const INTRO_SESSION_KEY = "ls-hero-intro-played";
 
-export const INTRO_CONFIG = {
-  enabled: true,
-  playOncePerSession: true,
-  allowSkip: true,
-  debugAlwaysPlay: false,
-  timing: {
-    stable: 220,
-    implosion: 720,
-    coreFormation: 250,
-    finalCompression: 140,
-    tension: 170,
-    wave: 1700,
-    cleanupFade: 180,
-    elementReveal: 320,
-  },
-  motion: {
-    revealOffset: 18,
-    maxBlur: 8,
-  },
-  implosion: {
-    concavity: 0.76,
-    cornerResistance: 0.78,
-    asymmetry: 0.64,
-    finalScale: 0.3,
-    noise: 0.06,
-  },
-};
-
-export const EXPLOSION_ENTRY_STATE = Object.freeze({
-  timestamp: 1500,
-  logo: Object.freeze({
-    scaleX: 0.03,
-    scaleY: 0.03,
-    opacity: 0.1,
-    filter: "brightness(4)",
+export const HERO_MOTION = Object.freeze({
+  wordStagger: 55,
+  charStagger: 22,
+  chaosDistance: 18,
+  chaosRotation: 4,
+  labels: Object.freeze({
+    sceneStart: 0,
+    navStart: 120,
+    labelStart: 180,
+    copyStart: 280,
+    chaos: 480,
+    resolution: 850,
+    supportingCopy: 1250,
+    ready: 1600,
   }),
-  core: Object.freeze({
-    scale: 0.88,
-    opacity: 1,
-    filter: "brightness(1.25)",
-  }),
-  flash: Object.freeze({ opacity: 0, scale: 0 }),
-  raysOpacity: 0,
-  wave: Object.freeze({ opacity: 0, scale: 0.01 }),
 });
 
 export function getIntroPreference({
@@ -51,20 +22,10 @@ export function getIntroPreference({
   reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)")
     .matches,
 } = {}) {
-  const params = new URLSearchParams(search);
-  const queryMode = params.get("intro");
+  const queryMode = new URLSearchParams(search).get("intro");
 
-  if (!INTRO_CONFIG.enabled || queryMode === "0" || reducedMotion) {
-    return "skip";
-  }
-
-  if (INTRO_CONFIG.debugAlwaysPlay || queryMode === "1") {
-    return "play";
-  }
-
-  if (!INTRO_CONFIG.playOncePerSession) {
-    return "play";
-  }
+  if (queryMode === "0" || reducedMotion) return "skip";
+  if (queryMode === "1") return "play";
 
   try {
     return sessionStorage.getItem(INTRO_SESSION_KEY) === "true"

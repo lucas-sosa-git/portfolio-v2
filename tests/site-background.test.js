@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import {
   BACKGROUND_STATES,
   getSectionProgress,
@@ -32,4 +33,32 @@ test("background states interpolate smoothly between section keyframes", () => {
       midpoint.lineOpacity - (first.lineOpacity + second.lineOpacity) / 2,
     ) < 1e-12,
   );
+});
+
+test("the site background keeps one authoritative render loop", () => {
+  const component = readFileSync(
+    new URL(
+      "../src/components/site-background/SiteBackground.jsx",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+
+  assert.equal(component.match(/requestAnimationFrame\(/g)?.length, 1);
+  assert.match(component, /cancelAnimationFrame\(frame\)/);
+  assert.doesNotMatch(component, /introObserver|intro-pending/);
+});
+
+test("the existing scene consumes finite hero intro state without a new loop", () => {
+  const scene = readFileSync(
+    new URL(
+      "../src/components/site-background/createSiteBackground.js",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+
+  assert.match(scene, /introState\?\.reveal/);
+  assert.match(scene, /introState\?\.regularity/);
+  assert.doesNotMatch(scene, /requestAnimationFrame|setInterval|setTimeout/);
 });

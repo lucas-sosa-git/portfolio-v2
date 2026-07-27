@@ -2,48 +2,21 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import {
-  getImpactGeometry,
-  getWaveRevealMetrics,
-} from "../src/components/portfolio-intro/introMath.js";
-import {
-  EXPLOSION_ENTRY_STATE,
+  HERO_MOTION,
   getIntroPreference,
-  INTRO_CONFIG,
 } from "../src/components/portfolio-intro/introConfig.js";
 
-test("impact geometry covers every viewport corner", () => {
-  const geometry = getImpactGeometry({
-    viewportWidth: 1440,
-    viewportHeight: 900,
-  });
-
-  assert.equal(geometry.x, 720);
-  assert.equal(geometry.y, 450);
-  assert.equal(geometry.maxRadius, Math.hypot(720, 450));
-});
-
-test("wave delays increase with physical distance from impact", () => {
-  const common = {
-    impactX: 500,
-    impactY: 400,
-    maxRadius: 700,
-    waveDuration: 950,
-    revealDuration: 320,
-  };
-  const near = getWaveRevealMetrics({
-    ...common,
-    elementRect: { left: 480, top: 380, width: 40, height: 40 },
-  });
-  const far = getWaveRevealMetrics({
-    ...common,
-    elementRect: { left: 80, top: 50, width: 40, height: 40 },
-  });
-
-  assert.equal(near.distance, 0);
-  assert.ok(far.delay > near.delay);
-  assert.ok(far.initialX > 0);
-  assert.ok(far.initialY > 0);
-});
+const component = readFileSync(
+  new URL(
+    "../src/components/portfolio-intro/PortfolioIntro.jsx",
+    import.meta.url,
+  ),
+  "utf8",
+);
+const heroTemplate = readFileSync(
+  new URL("../templates/hero.html", import.meta.url),
+  "utf8",
+);
 
 test("reduced motion and the explicit skip query bypass the intro", () => {
   assert.equal(
@@ -56,73 +29,46 @@ test("reduced motion and the explicit skip query bypass the intro", () => {
   );
 });
 
-test("the reveal keeps its approved wave timing", () => {
-  assert.equal(INTRO_CONFIG.timing.wave, 1700);
+test("the hero intro uses one scoped master timeline", () => {
+  assert.equal(component.match(/createTimeline\(/g)?.length, 1);
+  assert.match(component, /createScope\(/);
+  assert.match(component, /splitText\(/);
+  assert.match(component, /scrambleText\(/);
+  assert.match(component, /onScroll\(/);
+  assert.doesNotMatch(component, /requestAnimationFrame|setTimeout|setInterval/);
 });
 
-test("the integrated implosion hands off after exactly 1.5 seconds", () => {
-  const { timing } = INTRO_CONFIG;
-  const preExplosionDuration =
-    timing.stable +
-    timing.implosion +
-    timing.coreFormation +
-    timing.finalCompression +
-    timing.tension;
-
-  assert.equal(preExplosionDuration, 1500);
-  assert.equal(preExplosionDuration, EXPLOSION_ENTRY_STATE.timestamp);
+test("the labelled choreography finishes its ambient reveal at 2.1 seconds", () => {
+  assert.deepEqual(HERO_MOTION.labels, {
+    sceneStart: 0,
+    navStart: 120,
+    labelStart: 180,
+    copyStart: 280,
+    chaos: 480,
+    resolution: 850,
+    supportingCopy: 1250,
+    ready: 1600,
+  });
+  assert.equal(HERO_MOTION.labels.ready + 500, 2100);
 });
 
-test("the approved explosion entry values remain explicit and unchanged", () => {
-  assert.deepEqual(EXPLOSION_ENTRY_STATE.logo, {
-    scaleX: 0.03,
-    scaleY: 0.03,
-    opacity: 0.1,
-    filter: "brightness(4)",
-  });
-  assert.deepEqual(EXPLOSION_ENTRY_STATE.core, {
-    scale: 0.88,
-    opacity: 1,
-    filter: "brightness(1.25)",
-  });
-  assert.deepEqual(EXPLOSION_ENTRY_STATE.flash, {
-    opacity: 0,
-    scale: 0,
-  });
-  assert.equal(EXPLOSION_ENTRY_STATE.raysOpacity, 0);
-  assert.deepEqual(EXPLOSION_ENTRY_STATE.wave, {
-    opacity: 0,
-    scale: 0.01,
-  });
+test("the first viewport keeps two calls to action and moves strengths after the hero", () => {
+  const heroSection = heroTemplate.match(/<section id="hero"[\s\S]*?<\/section>/)?.[0];
+  const capabilityStrip = heroTemplate.match(/<div class="hero-capabilities"[\s\S]*/)?.[0];
+
+  assert.ok(heroSection);
+  assert.ok(capabilityStrip);
+  assert.equal(heroSection.match(/class="(?:primary|secondary)-btn"/g)?.length, 2);
+  assert.doesNotMatch(heroSection, /LinkedIn/);
+  assert.equal(capabilityStrip.match(/<li>/g)?.length, 5);
 });
 
-test("the expanding wave keeps centering separate from its animated scale", () => {
-  const css = readFileSync(
-    new URL(
-      "../src/components/portfolio-intro/portfolio-intro.css",
-      import.meta.url,
-    ),
-    "utf8",
-  );
-  const waveRule = css.match(/\.portfolio-intro-wave\s*\{[^}]+\}/)?.[0];
-
-  assert.ok(waveRule);
-  assert.match(waveRule, /translate:\s*-50%\s+-50%/);
-  assert.doesNotMatch(waveRule, /transform:\s*translate\(/);
-});
-
-test("the intro clips only the site header, not nested section headers", () => {
-  const component = readFileSync(
-    new URL(
-      "../src/components/portfolio-intro/PortfolioIntro.jsx",
-      import.meta.url,
-    ),
-    "utf8",
-  );
-
+test("the title keeps semantic regions for precision, chaos and resolution", () => {
+  assert.match(heroTemplate, /data-hero-normal/);
+  assert.match(heroTemplate, /data-hero-chaos/);
+  assert.match(heroTemplate, /data-hero-result/);
   assert.match(
-    component,
-    /const CLIP_SELECTOR = "\.site-header, #main, \.mobile-bottom-nav";/,
+    heroTemplate,
+    /aria-label="Convierto datos desordenados en información confiable\."/,
   );
-  assert.doesNotMatch(component, /const CLIP_SELECTOR = "header,/);
 });

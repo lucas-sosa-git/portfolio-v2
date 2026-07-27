@@ -3,6 +3,7 @@ import {
   BACKGROUND_SECTION_IDS,
   getSectionProgress,
 } from "./backgroundState";
+import { heroIntroState } from "../portfolio-intro/heroIntroState";
 import "./site-background.css";
 
 export function SiteBackground() {
@@ -17,20 +18,16 @@ export function SiteBackground() {
     const reducedMotionQuery = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
     );
-    if (reducedMotionQuery.matches) {
-      root.dataset.mode = "fallback";
-      return undefined;
-    }
 
     let disposed = false;
     let started = false;
+    let reducedMotion = reducedMotionQuery.matches;
     let scene = null;
     let frame = 0;
     let lastRenderAt = 0;
     let sectionCenters = [];
     let layoutDirty = true;
     let scrollDirty = true;
-    let introObserver = null;
     let layoutObserver = null;
     let themeObserver = null;
 
@@ -74,7 +71,11 @@ export function SiteBackground() {
       frame = 0;
       if (disposed || !scene || document.hidden) return;
 
-      const minimumFrameTime = mobileQuery.matches ? 1000 / 30 : 0;
+      const minimumFrameTime = reducedMotion
+        ? 1000 / 12
+        : mobileQuery.matches
+          ? 1000 / 30
+          : 0;
       if (lastRenderAt && timestamp - lastRenderAt < minimumFrameTime) {
         requestFrame();
         return;
@@ -98,6 +99,7 @@ export function SiteBackground() {
       layoutDirty = true;
     };
     const onPointerMove = (event) => {
+      if (reducedMotion) return;
       scene?.setPointer(
         (event.clientX / window.innerWidth) * 2 - 1,
         (event.clientY / window.innerHeight) * 2 - 1,
@@ -112,12 +114,22 @@ export function SiteBackground() {
       lastRenderAt = 0;
       requestFrame();
     };
+    const onReducedMotionChange = (event) => {
+      reducedMotion = event.matches;
+      scene?.setReducedMotion(reducedMotion);
+      lastRenderAt = 0;
+      requestFrame();
+    };
 
     const removeSceneListeners = () => {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onResize);
       window.removeEventListener("pointermove", onPointerMove);
       document.removeEventListener("visibilitychange", onVisibilityChange);
+      reducedMotionQuery.removeEventListener?.(
+        "change",
+        onReducedMotionChange,
+      );
       layoutObserver?.disconnect();
       themeObserver?.disconnect();
     };
@@ -134,12 +146,18 @@ export function SiteBackground() {
 
         scene = createSiteBackground(canvas, {
           isMobile: mobileQuery.matches,
+          introState: heroIntroState,
+          reducedMotion,
         });
         scene.setTheme(document.body.classList.contains("light"));
 
         window.addEventListener("scroll", onScroll, { passive: true });
         window.addEventListener("resize", onResize, { passive: true });
         document.addEventListener("visibilitychange", onVisibilityChange);
+        reducedMotionQuery.addEventListener?.(
+          "change",
+          onReducedMotionChange,
+        );
         if (finePointerQuery.matches) {
           window.addEventListener("pointermove", onPointerMove, {
             passive: true,
@@ -172,25 +190,20 @@ export function SiteBackground() {
       }
     };
 
-    if (document.documentElement.classList.contains("intro-pending")) {
-      introObserver = new MutationObserver(() => {
-        if (!document.documentElement.classList.contains("intro-pending")) {
-          introObserver?.disconnect();
-          introObserver = null;
-          start();
-        }
+    if (
+      document.documentElement.classList.contains("hero-motion-pending")
+    ) {
+      Object.assign(heroIntroState, {
+        reveal: 0.06,
+        energy: 0.05,
+        regularity: 0.52,
+        environment: 0.08,
       });
-      introObserver.observe(document.documentElement, {
-        attributes: true,
-        attributeFilter: ["class"],
-      });
-    } else {
-      start();
     }
+    start();
 
     return () => {
       disposed = true;
-      introObserver?.disconnect();
       window.cancelAnimationFrame(frame);
       removeSceneListeners();
       scene?.dispose();

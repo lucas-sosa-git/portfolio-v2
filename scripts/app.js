@@ -43,6 +43,30 @@ if (!userHasThemeChoice) {
   darkModeQuery.addEventListener?.("change", followSystemTheme);
 }
 
+const navbar = document.querySelector(".navbar");
+
+if (navbar) {
+  const COMPACT_SCROLL_Y = 90;
+  const EXPANDED_SCROLL_Y = 35;
+  let isCompact = window.scrollY > COMPACT_SCROLL_Y;
+
+  navbar.dataset.compact = String(isCompact);
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      const nextCompact = isCompact
+        ? window.scrollY >= EXPANDED_SCROLL_Y
+        : window.scrollY > COMPACT_SCROLL_Y;
+
+      if (nextCompact === isCompact) return;
+      isCompact = nextCompact;
+      navbar.dataset.compact = String(isCompact);
+    },
+    { passive: true },
+  );
+}
+
 document.querySelectorAll(".copy-btn").forEach((button) => {
   button.addEventListener("click", async () => {
     const value = button.dataset.copy || "";

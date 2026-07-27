@@ -12,35 +12,30 @@
         const params = new URLSearchParams(window.location.search);
         const queryMode = params.get("intro");
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        const alreadyPlayed = sessionStorage.getItem("ls-portfolio-intro-played") === "true";
+        const alreadyPlayed = sessionStorage.getItem("ls-hero-intro-played") === "true";
 
         if (queryMode !== "0" && !reducedMotion && (queryMode === "1" || !alreadyPlayed)) {
-          root.classList.add("intro-pending");
+          root.classList.add("hero-motion-pending");
         }
       } catch {
-        root.classList.add("intro-pending");
+        root.classList.add("hero-motion-pending");
       }
 
       window.setTimeout(() => {
-        window.dispatchEvent(new CustomEvent("portfolio-intro-timeout"));
-        root.classList.remove("intro-pending", "intro-wave-active");
-        document.body?.classList.remove("intro-running");
-      }, 6500);
+        window.dispatchEvent(new CustomEvent("hero-motion-timeout"));
+        root.classList.remove("hero-motion-pending");
+      }, 4000);
     })();
   </script>
   <style>
-    html.intro-pending [data-wave-reveal],
-    html.intro-pending .hero-kicker,
-    html.intro-pending .mobile-bottom-nav {
+    html.hero-motion-pending [data-hero-intro] {
       opacity: 0;
-      visibility: hidden;
     }
   </style>
   <noscript>
     <style>
-      [data-wave-reveal] {
+      [data-hero-intro] {
         opacity: 1 !important;
-        visibility: visible !important;
       }
     </style>
   </noscript>
@@ -70,7 +65,7 @@
   <meta property="og:updated_time" content="2025-08-18T00:00:00Z" />
 
   <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles/main.css?v=20260726-background-3d-1">
+  <link rel="stylesheet" href="styles/main.css?v=20260727-navbar-contract-2">
 </head>
 
 <body class="dark">

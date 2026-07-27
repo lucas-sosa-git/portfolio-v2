@@ -5,11 +5,9 @@ import {
   CanvasTexture,
   Color,
   Group,
-  IcosahedronGeometry,
+  LineLoop,
   LineBasicMaterial,
   LineSegments,
-  Mesh,
-  MeshBasicMaterial,
   PerspectiveCamera,
   Points,
   PointsMaterial,
@@ -37,6 +35,11 @@ const LIGHT_PALETTE = {
   line: "#c63a3a",
   core: "#7b2121",
 };
+
+const SCROLL_RESPONSE_RATE = 0.72;
+const LISSAJOUS_PHASES = [0, 0.8, 1.6];
+const LISSAJOUS_OPACITY = [1, 0.72, 0.48];
+const LISSAJOUS_COLOR_KEYS = ["accent", "line", "core"];
 
 function createSeededRandom(seed) {
   let value = seed >>> 0;
@@ -120,7 +123,44 @@ function createGlowTexture() {
   return texture;
 }
 
-export function createSiteBackground(canvas, { isMobile = false } = {}) {
+function updateLissajousGeometry(
+  geometry,
+  phaseOffset,
+  time,
+  reveal = 1,
+  regularity = 1,
+) {
+  const positions = geometry.getAttribute("position");
+  const pointCount = positions.count;
+  const phase = time * 0.075;
+  const amplitude = 0.68 + reveal * 0.32;
+  const chaos = 1 - regularity;
+
+  for (let index = 0; index < pointCount; index += 1) {
+    const angle = (index / pointCount) * Math.PI * 2;
+    const jitter =
+      Math.sin(index * 0.07 + phaseOffset * 1.3 + time * 0.3) * 0.02 +
+      chaos *
+        (Math.sin(index * 0.61 + phaseOffset * 2.4) * 0.12 +
+          Math.cos(index * 0.19 - phaseOffset) * 0.055);
+
+    positions.setXYZ(
+      index,
+      Math.sin(3 * angle + phase + phaseOffset) * amplitude + jitter,
+      Math.sin(2 * angle + phase * 1.22 + phaseOffset * 0.8) *
+        amplitude +
+        jitter,
+      Math.sin(angle + phaseOffset * 1.1 + 0.55) * amplitude,
+    );
+  }
+
+  positions.needsUpdate = true;
+}
+
+export function createSiteBackground(
+  canvas,
+  { isMobile = false, introState = null, reducedMotion = false } = {},
+) {
   const renderer = new WebGLRenderer({
     canvas,
     alpha: true,
@@ -138,8 +178,8 @@ export function createSiteBackground(canvas, { isMobile = false } = {}) {
   scene.add(composition);
   composition.add(network, core);
 
-  const pointCount = isMobile ? 60 : 140;
-  const connectionCount = isMobile ? 30 : 90;
+  const pointCount = isMobile ? 38 : 92;
+  const connectionCount = isMobile ? 16 : 46;
   const {
     accentGeometry,
     neutralGeometry,
@@ -178,28 +218,28 @@ export function createSiteBackground(canvas, { isMobile = false } = {}) {
     new LineSegments(connectionGeometry, lineMaterial),
   );
 
-  const coreGeometry = new IcosahedronGeometry(0.82, isMobile ? 1 : 2);
-  const accentCoreMaterial = new MeshBasicMaterial({
-    color: DARK_PALETTE.accent,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.58,
-    blending: AdditiveBlending,
-    depthWrite: false,
+  const lissajousPointCount = isMobile ? 160 : 260;
+  const lissajousGeometries = LISSAJOUS_PHASES.map(() =>
+    createPointGeometry(new Array(lissajousPointCount * 3).fill(0)),
+  );
+  const lissajousMaterials = LISSAJOUS_COLOR_KEYS.map(
+    (colorKey) => new LineBasicMaterial({
+      color: DARK_PALETTE[colorKey],
+      transparent: true,
+      blending: AdditiveBlending,
+      depthWrite: false,
+    }),
+  );
+  const lissajous = new Group();
+  lissajous.scale.setScalar(1.04);
+  lissajous.rotation.x = 0.16;
+  LISSAJOUS_PHASES.forEach((phaseOffset, index) => {
+    updateLissajousGeometry(lissajousGeometries[index], phaseOffset, 0);
+    lissajous.add(
+      new LineLoop(lissajousGeometries[index], lissajousMaterials[index]),
+    );
   });
-  const neutralCoreMaterial = new MeshBasicMaterial({
-    color: DARK_PALETTE.core,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.28,
-    blending: AdditiveBlending,
-    depthWrite: false,
-  });
-  const accentCore = new Mesh(coreGeometry, accentCoreMaterial);
-  const neutralCore = new Mesh(coreGeometry, neutralCoreMaterial);
-  neutralCore.scale.setScalar(1.22);
-  neutralCore.rotation.set(0.35, 0.28, 0.18);
-  core.add(accentCore, neutralCore);
+  core.add(lissajous);
 
   const glowTexture = createGlowTexture();
   const glowMaterial = new SpriteMaterial({
@@ -221,6 +261,7 @@ export function createSiteBackground(canvas, { isMobile = false } = {}) {
   let currentPointerX = 0;
   let currentPointerY = 0;
   let lightTheme = false;
+  let reducedMotionEnabled = reducedMotion;
   const targetColors = {
     accent: new Color(DARK_PALETTE.accent),
     neutral: new Color(DARK_PALETTE.neutral),
@@ -259,47 +300,111 @@ export function createSiteBackground(canvas, { isMobile = false } = {}) {
       targetPointerX = x;
       targetPointerY = y;
     },
+    setReducedMotion(value) {
+      reducedMotionEnabled = value;
+      if (value) {
+        targetPointerX = 0;
+        targetPointerY = 0;
+      }
+    },
     setTheme,
     render(time, delta) {
-      const progressMix = 1 - Math.exp(-delta * 2.6);
+      const progressMix = 1 - Math.exp(-delta * SCROLL_RESPONSE_RATE);
       const pointerMix = 1 - Math.exp(-delta * 4.5);
       currentProgress += (targetProgress - currentProgress) * progressMix;
       currentPointerX += (targetPointerX - currentPointerX) * pointerMix;
       currentPointerY += (targetPointerY - currentPointerY) * pointerMix;
 
       const state = interpolateBackgroundState(currentProgress);
-      const horizontalScale = isMobile ? 0.36 : 1;
+      const introReveal = introState?.reveal ?? 1;
+      const introEnergy = introState?.energy ?? 1;
+      const introRegularity = introState?.regularity ?? 1;
+      const introEnvironment = introState?.environment ?? 1;
+      const ambientSectionMix = 0.52 + Math.min(currentProgress, 1) * 0.48;
+      const motionTime = time * (reducedMotionEnabled ? 0.14 : 1);
+      const heroProgress = Math.min(currentProgress, 1);
+      const horizontalScale = isMobile ? 0.3 + heroProgress * 0.32 : 1;
+      const mobileIntensity = isMobile ? 0.72 : 1;
       composition.position.x =
         state.focusX * horizontalScale + currentPointerX * 0.22;
-      composition.position.y = state.focusY - currentPointerY * 0.15;
+      composition.position.y =
+        state.focusY -
+        currentPointerY * 0.15 -
+        (isMobile ? (1 - heroProgress) * 2.05 : 0);
 
       network.scale.set(state.scaleX, state.scaleY, state.depthScale);
       network.rotation.x = -0.08 + currentPointerY * 0.035;
-      network.rotation.y = time * 0.026 + currentPointerX * 0.05;
-      network.rotation.z = state.rotationZ + Math.sin(time * 0.18) * 0.015;
+      network.rotation.y = motionTime * 0.026 + currentPointerX * 0.05;
+      network.rotation.z =
+        state.rotationZ + Math.sin(motionTime * 0.18) * 0.015;
 
-      const pulse = 1 + Math.sin(time * 1.35) * 0.035;
-      core.scale.setScalar(state.coreScale * pulse);
-      accentCore.rotation.x = time * 0.11;
-      accentCore.rotation.y = time * 0.15;
-      neutralCore.rotation.x = 0.35 - time * 0.065;
-      neutralCore.rotation.y = 0.28 + time * 0.08;
+      const pulseAmount = reducedMotionEnabled ? 0.008 : 0.035;
+      const pulse = 1 + Math.sin(motionTime * 1.35) * pulseAmount;
+      core.scale.setScalar(
+        state.coreScale *
+          pulse *
+          (0.58 + introReveal * 0.42) *
+          (isMobile ? 0.68 : 1),
+      );
+      lissajous.rotation.y = motionTime * 0.045;
+      lissajous.rotation.z = motionTime * 0.025;
+      LISSAJOUS_PHASES.forEach((phaseOffset, index) => {
+        updateLissajousGeometry(
+          lissajousGeometries[index],
+          phaseOffset,
+          motionTime,
+          introReveal,
+          introRegularity,
+        );
+      });
 
       const colorMix = 1 - Math.exp(-delta * 3.2);
       accentMaterial.color.lerp(targetColors.accent, colorMix);
       neutralMaterial.color.lerp(targetColors.neutral, colorMix);
       lineMaterial.color.lerp(targetColors.line, colorMix);
-      accentCoreMaterial.color.lerp(targetColors.accent, colorMix);
-      neutralCoreMaterial.color.lerp(targetColors.core, colorMix);
       glowMaterial.color.lerp(targetColors.accent, colorMix);
+      lissajousMaterials.forEach((material, index) => {
+        material.color.lerp(
+          targetColors[LISSAJOUS_COLOR_KEYS[index]],
+          colorMix,
+        );
+      });
 
       const themeOpacity = lightTheme ? 0.68 : 1;
-      accentMaterial.opacity = state.pointOpacity * themeOpacity;
-      neutralMaterial.opacity = state.pointOpacity * 0.7 * themeOpacity;
-      lineMaterial.opacity = state.lineOpacity * themeOpacity;
-      accentCoreMaterial.opacity = state.coreOpacity * 0.74 * themeOpacity;
-      neutralCoreMaterial.opacity = state.coreOpacity * 0.38 * themeOpacity;
-      glowMaterial.opacity = state.coreOpacity * 0.5 * themeOpacity;
+      accentMaterial.opacity =
+        state.pointOpacity *
+        themeOpacity *
+        mobileIntensity *
+        ambientSectionMix *
+        introEnvironment;
+      neutralMaterial.opacity =
+        state.pointOpacity *
+        0.7 *
+        themeOpacity *
+        mobileIntensity *
+        ambientSectionMix *
+        introEnvironment;
+      lineMaterial.opacity =
+        state.lineOpacity *
+        themeOpacity *
+        mobileIntensity *
+        ambientSectionMix *
+        introEnvironment;
+      glowMaterial.opacity =
+        state.coreOpacity *
+        0.5 *
+        themeOpacity *
+        mobileIntensity *
+        introEnergy;
+      lissajousMaterials.forEach((material, index) => {
+        material.opacity =
+          state.coreOpacity *
+          LISSAJOUS_OPACITY[index] *
+          themeOpacity *
+          mobileIntensity *
+          Math.max(0.04, introReveal) *
+          (0.72 + introEnergy * 0.28);
+      });
 
       renderer.render(scene, camera);
     },
@@ -307,13 +412,12 @@ export function createSiteBackground(canvas, { isMobile = false } = {}) {
       accentGeometry.dispose();
       neutralGeometry.dispose();
       connectionGeometry.dispose();
-      coreGeometry.dispose();
+      lissajousGeometries.forEach((geometry) => geometry.dispose());
       accentMaterial.dispose();
       neutralMaterial.dispose();
       lineMaterial.dispose();
-      accentCoreMaterial.dispose();
-      neutralCoreMaterial.dispose();
       glowMaterial.dispose();
+      lissajousMaterials.forEach((material) => material.dispose());
       glowTexture?.dispose();
       renderer.dispose();
       renderer.forceContextLoss();
