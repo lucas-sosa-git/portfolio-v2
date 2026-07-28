@@ -23,8 +23,10 @@ npm run build
 npm run preview
 ```
 
-Vite genera el sitio desplegable en `dist/` y conserva rutas relativas para
-GitHub Pages.
+Vite genera el sitio desplegable en `dist/`. En producción usa la base
+`/portfolio-v2/` para que los recursos resuelvan correctamente en GitHub Pages.
+El workflow de GitHub Actions publica únicamente ese directorio después de
+ejecutar los tests y el build en cada push a `main`.
 
 ## Arquitectura visual
 

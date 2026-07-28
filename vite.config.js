@@ -28,7 +28,7 @@ function htmlTemplates() {
 }
 
 export default defineConfig({
-  base: "./",
+  base: "/portfolio-v2/",
   plugins: [htmlTemplates(), react()],
   build: {
     target: "es2020",
