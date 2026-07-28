@@ -152,7 +152,7 @@ document.querySelectorAll(".copy-btn").forEach((button) => {
       });
 
       if (response.ok) {
-        status.textContent = "Gracias. Tu mensaje fue enviado correctamente.";
+        status.textContent = "Mensaje enviado. Te responderé a la brevedad.";
         status.classList.add("success");
         form.reset();
         fields.forEach((field) => {
@@ -162,15 +162,15 @@ document.querySelectorAll(".copy-btn").forEach((button) => {
             ?.setAttribute("aria-invalid", "false");
         });
       } else {
-        status.textContent = "Ocurrió un problema. Intentá de nuevo.";
+        status.textContent = "No pudimos enviar el mensaje. Intentá nuevamente en unos minutos.";
         status.classList.add("error");
       }
     } catch {
-      status.textContent = "Error de conexión. Intentá más tarde.";
+      status.textContent = "No hay conexión para enviar el mensaje. Revisá tu red e intentá nuevamente.";
       status.classList.add("error");
     } finally {
       submitButton.disabled = false;
-      submitButton.textContent = "Enviar";
+      submitButton.textContent = "Enviar mensaje";
       status.hidden = false;
     }
 

@@ -59,7 +59,7 @@ export function ProjectsSection() {
                           openDetails(project, event.currentTarget)
                         }
                       >
-                        Explorar caso
+                        Ver el caso
                       </button>
                       {primaryUrl && (
                         <a

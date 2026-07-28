@@ -3,6 +3,7 @@ export const INTRO_SESSION_KEY = "ls-hero-intro-played";
 export const HERO_MOTION = Object.freeze({
   wordStagger: 55,
   charStagger: 22,
+  titlePartDuration: 500,
   chaosDistance: 18,
   chaosRotation: 4,
   labels: Object.freeze({

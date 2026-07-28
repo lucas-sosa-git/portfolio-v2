@@ -62,3 +62,27 @@ test("the existing scene consumes finite hero intro state without a new loop", (
   assert.match(scene, /introState\?\.regularity/);
   assert.doesNotMatch(scene, /requestAnimationFrame|setInterval|setTimeout/);
 });
+
+test("content sections preserve the shared site background", () => {
+  const mainStyles = readFileSync(
+    new URL("../styles/main.css", import.meta.url),
+    "utf8",
+  );
+  const projectStyles = readFileSync(
+    new URL(
+      "../src/components/projects/projects-gallery.css",
+      import.meta.url,
+    ),
+    "utf8",
+  );
+
+  assert.match(
+    projectStyles,
+    /#projects\.projects-section\s*{[^}]*background:\s*transparent;/s,
+  );
+  assert.doesNotMatch(projectStyles, /#projects\.projects-section::before/);
+  assert.doesNotMatch(
+    mainStyles,
+    /\.skills-section::before|#courses::before|#contact::before/,
+  );
+});

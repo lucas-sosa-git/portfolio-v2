@@ -38,7 +38,8 @@ test("the hero intro uses one scoped master timeline", () => {
   assert.doesNotMatch(component, /requestAnimationFrame|setTimeout|setInterval/);
 });
 
-test("the labelled choreography finishes its ambient reveal at 2.1 seconds", () => {
+test("all title regions enter together over half a second", () => {
+  assert.equal(HERO_MOTION.titlePartDuration, 500);
   assert.deepEqual(HERO_MOTION.labels, {
     sceneStart: 0,
     navStart: 120,
@@ -49,18 +50,20 @@ test("the labelled choreography finishes its ambient reveal at 2.1 seconds", () 
     supportingCopy: 1250,
     ready: 1600,
   });
+  assert.match(component, /set\(chaosChars, \{\s*opacity: 0,/);
+  assert.equal(component.match(/"copy-start"/g)?.length, 5);
+  assert.doesNotMatch(component, /"chaos\+=140"/);
+  assert.doesNotMatch(component, /accentColor|textColor|color:\s*\[/);
   assert.equal(HERO_MOTION.labels.ready + 500, 2100);
 });
 
-test("the first viewport keeps two calls to action and moves strengths after the hero", () => {
+test("the first viewport keeps two calls to action without a detached strengths list", () => {
   const heroSection = heroTemplate.match(/<section id="hero"[\s\S]*?<\/section>/)?.[0];
-  const capabilityStrip = heroTemplate.match(/<div class="hero-capabilities"[\s\S]*/)?.[0];
 
   assert.ok(heroSection);
-  assert.ok(capabilityStrip);
   assert.equal(heroSection.match(/class="(?:primary|secondary)-btn"/g)?.length, 2);
   assert.doesNotMatch(heroSection, /LinkedIn/);
-  assert.equal(capabilityStrip.match(/<li>/g)?.length, 5);
+  assert.doesNotMatch(heroTemplate, /hero-capabilities/);
 });
 
 test("the title keeps semantic regions for precision, chaos and resolution", () => {

@@ -8,15 +8,15 @@ export const projects = [
     eyebrow: "Full-stack colaborativo",
     status: "Proyecto destacado",
     summary:
-      "Sistema web académico para gestionar reservas, roles, cancelaciones, reseñas y confirmaciones por mail y QR.",
+      "Sistema web académico para gestionar reservas, roles, cancelaciones, reseñas y confirmaciones por email y QR.",
     problem:
-      "Resolver un flujo real de turnos y separar permisos para clientes, profesionales y administración.",
+      "Resolver un flujo de turnos real con permisos diferenciados para clientes, profesionales y administración.",
     role:
-      "Desarrollo full-stack colaborativo: integración de frontend y backend, autenticación, permisos, almacenamiento y control de versiones.",
+      "Desarrollo full-stack en equipo: integración de frontend, backend, autenticación, permisos, almacenamiento y control de versiones.",
     challenge:
       "Coordinar los flujos entre interfaces, API y persistencia, sostener los roles con JWT e integrar Supabase Storage dentro de una base compartida por el equipo.",
     result:
-      "Aplicación operativa construida en equipo, con responsabilidades separadas, autenticación y almacenamiento de imágenes.",
+      "Aplicación operativa desarrollada en equipo, con roles diferenciados, autenticación y almacenamiento de imágenes.",
     learning:
       "Consolidé la integración de una aplicación de punta a punta. Git y Docker acompañaron el desarrollo y la integración local; Docker no se presenta como despliegue productivo.",
     technologies: [
@@ -40,16 +40,16 @@ export const projects = [
     eyebrow: "Data Quality · BI",
     status: "Producción",
     summary:
-      "Automatización del procesamiento y validación de información de productos y mermas para reportes confiables.",
+      "Automatización del procesamiento y la validación de datos de productos y mermas para generar reportes confiables.",
     problem:
-      "Preparar, cruzar y corregir datos que antes requerían varios días de trabajo manual.",
+      "Preparar, cruzar y corregir datos que antes demandaban varios días de trabajo manual.",
     role: "Automatización y análisis de datos",
     challenge:
-      "Convertir fuentes heterogéneas y errores de calidad en un proceso trazable, repetible y apto para alimentar el reporte.",
+      "Convertir fuentes heterogéneas y errores de calidad en un proceso trazable y repetible para alimentar el reporte.",
     result:
-      "El flujo pasó de varios días de trabajo manual a ejecutarse en aproximadamente una hora.",
+      "El proceso pasó de varios días de trabajo manual a ejecutarse en aproximadamente una hora.",
     learning:
-      "Un buen dashboard empieza por validación, trazabilidad y control de errores; la visualización viene después.",
+      "Un buen reporte empieza con validación, trazabilidad y control de errores; la visualización viene después.",
     technologies: ["Python", "Pandas", "SQL", "Power BI"],
     image: projectImage("vla.png"),
     imageAlt: "Tablero de mermas VLA en Power BI",
@@ -68,11 +68,11 @@ export const projects = [
       "Comparar categorías con descripciones distintas para detectar candidatos de equivalencia.",
     role: "Exploración y validación técnica",
     challenge:
-      "Distinguir similitud lingüística de equivalencia funcional y hacer visibles los falsos positivos del modelo.",
+      "Distinguir la similitud lingüística de la equivalencia funcional y visibilizar los falsos positivos del modelo.",
     result:
-      "Candidatos de coincidencia y criterios más claros para evaluar precisión y limitaciones.",
+      "Candidatos de coincidencia y criterios más claros para evaluar la precisión y las limitaciones.",
     learning:
-      "Aplicar IA exige medir precisión, revisar falsos positivos y validar cada criterio con conocimiento funcional.",
+      "Aplicar IA exige medir la precisión, revisar falsos positivos y validar cada criterio con conocimiento funcional.",
     technologies: ["Python", "Embeddings", "Hugging Face", "FAISS"],
     image: projectImage("gpc-cpc.webp"),
     imageAlt: "Matching de categorías GPC y CPC con embeddings",
@@ -85,7 +85,7 @@ export const projects = [
     eyebrow: "Frontend · UX",
     status: "Marca profesional",
     summary:
-      "Sitio responsive para presentar experiencia, proyectos, aprendizajes y foco profesional con lectura rápida.",
+      "Sitio responsive para presentar experiencia, proyectos y foco profesional con una lectura ágil.",
     problem:
       "Convertir experiencia técnica dispersa en una narrativa clara para recruiters y equipos técnicos.",
     role: "Diseño y desarrollo frontend",
@@ -114,9 +114,9 @@ export const projects = [
     challenge:
       "Priorizar flujos de negocio conectados sin perder claridad entre inventario, ventas, caja y evolución técnica.",
     result:
-      "Un laboratorio de producto real donde conviven arquitectura, UX, despliegue y decisiones de negocio.",
+      "Un producto en desarrollo donde conviven arquitectura, UX, despliegue y decisiones de negocio.",
     learning:
-      "Estoy aprendiendo a pensar en alcance, prioridades, deuda técnica, estados de negocio y coordinación.",
+      "Estoy aprendiendo a gestionar alcance, prioridades, deuda técnica, estados de negocio y coordinación.",
     technologies: ["React", "SQLAlchemy", "Render", "GitHub"],
     image: projectImage("nubenta.png"),
     imageAlt: "Dashboard de Nubenta POS",
@@ -129,16 +129,16 @@ export const projects = [
     eyebrow: "Demo técnica · Prototipado",
     status: "GS1",
     summary:
-      "Frontend que interpreta GTIN, lote, vencimiento y código de material desde un GS1 Digital Link.",
+      "Frontend que interpreta GTIN, lote, vencimiento y código de material a partir de un GS1 Digital Link.",
     problem:
-      "Validar y comunicar rápidamente cómo visualizar la información codificada en una URL GS1.",
+      "Validar y comunicar con rapidez cómo visualizar la información codificada en una URL GS1.",
     role: "Prototipado frontend",
     challenge:
-      "Traducir identificadores y atributos técnicos en una interfaz comprensible para validar el flujo con rapidez.",
+      "Traducir identificadores y atributos técnicos a una interfaz comprensible para validar el flujo con rapidez.",
     result:
-      "Una demo funcional para probar el flujo sin construir primero un sistema completo.",
+      "Una demo funcional para probar el flujo sin necesidad de construir primero un sistema completo.",
     learning:
-      "Cuando una idea técnica es difícil de explicar, un prototipo pequeño acelera la conversación y la validación.",
+      "Cuando una idea técnica es difícil de explicar, un prototipo acotado acelera la conversación y la validación.",
     technologies: ["HTML", "CSS", "JavaScript", "GS1 Digital Link"],
     image: projectImage("gs1-qr-code.png"),
     imageAlt: "Demo de GS1 Digital Link para Purina",
@@ -152,16 +152,16 @@ export const projects = [
     eyebrow: "Web institucional · Equipo",
     status: "Cliente real",
     summary:
-      "Sitio responsive con contenido institucional ordenado para un consultorio odontológico.",
+      "Sitio responsive que organiza el contenido institucional de un consultorio odontológico.",
     problem:
       "Traducir las necesidades de un cliente en una presencia web simple, clara y accesible.",
     role: "Desarrollo web en equipo",
     challenge:
       "Ordenar contenido y decisiones visuales con el equipo para responder a una necesidad concreta del cliente.",
     result:
-      "Un primer producto web pensado para usuarios reales y construido de manera colaborativa.",
+      "Un primer producto web construido en equipo y pensado para usuarios reales.",
     learning:
-      "Desarrollar para otros implica escuchar, simplificar, priorizar y adaptar la solución a una necesidad concreta.",
+      "Desarrollar para otras personas implica escuchar, simplificar, priorizar y adaptar la solución a una necesidad concreta.",
     technologies: ["HTML", "CSS", "JavaScript", "Responsive"],
     image: projectImage("rojas.png"),
     imageAlt: "Sitio web del consultorio odontológico Rojas",

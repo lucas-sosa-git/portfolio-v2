@@ -107,7 +107,6 @@ export function PortfolioIntro() {
         }
         introStarted = true;
 
-        const result = title.querySelector("[data-hero-result]");
         const split = splitText(title, {
           words: { class: "hero-word", wrap: "clip" },
           chars: { class: "hero-char" },
@@ -125,11 +124,6 @@ export function PortfolioIntro() {
         const resultWords = title.querySelectorAll(
           "[data-hero-result] .hero-word",
         );
-        const bodyStyles = getComputedStyle(document.body);
-        const textColor = bodyStyles.getPropertyValue("--text").trim();
-        const accentColor = bodyStyles
-          .getPropertyValue("--contact-accent")
-          .trim();
 
         Object.assign(heroIntroState, {
           reveal: 0.06,
@@ -145,7 +139,7 @@ export function PortfolioIntro() {
         set(resultWords, { opacity: 0, y: "82%" });
         set(supportTargets, { opacity: 0, y: 16 });
         set(chaosChars, {
-          opacity: 0.22,
+          opacity: 0,
           x: (_, index) =>
             ((index * 7) % 9 - 4) * (HERO_MOTION.chaosDistance / 4),
           y: (_, index) =>
@@ -165,7 +159,6 @@ export function PortfolioIntro() {
             split.chars.forEach((char) =>
               char.style.removeProperty("will-change"),
             );
-            result?.style.removeProperty("color");
             markIntroPlayed();
             showFinalHero();
             window.removeEventListener(
@@ -222,7 +215,7 @@ export function PortfolioIntro() {
               opacity: [0, 1],
               y: ["92%", "0%"],
               delay: stagger(HERO_MOTION.wordStagger),
-              duration: 570,
+              duration: HERO_MOTION.titlePartDuration,
             },
             "copy-start",
           )
@@ -240,22 +233,26 @@ export function PortfolioIntro() {
           .add(
             chaosChars,
             {
-              opacity: [0.22, 1],
+              opacity: [0, 1],
               x: 0,
               y: 0,
               rotate: 0,
               delay: stagger(
                 self.matches.compact ? 14 : HERO_MOTION.charStagger,
               ),
-              duration: self.matches.compact ? 520 : 670,
+              duration: HERO_MOTION.titlePartDuration,
               ease: "out(4)",
             },
-            "chaos",
+            "copy-start",
           )
           .add(
             bridgeWords,
-            { opacity: [0, 1], y: ["52%", "0%"], duration: 430 },
-            "chaos+=140",
+            {
+              opacity: [0, 1],
+              y: ["52%", "0%"],
+              duration: HERO_MOTION.titlePartDuration,
+            },
+            "copy-start",
           )
           .add(
             resultWords,
@@ -263,9 +260,9 @@ export function PortfolioIntro() {
               opacity: [0, 1],
               y: ["82%", "0%"],
               delay: stagger(38),
-              duration: 500,
+              duration: HERO_MOTION.titlePartDuration,
             },
-            "resolution",
+            "copy-start",
           )
           .add(
             heroIntroState,
@@ -287,15 +284,6 @@ export function PortfolioIntro() {
               duration: 480,
             },
             "supporting-copy",
-          )
-          .add(
-            result,
-            {
-              color: [accentColor, textColor],
-              duration: 360,
-              ease: "out(2)",
-            },
-            "ready",
           )
           .add(
             heroIntroState,

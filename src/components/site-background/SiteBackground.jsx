@@ -182,7 +182,8 @@ export function SiteBackground() {
 
         root.dataset.mode = "webgl";
         requestFrame();
-      } catch {
+      } catch (error) {
+        console.error("Unable to initialise the site background.", error);
         root.dataset.mode = "fallback";
         removeSceneListeners();
         scene?.dispose();

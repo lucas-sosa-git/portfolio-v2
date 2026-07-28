@@ -428,7 +428,7 @@ h1,h2{ color:var(--primary); margin:0 0 .75rem; }
   grid-template-areas:"photo copy";
   align-items:center;
   gap:clamp(1.2rem,3vw,3rem);
-  padding-block:clamp(2rem,5vh,3rem);
+  padding-block:clamp(1.5rem,4vh,2.5rem);
 }
 .about-photo{ grid-area:photo; justify-self:center; }
 .about-copy { grid-area:copy;  display:grid; gap:1rem; }
@@ -890,19 +890,6 @@ body.light .pdf-btn{
   color: var(--text);
 }
 
-.skills-section,
-#courses,
-#contact{ position:relative; }
-.skills-section::before,
-#courses::before,
-#contact::before{
-  content:""; position:absolute; z-index:-1; inset:0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);
-  background-size:3rem 3rem;
-  pointer-events:none;
-}
 .skill-category,
 .course-card,
 .c-form{
@@ -935,12 +922,4 @@ body.light .pdf-btn{
   color:var(--text);
   background:rgba(233,68,74,.1);
   border:1px solid rgba(249,168,168,.32);
-}
-
-body.light .skills-section::before,
-body.light #courses::before,
-body.light #contact::before{
-  background-image:
-    linear-gradient(rgba(100,30,30,.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(100,30,30,.045) 1px, transparent 1px);
 }
