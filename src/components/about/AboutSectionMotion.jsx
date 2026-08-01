@@ -4,7 +4,7 @@ import { scrambleText } from "animejs/text";
 import { createTimeline } from "animejs/timeline";
 import { set, stagger } from "animejs/utils";
 
-const FINAL_TITLE = "Transformo datos desordenados en procesos claros.";
+const FINAL_TITLE = "Primero entiendo el problema.";
 
 const ABOUT_MOTION = Object.freeze({
   observerThreshold: 0.18,

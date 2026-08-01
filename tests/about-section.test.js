@@ -38,6 +38,12 @@ test("about motion uses one scoped, one-shot Anime.js timeline", () => {
 
 test("about reserves the final title and provides reduced motion styles", () => {
   assert.match(template, /class="about-title-reserve"/);
+  assert.match(template, /aria-label="Primero entiendo el problema\."/);
+  assert.match(
+    component,
+    /const FINAL_TITLE = "Primero entiendo el problema\."/,
+  );
+  assert.doesNotMatch(template, /datos desordenados|procesos claros/);
   assert.match(styles, /\.about-title-reserve\s*{[^}]*visibility:hidden/s);
   assert.match(styles, /@media \(prefers-reduced-motion:reduce\)/);
   assert.doesNotMatch(styles, /\.about-photo:hover/);
