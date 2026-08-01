@@ -1,4 +1,5 @@
 import { createRoot } from "react-dom/client";
+import { AboutSectionMotion } from "./components/about/AboutSectionMotion";
 import { PortfolioIntro } from "./components/portfolio-intro/PortfolioIntro";
 import { ProjectsSection } from "./components/projects/ProjectsSection";
 import { SiteBackground } from "./components/site-background/SiteBackground";
@@ -13,7 +14,12 @@ if (backgroundRoot) {
 }
 
 if (introRoot) {
-  createRoot(introRoot).render(<PortfolioIntro />);
+  createRoot(introRoot).render(
+    <>
+      <PortfolioIntro />
+      <AboutSectionMotion />
+    </>,
+  );
 }
 
 if (projectsRoot) {
