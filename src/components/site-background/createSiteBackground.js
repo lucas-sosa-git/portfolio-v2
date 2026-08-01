@@ -40,6 +40,7 @@ const SCROLL_RESPONSE_RATE = 0.72;
 const LISSAJOUS_PHASES = [0, 0.8, 1.6];
 const LISSAJOUS_OPACITY = [1, 0.72, 0.48];
 const LISSAJOUS_COLOR_KEYS = ["accent", "line", "core"];
+const LISSAJOUS_SCALE = { mobile: 1.72, desktop: 1.04 };
 
 function createSeededRandom(seed) {
   let value = seed >>> 0;
@@ -231,7 +232,9 @@ export function createSiteBackground(
     }),
   );
   const lissajous = new Group();
-  lissajous.scale.setScalar(1.04);
+  lissajous.scale.setScalar(
+    isMobile ? LISSAJOUS_SCALE.mobile : LISSAJOUS_SCALE.desktop,
+  );
   lissajous.rotation.x = 0.16;
   LISSAJOUS_PHASES.forEach((phaseOffset, index) => {
     updateLissajousGeometry(lissajousGeometries[index], phaseOffset, 0);
