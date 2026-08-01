@@ -413,11 +413,26 @@ h1,h2{ color:var(--primary); margin:0 0 .75rem; }
     padding-bottom:clamp(2.5rem, 6vh, 4rem);
   }
   .hero-kicker{ font-size:.82rem; }
-  .hero-title{ font-size:clamp(2rem, 12vw, 2.65rem); }
+  .hero-title{
+    font-size:clamp(1.85rem, 9.5vw, 2.25rem);
+    line-height:1.06;
+  }
   .hero-subtitle{ font-size:clamp(.9rem, 4vw, 1rem); }
-  .hero-actions{ display:grid; grid-template-columns:1fr; width:100%; }
+  .hero-actions{
+    display:grid;
+    grid-template-columns:minmax(0,1fr);
+    width:100%;
+    gap:.65rem;
+    margin-top:.9rem;
+  }
   .primary-btn,
-  .secondary-btn{ width:100%; }
+  .secondary-btn{
+    box-sizing:border-box;
+    width:100%;
+    min-width:0;
+    padding:.72rem .9rem;
+    font-size:.92rem;
+  }
   .hero-visual{ display:none; }
 }
 

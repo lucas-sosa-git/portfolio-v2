@@ -17,6 +17,10 @@ const heroTemplate = readFileSync(
   new URL("../templates/hero.html", import.meta.url),
   "utf8",
 );
+const styles = readFileSync(
+  new URL("../styles/main.css", import.meta.url),
+  "utf8",
+);
 
 test("reduced motion and the explicit skip query bypass the intro", () => {
   assert.equal(
@@ -64,6 +68,12 @@ test("the first viewport keeps two calls to action without a detached strengths 
   assert.equal(heroSection.match(/class="(?:primary|secondary)-btn"/g)?.length, 2);
   assert.doesNotMatch(heroSection, /LinkedIn/);
   assert.doesNotMatch(heroTemplate, /hero-capabilities/);
+});
+
+test("the mobile hero keeps its title and actions inside the content width", () => {
+  assert.match(styles, /font-size:clamp\(1\.85rem, 9\.5vw, 2\.25rem\)/);
+  assert.match(styles, /grid-template-columns:minmax\(0,1fr\)/);
+  assert.match(styles, /box-sizing:border-box;\s*width:100%;\s*min-width:0;/s);
 });
 
 test("the title keeps semantic regions for precision, chaos and resolution", () => {
