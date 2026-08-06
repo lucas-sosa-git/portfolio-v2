@@ -275,6 +275,6 @@ if (navToggle && navMenu) {
     if (button) applyFilter(button);
   });
   applyFilter(
-    buttons.find((button) => button.dataset.cat === "Avanzado") || buttons[0],
+    buttons.find((button) => button.dataset.cat === "all") || buttons[0],
   );
 })();
