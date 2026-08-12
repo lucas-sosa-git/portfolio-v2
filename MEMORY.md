@@ -39,3 +39,9 @@ git diff --check
 
 Probar al menos 1366×768, 390×844, teclado, enlaces, diálogo, tema claro,
 reduced motion y consola.
+
+## Convenciones de Git
+
+- Todos los mensajes de commit deben escribirse en español.
+- El título debe explicar claramente el cambio realizado; cuando aporte valor,
+  agregar un cuerpo breve con los detalles principales y la validación.

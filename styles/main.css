@@ -288,13 +288,14 @@ h1,h2{ color:var(--primary); margin:0 0 .75rem; }
 
 /* =====================  HERO  ===================== */
 .hero-2col{
+  box-sizing:border-box;
   display: grid; grid-template-columns: 1.15fr .85fr; align-items: center;
   gap: clamp(1.25rem, 3vw, 3rem);
-  min-height: calc(100vh - var(--nav-h));
+  min-height:100vh;
   padding-block: clamp(1rem, 3vh, 2.5rem);
 }
 @supports (height: 100svh){
-  .hero-2col{ min-height: calc(100svh - var(--nav-h)); }
+  .hero-2col{ min-height:100svh; }
 }
 .hero-copy{ display: grid; gap: .9rem; }
 .hero-kicker{
@@ -408,7 +409,6 @@ h1,h2{ color:var(--primary); margin:0 0 .75rem; }
 }
 @media (max-width: 640px){
   .hero-2col{
-    min-height:auto;
     padding-top:calc(var(--nav-top) + var(--nav-expanded-height) + var(--nav-hero-gap));
     padding-bottom:clamp(2.5rem, 6vh, 4rem);
   }
@@ -444,7 +444,6 @@ h1,h2{ color:var(--primary); margin:0 0 .75rem; }
     --nav-hero-gap:24px;
   }
   .hero-2col{
-    min-height:auto;
     padding-top:calc(var(--nav-top) + var(--nav-expanded-height) + var(--nav-hero-gap));
     padding-bottom:clamp(2rem, 4vh, 3rem);
   }

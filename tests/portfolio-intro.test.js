@@ -70,6 +70,15 @@ test("the first viewport keeps two calls to action without a detached strengths 
   assert.doesNotMatch(heroTemplate, /hero-capabilities/);
 });
 
+test("the hero divider stays at the bottom of the initial viewport", () => {
+  assert.match(
+    styles,
+    /\.hero-2col\s*{[^}]*box-sizing:border-box;[^}]*min-height:100vh;/s,
+  );
+  assert.match(styles, /@supports \(height: 100svh\)\s*{\s*\.hero-2col{ min-height:100svh; }/);
+  assert.doesNotMatch(styles, /\.hero-2col\s*{[^}]*min-height:auto;/s);
+});
+
 test("the mobile hero keeps its title and actions inside the content width", () => {
   assert.match(styles, /font-size:clamp\(1\.85rem, 9\.5vw, 2\.25rem\)/);
   assert.match(styles, /grid-template-columns:minmax\(0,1fr\)/);
