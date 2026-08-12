@@ -48,3 +48,10 @@ test("about reserves the final title and provides reduced motion styles", () => 
   assert.match(styles, /@media \(prefers-reduced-motion:reduce\)/);
   assert.doesNotMatch(styles, /\.about-photo:hover/);
 });
+
+test("about fits beneath the navbar on short notebooks", () => {
+  assert.match(
+    styles,
+    /@media \(min-width:961px\) and \(max-height:820px\)\s*{[^}]*\.about-section\s*{[^}]*padding-block:clamp\(2rem,4vh,3\.5rem\)/s,
+  );
+});

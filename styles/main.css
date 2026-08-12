@@ -607,6 +607,11 @@ h1,h2{ color:var(--primary); margin:0 0 .75rem; }
   line-height:1.55;
   text-wrap:pretty;
 }
+@media (min-width:961px) and (max-height:820px){
+  .about-section{
+    padding-block:clamp(2rem,4vh,3.5rem);
+  }
+}
 @media (max-width:760px){
   .about-section{
     padding-block:clamp(4rem,14vw,6rem);
