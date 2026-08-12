@@ -72,8 +72,6 @@ html::-webkit-scrollbar-thumb:hover{
   background:var(--scrollbar-thumb-hover);
   background-clip:content-box;
 }
-section[id]{ scroll-margin-top: calc(var(--nav-h) + 16px); }
-
 html,body{ margin:0; padding:0; max-width:100%; overflow-x:clip; }
 body{
   background:var(--bg);

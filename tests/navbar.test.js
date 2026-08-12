@@ -38,3 +38,13 @@ test("navbar scroll state uses passive hysteresis without redundant updates", ()
   assert.match(script, /if \(nextCompact === isCompact\) return/);
   assert.match(script, /{ passive: true }/);
 });
+
+test("section links apply the responsive navbar offset only once", () => {
+  const styles = readProjectFile("styles/main.css");
+
+  assert.match(
+    styles,
+    /html\s*{[^}]*scroll-padding-top: calc\(var\(--nav-h\) \+ 16px\)/s,
+  );
+  assert.doesNotMatch(styles, /section\[id\][^}]*scroll-margin-top/);
+});
