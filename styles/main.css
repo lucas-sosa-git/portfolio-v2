@@ -436,6 +436,38 @@ h1,h2{ color:var(--primary); margin:0 0 .75rem; }
   .hero-visual{ display:none; }
 }
 
+/* Notebooks: reserve the fixed header's vertical space without shrinking desktop layouts. */
+@media (min-width: 961px) and (max-height: 820px){
+  :root{
+    --nav-top:10px;
+    --nav-expanded-height:56px;
+    --nav-hero-gap:24px;
+  }
+  .hero-2col{
+    min-height:auto;
+    padding-top:calc(var(--nav-top) + var(--nav-expanded-height) + var(--nav-hero-gap));
+    padding-bottom:clamp(2rem, 4vh, 3rem);
+  }
+  .hero-copy{ gap:.65rem; }
+  .hero-title{
+    font-size:clamp(2.2rem, 2rem + 2.25vw, 3.15rem);
+  }
+  .hero-subtitle{ line-height:1.5; }
+  .hero-actions{ margin-top:.7rem; }
+  .hero-visual{
+    height:clamp(280px, 38vw, 440px);
+    min-width:clamp(260px, 34vw, 420px);
+  }
+}
+
+/* Short notebooks: keep the animated kicker clear of the fixed navbar. */
+@media (min-width: 961px) and (max-height: 900px){
+  .hero-copy{
+    position:relative;
+    top:clamp(1rem, 3vh, 1.75rem);
+  }
+}
+
 /* =====================  SOBRE MÍ  ===================== */
 .about-section{
   padding-block:clamp(4.5rem,9vw,7.5rem);
