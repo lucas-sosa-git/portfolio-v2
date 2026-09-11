@@ -7,7 +7,6 @@ const projectRoot = process.cwd();
 const templatesDirectory = resolve(projectRoot, "templates");
 const includeDirective = /<!--\s*@include\s+(templates\/[\w-]+\.html)\s*-->/g;
 const staticAssets = [
-  "assets/cv_sosa_lucas.pdf",
   "assets/og-favicon-v4.png",
   "assets/courses/c-sharp-para-no-programadores.pdf",
   "assets/courses/desarrollo-web-con-html.pdf",

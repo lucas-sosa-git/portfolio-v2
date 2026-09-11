@@ -62,3 +62,11 @@ git diff --check
 
 También se debe comprobar el recorrido completo, enlaces, teclado, diálogo de
 detalle, responsive, tema claro/oscuro y ausencia de overflow horizontal.
+
+La prueba de navegación real se ejecuta contra la vista previa local después
+del build, con `node --test tests/navbar.browser.mjs`. Requiere una instalación
+existente de Playwright y Chrome: `PLAYWRIGHT_MODULE_PATH` permite indicar la
+ruta del módulo externo, sin agregar dependencias al portfolio. Opcionalmente,
+`BROWSER_CHANNEL` selecciona otro navegador instalado y `PORTFOLIO_TEST_URL`
+cambia la URL de la vista previa. Comprueba los tres tamaños, enlaces accesibles,
+activación por teclado y alineación del logo con portada y Contacto.
