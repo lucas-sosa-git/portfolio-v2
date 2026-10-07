@@ -1,12 +1,69 @@
-const projectImage = (filename) =>
-  new URL(`../../assets/projects/${filename}`, import.meta.url).href;
+const projectImages = {
+  vla: new URL("../../assets/projects/vla.png", import.meta.url).href,
+  rojas: new URL("../../assets/projects/rojas.png", import.meta.url).href,
+  ids: new URL("../../assets/projects/ids-turnos.svg", import.meta.url).href,
+};
 
 export const projects = [
   {
+    id: "vla-mermas",
+    title: "Control de mermas en retail",
+    eyebrow: "Automatización y BI",
+    status: "En producción",
+    impact:
+      "Reduje de varios días a cerca de una hora el procesamiento manual de datos para reportes confiables.",
+    cardRole: "Automatización y análisis · Python, Pandas, SQL, Power BI",
+    summary:
+      "Automatización del procesamiento y la validación de datos de productos y mermas para generar reportes confiables.",
+    problem:
+      "Preparar, cruzar y corregir datos que antes demandaban varios días de trabajo manual.",
+    role: "Automatización y análisis de datos",
+    challenge:
+      "Convertir fuentes heterogéneas y errores de calidad en un proceso trazable y repetible para alimentar el reporte.",
+    result:
+      "El proceso pasó de varios días de trabajo manual a ejecutarse en aproximadamente una hora.",
+    learning:
+      "Un buen reporte empieza con validación, trazabilidad y control de errores; la visualización viene después.",
+    technologies: ["Python", "Pandas", "SQL", "Power BI"],
+    image: projectImages.vla,
+    imageAlt: "Gráfico anual de mermas y sus indicadores principales en Power BI",
+    liveUrl:
+      "https://app.powerbi.com/view?r=eyJrIjoiYjFkZWJjZjQtOGZjNi00NDg5LWJkOTUtNDExYTEyNzAxMGViIiwidCI6ImEyMmNjNzFiLTA5MjQtNDQ4YS1hOTJhLTRiNjNlYjZkOWE3NiIsImMiOjR9",
+    primaryLabel: "Ver reporte",
+  },
+  {
+    id: "proyecto-rojas",
+    title: "Web para consultorio odontológico",
+    eyebrow: "Desarrollo web · Equipo",
+    status: "Cliente real",
+    impact:
+      "Organicé la información del consultorio en un sitio responsive para que sus pacientes encuentren tratamientos y turnos.",
+    cardRole: "Desarrollo web en equipo · HTML, CSS, JavaScript",
+    summary:
+      "Sitio responsive que organiza el contenido institucional de un consultorio odontológico.",
+    problem:
+      "Traducir las necesidades de un cliente en una presencia web simple, clara y accesible.",
+    role: "Desarrollo web en equipo",
+    challenge:
+      "Ordenar contenido y decisiones visuales con el equipo para responder a una necesidad concreta del cliente.",
+    result:
+      "Un primer producto web construido en equipo y pensado para usuarios reales.",
+    learning:
+      "Desarrollar para otras personas implica escuchar, simplificar, priorizar y adaptar la solución a una necesidad concreta.",
+    technologies: ["HTML", "CSS", "JavaScript", "Responsive"],
+    image: projectImages.rojas,
+    imageAlt: "Portada del sitio del consultorio odontológico Rojas",
+    githubUrl: "https://github.com/XeonnNK/Dental_Rojas",
+    primaryLabel: "Ver código",
+  },
+  {
     id: "gestor-turnos-ids",
-    title: "Gestor de Turnos IDS",
-    eyebrow: "Full-stack colaborativo",
-    status: "Proyecto destacado",
+    title: "Sistema de turnos y reservas",
+    eyebrow: "Aplicación web · Equipo",
+    status: "Proyecto académico",
+    impact:
+      "Integré reservas, roles de usuario, cancelaciones, reseñas y confirmaciones por email y QR en una sola aplicación.",
+    cardRole: "Desarrollo full-stack · Flask, SQL, JWT, Supabase Storage",
     summary:
       "Sistema web académico para gestionar reservas, roles, cancelaciones, reseñas y confirmaciones por email y QR.",
     problem:
@@ -28,144 +85,10 @@ export const projects = [
       "Git",
       "Docker",
     ],
-    image: projectImage("ids-turnos.svg"),
+    image: projectImages.ids,
     imageAlt:
-      "Arquitectura del Gestor de Turnos IDS con frontend, backend, JWT, SQL y Supabase Storage",
+      "Mockup de la agenda y arquitectura del sistema de turnos con Flask, JWT, SQL y Supabase Storage",
     githubUrl: "https://github.com/lucas-sosa-git/gestor-de-turnos-IDS",
-    primaryLabel: "Ver código",
-  },
-  {
-    id: "vla-mermas",
-    title: "VLA · Mermas retail",
-    eyebrow: "Data Quality · BI",
-    status: "Producción",
-    summary:
-      "Automatización del procesamiento y la validación de datos de productos y mermas para generar reportes confiables.",
-    problem:
-      "Preparar, cruzar y corregir datos que antes demandaban varios días de trabajo manual.",
-    role: "Automatización y análisis de datos",
-    challenge:
-      "Convertir fuentes heterogéneas y errores de calidad en un proceso trazable y repetible para alimentar el reporte.",
-    result:
-      "El proceso pasó de varios días de trabajo manual a ejecutarse en aproximadamente una hora.",
-    learning:
-      "Un buen reporte empieza con validación, trazabilidad y control de errores; la visualización viene después.",
-    technologies: ["Python", "Pandas", "SQL", "Power BI"],
-    image: projectImage("vla.png"),
-    imageAlt: "Tablero de mermas VLA en Power BI",
-    liveUrl:
-      "https://app.powerbi.com/view?r=eyJrIjoiYjFkZWJjZjQtOGZjNi00NDg5LWJkOTUtNDExYTEyNzAxMGViIiwidCI6ImEyMmNjNzFiLTA5MjQtNDQ4YS1hOTJhLTRiNjNlYjZkOWE3NiIsImMiOjR9",
-    primaryLabel: "Ver reporte",
-  },
-  {
-    id: "matching-gpc-cpc",
-    title: "Matching GPC ↔ CPC",
-    eyebrow: "IA aplicada · NLP",
-    status: "Experimento",
-    summary:
-      "Prueba de equivalencias semánticas entre taxonomías mediante embeddings y búsqueda por similitud.",
-    problem:
-      "Comparar categorías con descripciones distintas para detectar candidatos de equivalencia.",
-    role: "Exploración y validación técnica",
-    challenge:
-      "Distinguir la similitud lingüística de la equivalencia funcional y visibilizar los falsos positivos del modelo.",
-    result:
-      "Candidatos de coincidencia y criterios más claros para evaluar la precisión y las limitaciones.",
-    learning:
-      "Aplicar IA exige medir la precisión, revisar falsos positivos y validar cada criterio con conocimiento funcional.",
-    technologies: ["Python", "Embeddings", "Hugging Face", "FAISS"],
-    image: projectImage("gpc-cpc.webp"),
-    imageAlt: "Matching de categorías GPC y CPC con embeddings",
-    liveUrl: "#contact",
-    primaryLabel: "Consultar caso",
-  },
-  {
-    id: "portfolio-personal",
-    title: "Portfolio personal",
-    eyebrow: "Frontend · UX",
-    status: "Marca profesional",
-    summary:
-      "Sitio responsive para presentar experiencia, proyectos y foco profesional con una lectura ágil.",
-    problem:
-      "Convertir experiencia técnica dispersa en una narrativa clara para recruiters y equipos técnicos.",
-    role: "Diseño y desarrollo frontend",
-    challenge:
-      "Combinar una identidad visual profunda con navegación accesible, rendimiento y una lectura clara en distintas pantallas.",
-    result:
-      "Una experiencia accesible para comunicar proyectos técnicos y mostrar evolución profesional.",
-    learning:
-      "Aprendí a equilibrar diseño, accesibilidad, rendimiento y comunicación en una base mantenible.",
-    technologies: ["HTML", "CSS", "JavaScript", "Accesibilidad"],
-    image: projectImage("portfolio.png"),
-    imageAlt: "Portfolio personal de Lucas Sosa",
-    githubUrl: "https://github.com/lucas-sosa-git/portfolio-v2",
-    primaryLabel: "Ver código",
-  },
-  {
-    id: "nubenta-pos",
-    title: "Nubenta · POS",
-    eyebrow: "Producto propio · Web App",
-    status: "En desarrollo",
-    summary:
-      "Aplicación tipo POS para gestionar ventas, inventario, caja y la operación diaria de comercios.",
-    problem:
-      "Diseñar un producto útil para comercios y sostener su evolución técnica de manera incremental.",
-    role: "Producto y desarrollo en equipo",
-    challenge:
-      "Priorizar flujos de negocio conectados sin perder claridad entre inventario, ventas, caja y evolución técnica.",
-    result:
-      "Un producto en desarrollo donde conviven arquitectura, UX, despliegue y decisiones de negocio.",
-    learning:
-      "Estoy aprendiendo a gestionar alcance, prioridades, deuda técnica, estados de negocio y coordinación.",
-    technologies: ["React", "SQLAlchemy", "Render", "GitHub"],
-    image: projectImage("nubenta.png"),
-    imageAlt: "Dashboard de Nubenta POS",
-    liveUrl: "https://pos-pyme.vercel.app/",
-    primaryLabel: "Ver demo",
-  },
-  {
-    id: "gs1-qr-code",
-    title: "Demo GS1 QR Code",
-    eyebrow: "Demo técnica · Prototipado",
-    status: "GS1",
-    summary:
-      "Frontend que interpreta GTIN, lote, vencimiento y código de material a partir de un GS1 Digital Link.",
-    problem:
-      "Validar y comunicar con rapidez cómo visualizar la información codificada en una URL GS1.",
-    role: "Prototipado frontend",
-    challenge:
-      "Traducir identificadores y atributos técnicos a una interfaz comprensible para validar el flujo con rapidez.",
-    result:
-      "Una demo funcional para probar el flujo sin necesidad de construir primero un sistema completo.",
-    learning:
-      "Cuando una idea técnica es difícil de explicar, un prototipo acotado acelera la conversación y la validación.",
-    technologies: ["HTML", "CSS", "JavaScript", "GS1 Digital Link"],
-    image: projectImage("gs1-qr-code.png"),
-    imageAlt: "Demo de GS1 Digital Link para Purina",
-    liveUrl:
-      "https://gs1-purina.vercel.app/01/8445290971326/10/L001?17=260329&240=COD1234",
-    primaryLabel: "Ver demo",
-  },
-  {
-    id: "proyecto-rojas",
-    title: "Proyecto Rojas · Web",
-    eyebrow: "Web institucional · Equipo",
-    status: "Cliente real",
-    summary:
-      "Sitio responsive que organiza el contenido institucional de un consultorio odontológico.",
-    problem:
-      "Traducir las necesidades de un cliente en una presencia web simple, clara y accesible.",
-    role: "Desarrollo web en equipo",
-    challenge:
-      "Ordenar contenido y decisiones visuales con el equipo para responder a una necesidad concreta del cliente.",
-    result:
-      "Un primer producto web construido en equipo y pensado para usuarios reales.",
-    learning:
-      "Desarrollar para otras personas implica escuchar, simplificar, priorizar y adaptar la solución a una necesidad concreta.",
-    technologies: ["HTML", "CSS", "JavaScript", "Responsive"],
-    image: projectImage("rojas.png"),
-    imageAlt: "Sitio web del consultorio odontológico Rojas",
-    githubUrl: "https://github.com/XeonnNK/Dental_Rojas",
     primaryLabel: "Ver código",
   },
 ];

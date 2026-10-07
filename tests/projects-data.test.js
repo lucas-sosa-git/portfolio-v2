@@ -25,6 +25,22 @@ test("every project provides a complete, non-empty case narrative", () => {
   });
 });
 
+test("the main gallery leads with validated work and gives each card a clear result and role", () => {
+  assert.deepEqual(
+    projects.map((project) => project.id),
+    ["vla-mermas", "proyecto-rojas", "gestor-turnos-ids"],
+  );
+
+  projects.forEach((project) => {
+    assert.ok(project.impact.trim(), `${project.id} needs a clear outcome`);
+    assert.ok(project.cardRole.trim(), `${project.id} needs a role and stack line`);
+  });
+
+  assert.match(projects[0].impact, /varios días a cerca de una hora/i);
+  assert.equal(projects[0].status, "En producción");
+  assert.equal(projects[1].status, "Cliente real");
+});
+
 test("IDS documents collaboration and Docker without claiming production deployment", () => {
   const ids = projects.find((project) => project.id === "gestor-turnos-ids");
   assert.ok(ids.technologies.includes("Docker"));

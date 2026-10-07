@@ -14,77 +14,49 @@ export function ProjectsSection() {
   return (
     <>
       <div className="projects-gallery">
+        <header className="projects-gallery__header">
+          <h2 className="section-title">Proyectos</h2>
+        </header>
         <ol className="projects-gallery__list">
-          {projects.map((project, index) => {
-            const primaryUrl = project.liveUrl || project.githubUrl;
-
-            return (
-              <li key={project.id} className="project-entry">
-                <article aria-labelledby={`${project.id}-title`}>
-                  <figure className="project-entry__visual">
-                    <img
-                      src={project.image}
-                      alt={project.imageAlt}
-                      loading={index < 2 ? "eager" : "lazy"}
-                      fetchPriority={index === 0 ? "high" : "auto"}
-                      decoding="async"
-                    />
-                    <figcaption>
-                      <span>{String(index + 1).padStart(2, "0")}</span>
-                      <span>{project.status}</span>
-                    </figcaption>
-                  </figure>
-
-                  <div className="project-entry__content">
+          {projects.map((project, index) => (
+            <li
+              key={project.id}
+              className={`project-entry${index === 0 ? " project-entry--featured" : ""}`}
+            >
+              <article aria-labelledby={`${project.id}-title`}>
+                <figure className="project-entry__visual">
+                  <img
+                    src={project.image}
+                    alt={project.imageAlt}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </figure>
+                <div className="project-entry__content">
+                  <div className="project-entry__meta">
                     <p className="project-entry__eyebrow">{project.eyebrow}</p>
-                    <h3 id={`${project.id}-title`}>{project.title}</h3>
-                    <p className="project-entry__summary">{project.summary}</p>
-                    <p className="project-entry__result">
-                      <span>Resultado</span>
-                      {project.result}
-                    </p>
-
-                    <ul aria-label="Tecnologías principales">
-                      {project.technologies.map((technology) => (
-                        <li key={technology}>{technology}</li>
-                      ))}
-                    </ul>
-
-                    <div className="project-entry__actions">
-                      <button
-                        type="button"
-                        aria-controls="project-details-dialog"
-                        aria-expanded={selectedProject?.id === project.id}
-                        onClick={(event) =>
-                          openDetails(project, event.currentTarget)
-                        }
-                      >
-                        Ver el caso
-                      </button>
-                      {primaryUrl && (
-                        <a
-                          href={primaryUrl}
-                          target={
-                            primaryUrl.startsWith("http")
-                              ? "_blank"
-                              : undefined
-                          }
-                          rel={
-                            primaryUrl.startsWith("http")
-                              ? "noopener noreferrer"
-                              : undefined
-                          }
-                        >
-                          {project.primaryLabel}
-                          <span aria-hidden="true">↗</span>
-                        </a>
-                      )}
-                    </div>
+                    <span className="project-entry__status">{project.status}</span>
                   </div>
-                </article>
-              </li>
-            );
-          })}
+                  <h3 id={`${project.id}-title`}>
+                    <button
+                      type="button"
+                      className="project-entry__open"
+                      aria-haspopup="dialog"
+                      aria-label={`Ver proyecto: ${project.title}`}
+                      aria-expanded={selectedProject?.id === project.id}
+                      onClick={(event) =>
+                        openDetails(project, event.currentTarget)
+                      }
+                    >
+                      {project.title}
+                    </button>
+                  </h3>
+                  <p className="project-entry__impact">{project.impact}</p>
+                  <p className="project-entry__role">{project.cardRole}</p>
+                </div>
+              </article>
+            </li>
+          ))}
         </ol>
       </div>
 
