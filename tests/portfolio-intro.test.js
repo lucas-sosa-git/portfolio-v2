@@ -91,6 +91,6 @@ test("the title keeps semantic regions for precision, chaos and resolution", () 
   assert.match(heroTemplate, /data-hero-result/);
   assert.match(
     heroTemplate,
-    /aria-label="Desarrollo herramientas a medida\."/,
+    /aria-label="Automatizo procesos y desarrollo aplicaciones web\."/,
   );
 });
