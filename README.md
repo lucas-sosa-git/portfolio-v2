@@ -1,6 +1,6 @@
 # Portfolio de Lucas Sosa
 
-Portfolio personal orientado a datos, automatización, desarrollo e IA aplicada.
+Portfolio de Lucas Sosa sobre soluciones tecnológicas a medida, con proyectos de desarrollo web, automatización y análisis de datos.
 La base del sitio sigue siendo HTML, CSS y JavaScript; React se usa como isla
 para la introducción y la galería de proyectos.
 
